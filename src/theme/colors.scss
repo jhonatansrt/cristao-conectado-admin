@@ -1,0 +1,59 @@
+:root {
+  /* ============================= */
+  /* 🎨 PRIMITIVAS */
+  /* ============================= */
+
+  --blue-primary: #2196f3;
+  --blue-primary-dark: #0b3d65;
+
+  --white: #ffffff;
+  --black: #000000;
+
+  --black-70: #000000b3;
+  --black-50: #00000080;
+  --black-20: #00000033;
+  --black-10: #0000001a;
+
+  --gray: #d9d9d9;
+  --background-light: #fafcfd;
+
+  --green-success: #4caf50;
+  --red-danger: #e53935;
+  --orange-hot: #ff9800;
+
+  /* ============================= */
+  /* 🎯 SEMÂNTICOS */
+  /* ============================= */
+
+  --color-primary: var(--blue-primary);
+  --color-primary-dark: var(--blue-primary-dark);
+  --color-on-primary: var(--white);
+
+  --color-background: var(--background-light);
+  --color-background-secondary: var(--blue-primary);
+  --color-surface: var(--white);
+
+  --color-text-primary: var(--black);
+  --color-text-secondary: var(--black-70);
+  --color-text-muted: var(--black-50);
+  --color-text-disabled: var(--black-20);
+  --color-text-inverse: var(--white);
+
+  --color-border: var(--black-10);
+  --color-border-strong: var(--black-20);
+
+  --color-success: var(--green-success);
+  --color-danger: var(--red-danger);
+  --color-warning: var(--orange-hot);
+
+  --color-input-background: var(--background-light);
+  --color-input-border: var(--gray);
+  --color-input-border-focus: var(--color-primary);
+  --color-input-placeholder: var(--color-text-muted);
+
+  --color-overlay: #00000066;
+}
+
+[data-theme="dark"] {
+  // A DEFINIR
+}

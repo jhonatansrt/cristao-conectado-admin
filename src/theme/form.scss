@@ -1,0 +1,112 @@
+form {
+  width: 100%;
+  gap: 32px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px 4px;
+  border: none;
+  border-bottom: 1px solid var(--color-input-border);
+  background-color: var(--color-input-background);
+  outline: none;
+  color: var(--color-text-primary);
+  appearance: none;
+  z-index: 1;
+
+  option {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  &::placeholder {
+    color: var(--color-input-placeholder);
+  }
+
+  &:disabled {
+    color: var(--color-text-disabled);
+  }
+
+  &:focus {
+    border-color: var(--color-input-border-focus);
+  }
+}
+
+select {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  padding: 18px 36px 18px 14px;
+  font-size: var(--font-size-14);
+  appearance: none;
+  width: 100%;
+  color: var(--color-text-secondary);
+  outline: none;
+}
+
+textarea {
+  min-height: 140px;
+}
+
+.item-content {
+  position: relative;
+
+  select {
+    padding: 16px 36px 16px 16px;
+    text-transform: capitalize;
+
+    option {
+      text-transform: capitalize;
+    }
+  }
+
+  ion-icon {
+    color: var(--color-text-muted);
+    position: absolute;
+    top: 18px;
+    right: 10px;
+  }
+}
+
+.input-floating {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  label {
+    position: absolute;
+    padding: 0 4px;
+    left: 1px;
+    transition: 0.2s ease;
+    color: var(--color-text-muted);
+    background-color: transparent;
+    z-index: 1;
+  }
+
+  input:focus:invalid,
+  textarea:focus:invalid,
+  select:focus:invalid,
+  input:not(:placeholder-shown):invalid,
+  textarea:not(:placeholder-shown):invalid {
+    border-color: var(--color-danger);
+  }
+}
+
+.input-floating input:not(:placeholder-shown) + label,
+.input-floating select:not([value=""]) + label,
+.input-floating input:focus + label,
+.input-floating select:focus + label {
+  transform: translateY(-24px) translateX(4px);
+  background-color: var(--color-surface);
+  left: 0px !important;
+  padding: 0;
+  z-index: 2;
+  font-size: var(--font-size-12);
+  color: var(--color-text-secondary);
+}
+
+.input-floating input:disabled + label {
+  color: var(--color-text-disabled);
+}
