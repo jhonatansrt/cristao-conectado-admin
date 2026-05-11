@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { IonSpinner } from '@ionic/angular/standalone';
+import { Component, input } from '@angular/core';
 import { ButtonClass } from './button.data';
 
 @Component({
@@ -7,10 +6,9 @@ import { ButtonClass } from './button.data';
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   standalone: true,
-  imports: [IonSpinner],
 })
 export class ButtonComponent {
-  @Input() public disabled?: boolean;
-  @Input() public loading?: boolean;
-  @Input() public btnClass?: ButtonClass;
+  public readonly disabled = input(false);
+  public readonly loading = input(false);
+  public readonly btnClass = input<ButtonClass>();
 }
