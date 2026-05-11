@@ -1,0 +1,13 @@
+<fieldset class="flex flex-column">
+  <label>{{ label() }}</label>
+  <input
+    type="text"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    (input)="onInput($event)"
+  />
+
+  @if (errorMessage()) {
+    <small>{{ errorMessage() }}</small>
+  }
+</fieldset>
