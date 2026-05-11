@@ -1,11 +1,7 @@
-:host {
-  display: block;
-}
-
 fieldset {
   border: 0;
-  gap: 8px;
   min-width: 0;
+  gap: 8px;
 
   label {
     color: var(--color-text-primary);
