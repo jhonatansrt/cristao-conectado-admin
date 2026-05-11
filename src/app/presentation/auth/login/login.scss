@@ -1,6 +1,5 @@
 article {
-  height: 100vh;
-
+  height: 100%;
   background: linear-gradient(
     to bottom,
     var(--color-primary) 0%,
@@ -8,4 +7,12 @@ article {
     var(--color-background) 40%,
     var(--color-background) 100%
   );
+
+  section {
+    background-color: var(--color-surface);
+    width: 320px;
+    height: 400px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+  }
 }
