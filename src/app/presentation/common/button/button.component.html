@@ -1,0 +1,7 @@
+<button [disabled]="disabled || loading" class="{{ btnClass }}">
+  @if (loading) {
+  <ion-spinner name="crescent" />
+  } @else {
+  <ng-content />
+  }
+</button>
