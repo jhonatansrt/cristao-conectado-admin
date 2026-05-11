@@ -1,7 +1,7 @@
 <fieldset class="flex flex-column">
   <label>{{ label() }}</label>
   <input
-    type="text"
+    [type]="type()"
     [value]="value()"
     [placeholder]="placeholder()"
     (input)="onInput($event)"

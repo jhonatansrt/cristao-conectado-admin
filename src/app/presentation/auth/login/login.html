@@ -1,3 +1,22 @@
-<article class="flex flex-column justify-center items-center">
-  <section></section>
-</article>
+<main class="flex justify-center items-center">
+  <section class="flex flex-column items-center">
+    <header>
+      <img src="../../../../assets/logo.png" />
+    </header>
+
+    <form class="flex flex-column" aria-label="Formulário de login">
+      <app-input label="E-mail" placeholder="" />
+
+      <div>
+        <app-input label="Senha" type="password" placeholder="" />
+        <a href="#">Esqueceu a senha?</a>
+      </div>
+
+      <app-button btnClass="btn-primary">Entrar</app-button>
+    </form>
+
+    <footer>
+      <p>Não tem conta? <a href="#">cadastre-se</a></p>
+    </footer>
+  </section>
+</main>

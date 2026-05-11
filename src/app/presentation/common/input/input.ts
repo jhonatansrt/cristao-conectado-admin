@@ -8,6 +8,7 @@ import { Component, input, output } from '@angular/core';
 })
 export class InputComponent {
   public readonly label = input<string>('');
+  public readonly type = input<string>('text');
   public readonly value = input<string>('');
   public readonly placeholder = input<string>('');
   public readonly errorMessage = input<string>('');
