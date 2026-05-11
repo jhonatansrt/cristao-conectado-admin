@@ -37,9 +37,18 @@ button {
   color: var(--color-primary);
 }
 
-ion-spinner {
-  transform: scale(1.6);
-  width: 14px;
-  height: 14px;
-  color: var(--color-on-primary);
+button > span {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
