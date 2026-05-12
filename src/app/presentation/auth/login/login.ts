@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../common/button/button.component';
 import { InputComponent } from '../../common/input/input';
+import { Container } from '../../../util/container.service';
+import { CreateAccount } from '../create-account/create-account';
 
 @Component({
   selector: 'app-login',
@@ -8,4 +10,11 @@ import { InputComponent } from '../../common/input/input';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {}
+export class Login {
+  private readonly container = inject(Container);
+
+  public openCreateAccount(event: Event): void {
+    event.preventDefault();
+    this.container.vcr?.createComponent(CreateAccount);
+  }
+}
