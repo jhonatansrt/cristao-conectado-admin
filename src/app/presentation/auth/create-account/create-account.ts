@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ButtonComponent } from '../../common/button/button.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -9,4 +9,10 @@ import { ModalComponent } from '../../common/modal/modal.component';
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
-export class CreateAccount {}
+export class CreateAccount {
+  @ViewChild('createAccountModal') private modal?: ModalComponent;
+
+  public closeCreateAccountModal(): void {
+    this.modal?.closeModal();
+  }
+}
