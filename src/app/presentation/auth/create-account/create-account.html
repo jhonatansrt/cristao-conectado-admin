@@ -1,4 +1,4 @@
-<app-modal title="Criar conta">
+<app-modal #createAccountModal title="Criar conta">
   <section class="body-modal">
     <form class="flex flex-column" aria-label="Formulário de criação de conta">
       <app-input label="Nome completo" />
@@ -10,7 +10,7 @@
   </section>
 
   <footer class="flex justify-end">
-    <app-button btnClass="btn-secondary">Cancelar</app-button>
+    <app-button btnClass="btn-secondary" (click)="closeCreateAccountModal()">Cancelar</app-button>
     <app-button btnClass="btn-primary">Criar conta</app-button>
   </footer>
 </app-modal>
