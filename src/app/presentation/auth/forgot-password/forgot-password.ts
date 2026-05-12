@@ -12,7 +12,13 @@ import { ModalComponent } from '../../common/modal/modal.component';
 export class ForgotPassword {
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
+  public currentStep = 1;
+
   public closeModal(): void {
     this.modal?.closeModal();
+  }
+
+  public goToStepTwo(): void {
+    this.currentStep = 2;
   }
 }
