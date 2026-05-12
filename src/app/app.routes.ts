@@ -8,11 +8,6 @@ import { Template } from './presentation/template/template';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: namedRoutes.default,
-    pathMatch: 'full',
-  },
-  {
-    path: namedRoutes.template,
     component: Template,
     children: [
       {
