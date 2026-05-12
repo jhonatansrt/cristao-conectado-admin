@@ -1,5 +1,18 @@
 <section [id]="'modal' + indexModal" class="background-modal">
   <article class="content-modal">
+    <header>
+      <h2>{{ title }}</h2>
+      <button type="button" (click)="closeModal()" aria-label="Fechar modal">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </header>
     <ng-content> </ng-content>
+    <footer>
+      @for (button of buttons; track $index) {
+        <app-button [disabled]="button.disabled" [loading]="button.loading" [btnClass]="button['btn-class']">
+          {{ button.label }}
+        </app-button>
+      }
+    </footer>
   </article>
 </section>

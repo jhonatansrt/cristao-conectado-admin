@@ -1,18 +1,13 @@
 .background-modal {
   position: fixed;
+  inset: 0;
   width: 100%;
-  height: fill-available;
+  height: 100%;
   background-color: var(--color-overlay);
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
   animation: fadeInBackgroundModal 0.3s both linear;
   backdrop-filter: blur(3px);
 
   .content-modal {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     background-color: var(--color-surface);
     position: absolute;
@@ -25,33 +20,41 @@
       display: none;
     }
 
-    .header-modal {
-      padding: 24px 24px 0;
+    header {
+      background-color: #2d90da;
+      color: var(--color-white);
+      padding: 20px 16px;
       display: flex;
-      justify-content: center;
-      position: sticky;
-      top: 0;
-      background-color: var(--color-surface);
-      z-index: 1;
+      justify-content: space-between;
+      align-items: center;
 
-      .dash-modal {
-        width: 55px;
-        height: 5px;
-        border-radius: 6px;
-        background-color: var(--color-text-muted);
+      h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
       }
 
-      ion-icon {
-        position: absolute;
-        right: 21px;
-        top: 13px;
-        font-size: 25px;
-        color: var(--color-text-muted);
+      button {
+        border: none;
+        background: transparent;
+        color: inherit;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
       }
     }
 
-    .box-shadow {
-      box-shadow: 0px -3px 11px #0000001a;
+    ng-content {
+      display: block;
+      padding: 24px;
+    }
+
+    footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px;
     }
   }
 
@@ -64,67 +67,22 @@
   animation: fadeOutBackgroundModal 0.1s both linear;
 }
 
-/* ============================= */
-/* 🎞️ ANIMAÇÕES */
-/* ============================= */
-
 @keyframes fadeInBackgroundModal {
-  from {
-    background-color: transparent;
-  }
-  to {
-    background-color: var(--color-overlay);
-  }
+  from { background-color: transparent; }
+  to { background-color: var(--color-overlay); }
 }
 
 @keyframes fadeOutBackgroundModal {
-  from {
-    background-color: var(--color-overlay);
-  }
-  to {
-    background-color: transparent;
-  }
+  from { background-color: var(--color-overlay); }
+  to { background-color: transparent; }
 }
 
 @keyframes fadeInContentModal {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 @keyframes fadeOutContentModal {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
-  }
-}
-
-::ng-deep {
-  .background-modal {
-    .body-modal {
-      padding: 24px;
-      flex-grow: 1;
-      overflow: auto;
-      background-color: var(--color-surface);
-    }
-
-    footer {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      padding: 24px;
-      position: sticky;
-      bottom: 0;
-      background-color: var(--color-surface);
-      z-index: 5;
-      padding-bottom: calc(constant(safe-area-inset-top) + 24px);
-      padding-bottom: calc(env(safe-area-inset-top) + 24px);
-    }
-  }
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
 }
