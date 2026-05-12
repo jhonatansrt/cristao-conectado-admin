@@ -5,6 +5,7 @@
     [value]="value()"
     [placeholder]="placeholder()"
     (input)="onInput($event)"
+    [appDateOfBirthMask]="dateOfBirth()"
   />
 
   @if (errorMessage()) {

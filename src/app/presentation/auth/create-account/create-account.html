@@ -3,7 +3,7 @@
     <form class="flex flex-column" aria-label="Formulário de criação de conta">
       <app-input label="Nome completo" />
       <app-input label="Email" type="email" />
-      <app-input label="Data de nascimento" />
+      <app-input label="Data de nascimento" placeholder="dd/mm/aaaa" [dateOfBirth]="true" />
       <app-input label="Senha" type="password" />
       <app-input label="Confirmar senha" type="password" />
     </form>
