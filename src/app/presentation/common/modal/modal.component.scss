@@ -11,9 +11,7 @@
   backdrop-filter: blur(3px);
 
   .content-modal {
-    display: flex;
-    flex-direction: column;
-    width: min(500px, 90vw);
+    width: 500px;
     max-width: 90%;
     height: 100%;
     background-color: var(--color-surface);
@@ -100,8 +98,6 @@
     }
 
     footer {
-      display: flex;
-      flex-direction: column;
       gap: 16px;
       width: 100%;
       padding: 24px;
