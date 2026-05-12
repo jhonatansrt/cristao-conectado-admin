@@ -1,14 +1,24 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ButtonClass } from '../button/button.data';
+import { ButtonComponent } from '../button/button.component';
+
+interface ModalFooterButton {
+  disabled: boolean;
+  loading: boolean;
+  btnClass: ButtonClass;
+  label: string;
+}
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
   standalone: true,
-  imports: [],
+  imports: [ButtonComponent],
 })
 export class ModalComponent implements OnInit {
   @Input() public title: string | undefined;
+  @Input() public buttons: ModalFooterButton[] = [];
   public indexModal = 1;
 
   constructor(private el: ElementRef) {}

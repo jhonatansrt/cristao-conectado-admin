@@ -1,5 +1,22 @@
-<section [id]="'modal' + indexModal" class="background-modal">
-  <article class="content-modal">
+<article [id]="'modal' + indexModal" class="background-modal">
+  <aside class="content-modal">
+    <header>
+      <h2>{{ title }}</h2>
+      <!-- ADICIONAR ICON CLOSE -->
+    </header>
+
     <ng-content> </ng-content>
-  </article>
-</section>
+
+    <footer>
+      @for (button of buttons; track $index) {
+        <app-button
+          [disabled]="button.disabled"
+          [loading]="button.loading"
+          [btnClass]="button.btnClass"
+        >
+          {{ button.label }}
+        </app-button>
+      }
+    </footer>
+  </aside>
+</article>
