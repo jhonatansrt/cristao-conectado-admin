@@ -1,26 +1,9 @@
-:host {
-  display: block;
-}
-
-nav {
-  padding-top: 8px;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
-li {
+nav ul li {
   width: 100%;
   color: var(--color-text-inverse);
-  display: flex;
-  align-items: center;
   gap: 16px;
   padding: 14px 28px;
+  cursor: pointer;
 
   &.selected {
     color: var(--color-text-secondary);
@@ -29,15 +12,15 @@ li {
     margin: 0 24px 0 12px;
     width: auto;
   }
-}
 
-mat-icon {
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
-}
+  mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
 
-span {
-  font-size: var(--font-size-28);
-  font-weight: var(--font-weight-regular);
+  span {
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-regular);
+  }
 }
