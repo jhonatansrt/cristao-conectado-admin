@@ -4,7 +4,7 @@ import { Injectable, Signal, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class HeaderStore {
-  private title = signal<string>('');
+  private title = signal<string>('Igreja');
 
   public setTitle(title: string): void {
     this.title.set(title);

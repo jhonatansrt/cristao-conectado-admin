@@ -4,11 +4,10 @@ header {
   z-index: 10;
   background: var(--header-background);
   padding: calc(20px + env(safe-area-inset-top)) 32px 20px;
-}
 
-h1 {
-  margin: 0;
-  font-size: var(--font-size-20);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+  h1 {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
 }
