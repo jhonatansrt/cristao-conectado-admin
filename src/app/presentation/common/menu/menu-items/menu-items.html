@@ -1,5 +1,5 @@
 <nav aria-label="Menu principal">
-  <ul class="flex flex-column">
+  <ul class="flex flex-column items-end">
     @for (item of items; track item.label) {
       <li class="flex items-center" [class.selected]="item.selected">
         <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>

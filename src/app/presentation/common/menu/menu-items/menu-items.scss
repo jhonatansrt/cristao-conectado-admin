@@ -1,26 +1,28 @@
-nav ul li {
-  width: 100%;
-  color: var(--color-text-inverse);
-  gap: 16px;
-  padding: 14px 28px;
-  cursor: pointer;
+nav ul {
+  padding-left: 16px;
 
-  &.selected {
-    color: var(--color-text-secondary);
-    background-color: var(--color-background);
-    border-radius: 999px;
-    margin: 0 24px 0 12px;
-    width: auto;
-  }
+  li {
+    width: 100%;
+    color: var(--color-text-inverse);
+    gap: 16px;
+    padding: 12px;
+    cursor: pointer;
 
-  mat-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
-  }
+    &.selected {
+      color: var(--color-text-secondary);
+      background-color: var(--color-background);
+      border-radius: 999px;
+    }
 
-  span {
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-regular);
+    mat-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
+
+    span {
+      font-size: var(--font-size-14);
+      font-weight: var(--font-weight-regular);
+    }
   }
 }
