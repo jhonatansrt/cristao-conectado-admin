@@ -10,9 +10,9 @@ import { ModalComponent } from '../../common/modal/modal.component';
   styleUrl: './create-account.scss',
 })
 export class CreateAccount {
-  @ViewChild('createAccountModal') private modal?: ModalComponent;
+  @ViewChild(ModalComponent) private modal?: ModalComponent;
 
-  public closeCreateAccountModal(): void {
+  public closeModal(): void {
     this.modal?.closeModal();
   }
 }
