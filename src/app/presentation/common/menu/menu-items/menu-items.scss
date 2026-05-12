@@ -21,6 +21,14 @@ li {
   align-items: center;
   gap: 16px;
   padding: 14px 28px;
+
+  &.selected {
+    color: var(--color-text-secondary);
+    background-color: var(--color-background);
+    border-radius: 999px;
+    margin: 0 24px 0 12px;
+    width: auto;
+  }
 }
 
 mat-icon {
