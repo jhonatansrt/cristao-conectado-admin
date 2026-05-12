@@ -1,4 +1,6 @@
 export const namedRoutes = {
-  default: 'login',
+  default: 'template',
+  template: 'template',
+  church: 'church',
   login: 'login',
 } as const;
