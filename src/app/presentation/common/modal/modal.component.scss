@@ -9,6 +9,7 @@
   right: 0;
   animation: fadeInBackgroundModal 0.3s both linear;
   backdrop-filter: blur(3px);
+  z-index: 9999;
 
   .content-modal {
     width: 500px;
@@ -26,16 +27,20 @@
       display: none;
     }
 
-    .header-modal {
-      padding: 24px 24px 0;
-      padding-top: calc(constant(safe-area-inset-top) + 24px);
-      padding-top: calc(env(safe-area-inset-top) + 24px);
-      display: flex;
-      justify-content: center;
+    header {
+      padding: 16px 24px;
+      padding-top: calc(constant(safe-area-inset-top) + 16px);
+      padding-top: calc(env(safe-area-inset-top) + 16px);
       position: sticky;
       top: 0;
       background-color: var(--color-primary);
       z-index: 1;
+
+      h2 {
+        color: var(--color-text-inverse);
+        font-size: var(--font-size-20);
+        font-weight: var(--font-weight-bold);
+      }
     }
   }
 
