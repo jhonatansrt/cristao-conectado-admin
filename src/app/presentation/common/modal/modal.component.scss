@@ -1,0 +1,130 @@
+.background-modal {
+  position: fixed;
+  width: 100%;
+  height: fill-available;
+  background-color: var(--color-overlay);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  animation: fadeInBackgroundModal 0.3s both linear;
+  backdrop-filter: blur(3px);
+
+  .content-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--color-surface);
+    position: absolute;
+    bottom: 0;
+    animation: fadeInContentModal 0.3s both linear;
+    overflow: auto;
+    box-shadow: 0 0 1px 0 var(--color-border);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .header-modal {
+      padding: 24px 24px 0;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      background-color: var(--color-surface);
+      z-index: 1;
+
+      .dash-modal {
+        width: 55px;
+        height: 5px;
+        border-radius: 6px;
+        background-color: var(--color-text-muted);
+      }
+
+      ion-icon {
+        position: absolute;
+        right: 21px;
+        top: 13px;
+        font-size: 25px;
+        color: var(--color-text-muted);
+      }
+    }
+
+    .box-shadow {
+      box-shadow: 0px -3px 11px #0000001a;
+    }
+  }
+
+  .close-content-modal {
+    animation: fadeOutContentModal 0.1s both linear;
+  }
+}
+
+.close-background-modal {
+  animation: fadeOutBackgroundModal 0.1s both linear;
+}
+
+/* ============================= */
+/* 🎞️ ANIMAÇÕES */
+/* ============================= */
+
+@keyframes fadeInBackgroundModal {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: var(--color-overlay);
+  }
+}
+
+@keyframes fadeOutBackgroundModal {
+  from {
+    background-color: var(--color-overlay);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@keyframes fadeInContentModal {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutContentModal {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+::ng-deep {
+  .background-modal {
+    .body-modal {
+      padding: 24px;
+      flex-grow: 1;
+      overflow: auto;
+      background-color: var(--color-surface);
+    }
+
+    footer {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      padding: 24px;
+      position: sticky;
+      bottom: 0;
+      background-color: var(--color-surface);
+      z-index: 5;
+      padding-bottom: calc(constant(safe-area-inset-top) + 24px);
+      padding-bottom: calc(env(safe-area-inset-top) + 24px);
+    }
+  }
+}
