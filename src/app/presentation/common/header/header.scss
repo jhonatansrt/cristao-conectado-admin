@@ -5,6 +5,7 @@ header {
   background: var(--header-background);
   padding: calc(20px + env(safe-area-inset-top)) 32px 20px;
   width: 100%;
+  border-bottom: 1px solid var(--gray);
 
   h1 {
     font-size: var(--font-size-20);
