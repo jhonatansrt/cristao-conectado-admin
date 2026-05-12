@@ -9,14 +9,14 @@
 
       <div>
         <app-input label="Senha" type="password" placeholder="" />
-        <a href="#" (click)="openForgotPassword($event)">Esqueceu a senha?</a>
+        <a (click)="openForgotPassword()">Esqueceu a senha?</a>
       </div>
 
       <app-button btnClass="btn-primary">Entrar</app-button>
     </form>
 
     <footer>
-      <p (click)="openCreateAccount($event)">Não tem conta? <a>cadastre-se</a></p>
+      <p (click)="openCreateAccount()">Não tem conta? <a>cadastre-se</a></p>
     </footer>
   </section>
 </main>

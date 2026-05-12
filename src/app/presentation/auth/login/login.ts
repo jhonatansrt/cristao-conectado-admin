@@ -14,14 +14,10 @@ import { ForgotPassword } from '../forgot-password/forgot-password';
 export class Login {
   private readonly container = inject(Container);
 
-  public openCreateAccount(event: Event): void {
-    event.preventDefault();
+  public openCreateAccount(): void {
     this.container.vcr?.createComponent(CreateAccount);
   }
-  public openForgotPassword(event: Event): void {
-    event.preventDefault();
+  public openForgotPassword(): void {
     this.container.vcr?.createComponent(ForgotPassword);
   }
-
 }
-
