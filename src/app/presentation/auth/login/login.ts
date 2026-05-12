@@ -3,6 +3,7 @@ import { ButtonComponent } from '../../common/button/button.component';
 import { InputComponent } from '../../common/input/input';
 import { Container } from '../../../util/container.service';
 import { CreateAccount } from '../create-account/create-account';
+import { ForgotPassword } from '../forgot-password/forgot-password';
 
 @Component({
   selector: 'app-login',
@@ -17,4 +18,10 @@ export class Login {
     event.preventDefault();
     this.container.vcr?.createComponent(CreateAccount);
   }
+  public openForgotPassword(event: Event): void {
+    event.preventDefault();
+    this.container.vcr?.createComponent(ForgotPassword);
+  }
+
 }
+
