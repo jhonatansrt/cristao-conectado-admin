@@ -100,7 +100,7 @@
       padding: 24px;
       flex-grow: 1;
       overflow: auto;
-      background-color: var(--color-surface);
+      background-color: var(--color-background);
     }
 
     footer {
@@ -109,7 +109,7 @@
       padding: 24px;
       position: sticky;
       bottom: 0;
-      background-color: var(--color-surface);
+      background-color: var(--color-background);
       z-index: 5;
       padding-bottom: calc(constant(safe-area-inset-bottom) + 24px);
       padding-bottom: calc(env(safe-area-inset-bottom) + 24px);

@@ -7,16 +7,18 @@
 
     <ng-content> </ng-content>
 
-    <footer class="flex flex-column">
-      @for (button of buttons; track $index) {
-        <app-button
-          [disabled]="button.disabled"
-          [loading]="button.loading"
-          [btnClass]="button.btnClass"
-        >
-          {{ button.label }}
-        </app-button>
-      }
-    </footer>
+    @if (buttons.length) {
+      <footer class="flex flex-column">
+        @for (button of buttons; track $index) {
+          <app-button
+            [disabled]="button.disabled"
+            [loading]="button.loading"
+            [btnClass]="button.btnClass"
+          >
+            {{ button.label }}
+          </app-button>
+        }
+      </footer>
+    }
   </aside>
 </article>
