@@ -9,11 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class MenuItems {
   protected readonly items = [
-    { label: 'Home', icon: 'home' },
-    { label: 'Membros', icon: 'person_outline' },
-    { label: 'Agenda', icon: 'calendar_month' },
-    { label: 'Playlists', icon: 'smart_display' },
-    { label: 'Avisos', icon: 'warning_amber' },
-    { label: 'Igreja', icon: 'church' },
+    { label: 'Home', icon: 'home', selected: false },
+    { label: 'Membros', icon: 'person_outline', selected: true },
+    { label: 'Agenda', icon: 'calendar_month', selected: false },
+    { label: 'Playlists', icon: 'smart_display', selected: false },
+    { label: 'Avisos', icon: 'warning_amber', selected: false },
+    { label: 'Igreja', icon: 'church', selected: false },
   ];
 }
