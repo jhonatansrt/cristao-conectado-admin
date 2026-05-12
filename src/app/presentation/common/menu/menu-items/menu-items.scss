@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+nav {
+  padding-top: 8px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  width: 100%;
+  color: var(--color-text-inverse);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 28px;
+}
+
+mat-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+span {
+  font-size: var(--font-size-28);
+  font-weight: var(--font-weight-regular);
+}
