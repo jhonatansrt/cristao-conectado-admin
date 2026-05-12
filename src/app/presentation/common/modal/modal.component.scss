@@ -42,6 +42,11 @@
         font-size: var(--font-size-20);
         font-weight: var(--font-weight-bold);
       }
+
+      mat-icon {
+        color: var(--color-text-inverse);
+        cursor: pointer;
+      }
     }
   }
 

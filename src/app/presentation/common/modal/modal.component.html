@@ -2,7 +2,7 @@
   <aside class="content-modal flex flex-column">
     <header class="flex justify-between items-center">
       <h2>{{ title }}</h2>
-      <!-- ADICIONAR ICON CLOSE -->
+      <mat-icon (click)="closeModal()">close</mat-icon>
     </header>
 
     <ng-content> </ng-content>
