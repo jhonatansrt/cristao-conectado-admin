@@ -67,6 +67,7 @@ section {
 @media (max-width: $breakpoint-mobile) {
   section {
     overflow: visible;
+    background: transparent;
 
     table {
       thead {
@@ -76,12 +77,13 @@ section {
       tbody {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
 
         tr {
           display: block;
           border: 1px solid var(--gray);
           border-radius: 12px;
+          background-color: var(--color-surface);
 
           td {
             display: flex;
