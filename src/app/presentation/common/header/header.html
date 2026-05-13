@@ -1,6 +1,4 @@
 <header>
-  <button type="button" class="menu-button" (click)="toggleMenu($event)" aria-label="Abrir menu">
-    <mat-icon aria-hidden="true">menu</mat-icon>
-  </button>
+  <mat-icon (click)="toggleMenu($event)" aria-hidden="true">menu</mat-icon>
   <h1>{{ title() }}</h1>
 </header>

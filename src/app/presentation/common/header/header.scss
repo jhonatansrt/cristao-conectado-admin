@@ -12,8 +12,11 @@ header {
   align-items: center;
   gap: 16px;
 
-  .menu-button {
+  mat-icon {
     display: none;
+    color: var(--color-text-primary);
+    font-size: 24px;
+    cursor: pointer;
   }
 
   h1 {
@@ -23,15 +26,8 @@ header {
   }
 
   @media screen and (max-width: $breakpoint-mobile) {
-    .menu-button {
+    mat-icon {
       display: block;
-      border: none;
-      background: transparent;
-      color: var(--color-text-primary);
-      font-size: 24px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
     }
   }
 }
