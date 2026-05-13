@@ -10,7 +10,7 @@ aside {
   @media screen and (max-width: $breakpoint-mobile) {
     position: absolute;
     z-index: 99;
-    border-radius: 0 25px 25px 0;
+    border-radius: 0;
 
     &.is-open {
       animation: fadeInMenu 0.3s both linear;
