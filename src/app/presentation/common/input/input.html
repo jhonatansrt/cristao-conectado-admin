@@ -2,9 +2,11 @@
   <label>{{ label() }}</label>
   <input
     [type]="type()"
-    [value]="value()"
+    [value]="inputValue || value()"
     [placeholder]="placeholder()"
+    [disabled]="isDisabled"
     (input)="onInput($event)"
+    (blur)="onBlur()"
     [appDateOfBirthMask]="dateOfBirth()"
   />
 

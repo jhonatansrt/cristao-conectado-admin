@@ -4,15 +4,34 @@
       <img src="../../../../assets/logo.png" />
     </header>
 
-    <form class="flex flex-column" aria-label="Formulário de login">
-      <app-input label="E-mail" placeholder="" />
+    <form class="flex flex-column" aria-label="Formulário de login" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <app-input
+        label="E-mail"
+        placeholder=""
+        formControlName="email"
+        [errorMessage]="
+          loginForm.controls.email.touched && loginForm.controls.email.hasError('required')
+            ? 'E-mail é obrigatório'
+            : loginForm.controls.email.touched && loginForm.controls.email.hasError('email')
+              ? 'Digite um e-mail válido'
+              : ''
+        " />
 
       <div>
-        <app-input label="Senha" type="password" placeholder="" />
+        <app-input
+          label="Senha"
+          type="password"
+          placeholder=""
+          formControlName="password"
+          [errorMessage]="
+            loginForm.controls.password.touched && loginForm.controls.password.hasError('required')
+              ? 'Senha é obrigatória'
+              : ''
+          " />
         <a (click)="openForgotPassword()">Esqueceu a senha?</a>
       </div>
 
-      <app-button btnClass="btn-primary">Entrar</app-button>
+      <app-button btnClass="btn-primary" [disabled]="loginForm.invalid">Entrar</app-button>
     </form>
 
     <footer>
