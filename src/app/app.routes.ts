@@ -23,26 +23,44 @@ export const routes: Routes = [
       {
         path: namedRoutes.home,
         component: Home,
+        data: {
+          title: 'Home',
+        },
       },
       {
         path: namedRoutes.members,
         component: Members,
+        data: {
+          title: 'Membros',
+        },
       },
       {
         path: namedRoutes.schedule,
         component: Schedule,
+        data: {
+          title: 'Agenda',
+        },
       },
       {
         path: namedRoutes.playlists,
         component: Playlists,
+        data: {
+          title: 'Playlists',
+        },
       },
       {
         path: namedRoutes.notices,
         component: Notices,
+        data: {
+          title: 'Avisos',
+        },
       },
       {
         path: namedRoutes.church,
         component: Church,
+        data: {
+          title: 'Igreja',
+        },
       },
     ],
   },
