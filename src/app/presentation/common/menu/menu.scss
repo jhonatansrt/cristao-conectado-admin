@@ -6,8 +6,6 @@ aside {
   border-radius: 0 25px 25px 0;
   background-color: var(--color-primary);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 
   @media screen and (max-width: $breakpoint-mobile) {
     position: absolute;
