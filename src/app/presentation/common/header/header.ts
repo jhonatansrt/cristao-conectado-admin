@@ -16,7 +16,8 @@ export class Header {
 
   protected readonly title = this.headerStore.getTitle();
 
-  protected toggleMenu(): void {
+  protected toggleMenu(event: MouseEvent): void {
+    event.stopPropagation();
     this.menuStore.toggle();
   }
 }
