@@ -1,0 +1,23 @@
+<section
+  id="toast"
+  [class.success]="success"
+  [class.error]="!success"
+  class="flex items-center justify-between"
+>
+  <article class="flex items-center">
+    @if (success) {
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+    } @else {
+      <ion-icon name="alert-circle-outline"></ion-icon>
+    }
+
+    <span class="flex flex-column">
+      <h2>{{ title }}</h2>
+      <p>{{ message }}</p>
+    </span>
+  </article>
+
+  <ion-icon (click)="toastService.closeToast()" name="close-outline"></ion-icon>
+
+  <article [style.background]="success ? 'var(--color-success)' : 'var(--color-danger)'"></article>
+</section>

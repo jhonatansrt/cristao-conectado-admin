@@ -1,0 +1,122 @@
+section {
+  position: absolute;
+  background-color: var(--color-surface);
+  height: fit-content;
+  min-height: auto;
+  border-radius: 3px;
+  padding: 12px 10px;
+  gap: 10px;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.4s linear both;
+  overflow: hidden;
+
+  ion-icon {
+    font-size: 25px;
+    flex-shrink: 0;
+  }
+
+  ion-icon[name="close-outline"] {
+    color: var(--color-text-secondary);
+  }
+
+  article {
+    gap: 10px;
+
+    ion-icon[name="checkmark-circle-outline"] {
+      color: var(--color-success);
+    }
+
+    ion-icon[name="alert-circle-outline"] {
+      color: var(--color-danger);
+    }
+
+    span {
+      gap: 3px;
+
+      h2,
+      p {
+        color: var(--color-text-primary);
+      }
+
+      h2 {
+        font-size: var(--font-size-16);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      p {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-text-secondary);
+      }
+    }
+
+    &:nth-of-type(2) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: currentColor;
+      animation: time 10s linear both;
+    }
+  }
+}
+
+/* ============================= */
+/* 🎯 VARIANTES */
+/* ============================= */
+
+.success {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ============================= */
+/* 🎞️ ANIMAÇÕES */
+/* ============================= */
+
+.fadeOut {
+  animation: fadeOut 0.2s linear both;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-200%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-200%);
+  }
+}
+
+@keyframes time {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+  }
+}
