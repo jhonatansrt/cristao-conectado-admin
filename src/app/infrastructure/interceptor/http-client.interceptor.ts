@@ -4,11 +4,12 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable, from, switchMap, catchError, throwError, map } from 'rxjs';
-import { AuthStore } from '../../application/auth/auth-store';
-import { IAuthRepository } from '../../domain/auth';
 import { IStorageRepository } from '../../domain/storage';
+import { IAuthRepository } from '../../domain/auth';
+import { AuthStore } from '../../application/auth/auth-store';
 
 export class HttpClientInterceptor implements HttpInterceptor {
   constructor(
@@ -17,13 +18,13 @@ export class HttpClientInterceptor implements HttpInterceptor {
     private authStore: AuthStore,
   ) {}
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return from(this.storage.getStorage('token')).pipe(
       switchMap((authToken) => {
+        // Garante que authToken seja uma string válida
         const validToken = authToken ? authToken : '';
+
+        // Adiciona o cabeçalho de autenticação
         request = this.addAuthHeaders(request, validToken);
 
         return next.handle(request).pipe(
@@ -34,6 +35,14 @@ export class HttpClientInterceptor implements HttpInterceptor {
               }
 
               if (err.error.message.includes('jwt expired')) {
+                // this.toast.openToast({
+                //   success: false,
+                //   title: 'Atenção',
+                //   message: 'Seu token expirou, você precisa logar novamente',
+                // });
+
+                // this.sessionStore.logout();
+
                 return throwError(() => err);
               }
             }
@@ -48,10 +57,8 @@ export class HttpClientInterceptor implements HttpInterceptor {
     );
   }
 
-  private addAuthHeaders(
-    request: HttpRequest<unknown>,
-    authToken: string,
-  ): HttpRequest<unknown> {
+  private addAuthHeaders(request: HttpRequest<unknown>, authToken: string): HttpRequest<unknown> {
+    // Define os cabeçalhos de acordo com a presença do 'Content-Type'
     const headers: Record<string, string> = !request.headers.has('Content-Type')
       ? { Authorization: `Bearer ${authToken}` }
       : {
@@ -59,6 +66,7 @@ export class HttpClientInterceptor implements HttpInterceptor {
           'Content-Type': 'application/json',
         };
 
+    // Clona a requisição e adiciona os cabeçalhos
     return request.clone({ setHeaders: headers });
   }
 
