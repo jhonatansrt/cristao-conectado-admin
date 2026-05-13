@@ -9,7 +9,7 @@ import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
 import { Template } from './presentation/template/template';
-import { loginGuard, userGuard } from './presentation/guards/user.guard';
+import { loginGuard, userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
