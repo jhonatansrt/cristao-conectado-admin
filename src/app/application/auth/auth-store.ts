@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { User } from 'src/app/domain/auth';
-import { IStorageRepository } from 'src/app/domain/storage/i-storage-repository';
+import { User } from '../../domain/auth';
+import { IStorageRepository } from '../../domain/storage';
 
 @Injectable({
   providedIn: 'root',
