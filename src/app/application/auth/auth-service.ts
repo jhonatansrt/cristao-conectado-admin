@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { catchError, map, Observable, switchMap, tap, throwError } from 'rxjs';
 
 import { AuthStore } from './auth-store';
-import { ToastService } from 'src/app/presentation/common/toast/toast.service';
-import { IStorageRepository } from 'src/app/domain/storage/i-storage-repository';
+import { ToastService } from '../../presentation/common/toast/toast.service';
+import { IStorageRepository } from '../../domain/storage';
 import {
   CreateAccountDTO,
   CreateSessionApiResponse,
