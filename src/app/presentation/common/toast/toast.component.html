@@ -6,9 +6,9 @@
 >
   <article class="flex items-center">
     @if (success) {
-      <ion-icon name="checkmark-circle-outline"></ion-icon>
+      <mat-icon class="status-icon success-icon">check_circle</mat-icon>
     } @else {
-      <ion-icon name="alert-circle-outline"></ion-icon>
+      <mat-icon class="status-icon error-icon">error</mat-icon>
     }
 
     <span class="flex flex-column">
@@ -17,7 +17,7 @@
     </span>
   </article>
 
-  <ion-icon (click)="toastService.closeToast()" name="close-outline"></ion-icon>
+  <mat-icon class="close-icon" (click)="toastService.closeToast()">close</mat-icon>
 
   <article [style.background]="success ? 'var(--color-success)' : 'var(--color-danger)'"></article>
 </section>

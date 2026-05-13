@@ -13,23 +13,25 @@ section {
   animation: fadeIn 0.4s linear both;
   overflow: hidden;
 
-  ion-icon {
+  mat-icon {
     font-size: 25px;
+    width: 25px;
+    height: 25px;
     flex-shrink: 0;
   }
 
-  ion-icon[name="close-outline"] {
+  .close-icon {
     color: var(--color-text-secondary);
   }
 
   article {
     gap: 10px;
 
-    ion-icon[name="checkmark-circle-outline"] {
+    .success-icon {
       color: var(--color-success);
     }
 
-    ion-icon[name="alert-circle-outline"] {
+    .error-icon {
       color: var(--color-danger);
     }
 
