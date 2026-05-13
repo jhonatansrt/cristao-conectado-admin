@@ -6,12 +6,14 @@ section {
   border-radius: 3px;
   padding: 12px 10px;
   gap: 10px;
-  top: 16px;
-  left: 16px;
+  top: calc(constant(safe-area-inset-top) + 16px);
+  top: calc(env(safe-area-inset-top) + 16px);
   right: 16px;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.4s linear both;
   overflow: hidden;
+  width: 400px;
+  max-width: calc(100% - 32px);
 
   mat-icon {
     font-size: 25px;
@@ -22,6 +24,7 @@ section {
 
   .close-icon {
     color: var(--color-text-secondary);
+    cursor: pointer;
   }
 
   article {
