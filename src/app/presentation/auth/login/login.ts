@@ -53,7 +53,7 @@ export class Login {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: async () => {
-          await this.router.navigate([`/${namedRoutes.home}`]);
+          await this.router.navigate([namedRoutes.home]);
         },
       });
   }
