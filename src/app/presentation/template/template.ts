@@ -40,6 +40,6 @@ export class Template {
       route = route.firstChild;
     }
 
-    return (route.snapshot.data['title'] as string | undefined) ?? 'Igreja';
+    return (route.snapshot.data?.['title'] as string | undefined) ?? 'Igreja';
   }
 }
