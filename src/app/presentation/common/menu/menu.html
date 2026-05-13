@@ -1,4 +1,4 @@
-<aside class="flex flex-column" [class.is-open]="isOpen()">
+<aside class="flex flex-column" [class.is-open]="isOpen()" [class.is-closed]="!isOpen()">
   <app-profile-preview />
   <app-menu-items />
 </aside>
