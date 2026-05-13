@@ -1,3 +1,5 @@
+@use '../../../../theme/breakpoint.scss' as *;
+
 header {
   position: sticky;
   top: 0;
@@ -6,10 +8,30 @@ header {
   padding: calc(20px + env(safe-area-inset-top)) 32px 20px;
   width: 100%;
   border-bottom: 1px solid var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .menu-button {
+    display: none;
+  }
 
   h1 {
     font-size: var(--font-size-20);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
+  }
+
+  @media screen and (max-width: $breakpoint-mobile) {
+    .menu-button {
+      display: block;
+      border: none;
+      background: transparent;
+      color: var(--color-text-primary);
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
   }
 }
