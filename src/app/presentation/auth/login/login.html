@@ -31,7 +31,7 @@
         <a (click)="openForgotPassword()">Esqueceu a senha?</a>
       </div>
 
-      <app-button btnClass="btn-primary" [disabled]="loginForm.invalid">Entrar</app-button>
+      <app-button btnClass="btn-primary" [disabled]="loginForm.invalid" [loading]="isLoading">Entrar</app-button>
     </form>
 
     <footer>

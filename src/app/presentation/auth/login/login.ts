@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../application/auth/auth-service';
@@ -22,6 +23,8 @@ export class Login {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
+  public isLoading = false;
+
   public loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -43,10 +46,15 @@ export class Login {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    this.authService.createSession({ email: email ?? '', password: password ?? '' }).subscribe({
-      next: async () => {
-        await this.router.navigate([`/${namedRoutes.home}`]);
-      },
-    });
+    this.isLoading = true;
+
+    this.authService
+      .createSession({ email: email ?? '', password: password ?? '' })
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: async () => {
+          await this.router.navigate([`/${namedRoutes.home}`]);
+        },
+      });
   }
 }
