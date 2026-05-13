@@ -11,9 +11,6 @@ aside {
     position: absolute;
     z-index: 99;
     border-radius: 0 25px 25px 0;
-    transform: translateX(-100%);
-    opacity: 0;
-    animation: fadeOutMenu 0.1s both linear;
 
     &.is-open {
       animation: fadeInMenu 0.3s both linear;
