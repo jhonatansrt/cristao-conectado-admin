@@ -14,10 +14,10 @@
       @for (row of rows(); track row.id) {
         <tr>
           @for (column of columns(); track column.key) {
-            <td>{{ row[column.key] }}</td>
+            <td [attr.data-label]="column.header">{{ row[column.key] }}</td>
           }
 
-          <td>
+          <td data-label="Ações">
             <div>
               @for (action of row.actions ?? []; track action.key) {
                 <button
