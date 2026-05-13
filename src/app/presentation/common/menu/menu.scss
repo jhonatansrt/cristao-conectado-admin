@@ -6,4 +6,9 @@ aside {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: var(--breakpoint-mobile)) {
+    position: absolute;
+    z-index: 99;
+  }
 }
