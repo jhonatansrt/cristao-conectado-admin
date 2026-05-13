@@ -1,12 +1,13 @@
 <article class="background-alert flex justify-center items-center">
-  <aside class="content-alert flex flex-column items-center">
-    <mat-icon class="icon-alert">warning</mat-icon>
+  <section class="content-alert flex flex-column items-center">
+    <div class="flex flex-column items-center">
+      <mat-icon class="icon-alert">warning</mat-icon>
+      <p>{{ message }}</p>
+    </div>
 
-    <p>{{ message }}</p>
-
-    <footer class="flex items-center">
+    <footer class="flex justify-center items-center">
       <app-button btnClass="btn-secondary" (click)="answer(false)">Não</app-button>
       <app-button btnClass="btn-primary" (click)="answer(true)">Sim</app-button>
     </footer>
-  </aside>
+  </section>
 </article>
