@@ -1,0 +1,37 @@
+<section>
+  <table>
+    <thead>
+      <tr>
+        @for (column of columns(); track column.key) {
+          <th>{{ column.header }}</th>
+        }
+
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (row of rows(); track row.id) {
+        <tr>
+          @for (column of columns(); track column.key) {
+            <td>{{ row[column.key] }}</td>
+          }
+
+          <td>
+            <div>
+              @for (action of row.actions ?? []; track action.key) {
+                <button
+                  type="button"
+                  (click)="handleActionClick(action, row)"
+                  [attr.aria-label]="action.label"
+                >
+                  <mat-icon aria-hidden="true">{{ action.icon }}</mat-icon>
+                </button>
+              }
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>
