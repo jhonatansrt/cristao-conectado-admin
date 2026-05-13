@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 import { HeaderStore } from '../../../application/header/header-store';
 import { MenuStore } from '../../../application/menu/menu-store';
 
 @Component({
   selector: 'app-header',
+  imports: [MatIconModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
