@@ -9,11 +9,13 @@ import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
 import { Template } from './presentation/template/template';
+import { loginGuard, userGuard } from './presentation/guards/user.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: Template,
+    canActivate: [userGuard],
     children: [
       {
         path: '',
@@ -49,5 +51,6 @@ export const routes: Routes = [
   {
     path: namedRoutes.login,
     component: Login,
+    canActivate: [loginGuard],
   },
 ];
