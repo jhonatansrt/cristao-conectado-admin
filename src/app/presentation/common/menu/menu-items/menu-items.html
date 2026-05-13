@@ -4,7 +4,7 @@
       <li
         class="flex items-center"
         [class.selected]="selectedRoute() === item.route"
-        (click)="navigate(item.route)"
+        (click)="navigate(item)"
       >
         <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
         <span>{{ item.label }}</span>
