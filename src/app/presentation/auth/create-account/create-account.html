@@ -1,16 +1,82 @@
 <app-modal title="Criar conta">
   <section class="body-modal">
-    <form class="flex flex-column" aria-label="Formulário de criação de conta">
-      <app-input label="Nome completo" />
-      <app-input label="Email" type="email" />
-      <app-input label="Data de nascimento" placeholder="dd/mm/aaaa" [dateOfBirth]="true" />
-      <app-input label="Senha" type="password" />
-      <app-input label="Confirmar senha" type="password" />
+    <form
+      class="flex flex-column"
+      aria-label="Formulário de criação de conta"
+      [formGroup]="createAccountForm"
+      (ngSubmit)="onCreateAccount()"
+    >
+      <app-input
+        label="Nome completo"
+        formControlName="name"
+        [errorMessage]="
+          createAccountForm.controls.name.touched && createAccountForm.controls.name.hasError('required')
+            ? 'Nome completo é obrigatório'
+            : ''
+        "
+      />
+      <app-input
+        label="Email"
+        type="email"
+        formControlName="email"
+        [errorMessage]="
+          createAccountForm.controls.email.touched && createAccountForm.controls.email.hasError('required')
+            ? 'E-mail é obrigatório'
+            : createAccountForm.controls.email.touched && createAccountForm.controls.email.hasError('email')
+              ? 'Digite um e-mail válido'
+              : ''
+        "
+      />
+      <app-input
+        label="Data de nascimento"
+        placeholder="dd/mm/aaaa"
+        [dateOfBirth]="true"
+        formControlName="birthDate"
+        [errorMessage]="
+          createAccountForm.controls.birthDate.touched &&
+          createAccountForm.controls.birthDate.hasError('required')
+            ? 'Data de nascimento é obrigatória'
+            : createAccountForm.controls.birthDate.touched &&
+                createAccountForm.controls.birthDate.hasError('pattern')
+              ? 'Digite uma data válida (dd/mm/aaaa)'
+              : ''
+        "
+      />
+      <app-input
+        label="Senha"
+        type="password"
+        formControlName="password"
+        [errorMessage]="
+          createAccountForm.controls.password.touched &&
+          createAccountForm.controls.password.hasError('required')
+            ? 'Senha é obrigatória'
+            : ''
+        "
+      />
+      <app-input
+        label="Confirmar senha"
+        type="password"
+        formControlName="confirmPassword"
+        [errorMessage]="
+          createAccountForm.controls.confirmPassword.touched &&
+          createAccountForm.controls.confirmPassword.hasError('required')
+            ? 'Confirmação de senha é obrigatória'
+            : createAccountForm.controls.confirmPassword.touched && !isPasswordMatch()
+              ? 'As senhas devem ser iguais'
+              : ''
+        "
+      />
     </form>
   </section>
 
   <footer class="flex justify-end">
     <app-button btnClass="btn-secondary" (click)="closeModal()">Cancelar</app-button>
-    <app-button btnClass="btn-primary">Criar conta</app-button>
+    <app-button
+      btnClass="btn-primary"
+      [disabled]="createAccountForm.invalid || !isPasswordMatch()"
+      [loading]="isLoading"
+      (click)="onCreateAccount()"
+      >Criar conta</app-button
+    >
   </footer>
 </app-modal>
