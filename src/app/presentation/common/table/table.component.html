@@ -1,10 +1,11 @@
-<div class="table-wrapper">
+<section>
   <table>
     <thead>
       <tr>
         @for (column of columns(); track column.key) {
           <th>{{ column.header }}</th>
         }
+
         <th>Ações</th>
       </tr>
     </thead>
@@ -16,8 +17,8 @@
             <td>{{ row[column.key] }}</td>
           }
 
-          <td class="actions-column">
-            <div class="actions-container">
+          <td>
+            <div>
               @for (action of row.actions ?? []; track action.key) {
                 <button
                   type="button"
@@ -33,4 +34,4 @@
       }
     </tbody>
   </table>
-</div>
+</section>
