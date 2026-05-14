@@ -6,6 +6,8 @@ import { INoticesRepository } from '../../domain/notices';
 import { NoticesRepository } from '../notices/notices-repository';
 import { ISchedulesRepository } from '../../domain/schedules';
 import { SchedulesRepository } from '../schedules/schedules-repository';
+import { IPlaylistsRepository } from '../../domain/playlists';
+import { PlaylistsRepository } from '../playlists/playlists-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -27,6 +29,11 @@ const schedulesProvider = {
   useClass: SchedulesRepository,
 };
 
-const commonProviders = [storageProvider, authProvider, noticesProvider, schedulesProvider];
+const playlistsProvider = {
+  provide: IPlaylistsRepository,
+  useClass: PlaylistsRepository,
+};
+
+const commonProviders = [storageProvider, authProvider, noticesProvider, schedulesProvider, playlistsProvider];
 
 export const providers = [...commonProviders];

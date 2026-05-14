@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
+import { PlaylistsService } from '../../application/playlists/playlists-service';
 
 @Component({
   selector: 'app-playlists',
@@ -8,9 +9,9 @@ import { TableComponent } from '../common/table/table.component';
   templateUrl: './playlists.html',
   styleUrl: './playlists.scss',
 })
-export class Playlists {
+export class Playlists implements OnInit {
   private readonly tableStore = inject(TableStore<TableRow>);
-
+  private playlistsService = inject(PlaylistsService);
 
   constructor() {
     const columns: TableColumn[] = [
@@ -21,20 +22,13 @@ export class Playlists {
       { key: 'order', header: 'Ordem de exibição' },
     ];
 
-    const rows: TableRow[] = Array.from({ length: 10 }, (_, index) => ({
-      id: index + 1,
-      title: 'Pregações',
-      videos: '3 vídeos',
-      createdAt: '22/10/1970',
-      updatedAt: '22/10/1970',
-      order: index + 1,
-      actions: [
-        { key: 'edit', icon: 'edit', label: 'Editar playlist' },
-        { key: 'delete', icon: 'delete', label: 'Excluir playlist' },
-        { key: 'open', icon: 'chevron_right', label: 'Abrir playlist' },
-      ],
-    }));
-
-    this.tableStore.setTable(columns, rows);
+    this.tableStore.setTable(columns, []);
   }
+
+  ngOnInit(): void {
+    this.playlistsService.getPlaylists().subscribe((rows) => {
+      this.tableStore.setRows(rows);
+    });
+  }
+
 }
