@@ -1,4 +1,12 @@
-<header>
-  <mat-icon (click)="toggleMenu($event)" aria-hidden="true">menu</mat-icon>
-  <h1>{{ title() }}</h1>
+<header class="flex items-center justify-between">
+  <div class="header-content flex items-center">
+    <mat-icon (click)="toggleMenu($event)" aria-hidden="true">menu</mat-icon>
+    <h1>{{ title() }}</h1>
+  </div>
+
+  <div class="buttons-actions flex items-center justify-end">
+    @for (action of buttonsActions(); track action.label) {
+      <app-button [btnClass]="action.btnClass">{{ action.label }}</app-button>
+    }
+  </div>
 </header>
