@@ -1,0 +1,20 @@
+:host {
+  .body-modal {
+    background-color: var(--color-background);
+    gap: 28px;
+  }
+
+  .form-field {
+    gap: 12px;
+
+    h3 {
+      color: var(--color-text-primary);
+      font-size: var(--font-size-20);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  .cards-list {
+    gap: 14px;
+  }
+}
