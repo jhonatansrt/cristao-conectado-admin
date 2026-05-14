@@ -1,0 +1,18 @@
+<article>
+  <header>
+    <h3>{{ title() }}</h3>
+    <p>{{ description() }}</p>
+  </header>
+
+  @if (icons().length) {
+    <menu>
+      @for (icon of icons(); track $index) {
+        <li>
+          <button type="button" (click)="icon.action()" [attr.aria-label]="icon.ariaLabel ?? icon.name">
+            <mat-icon>{{ icon.name }}</mat-icon>
+          </button>
+        </li>
+      }
+    </menu>
+  }
+</article>
