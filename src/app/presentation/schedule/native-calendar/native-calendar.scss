@@ -119,7 +119,6 @@ section {
 
     ol {
       border-radius: 10px;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
 
       li {
         min-height: 88px;
@@ -134,14 +133,6 @@ section {
 
         &:nth-last-child(-n + 7) {
           border-bottom: 1px solid var(--color-border);
-        }
-
-        &:nth-child(5n) {
-          border-right: none;
-        }
-
-        &:nth-last-child(-n + 5) {
-          border-bottom: none;
         }
 
         small {
