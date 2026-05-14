@@ -12,11 +12,16 @@ import { NativeCalendar } from './native-calendar/native-calendar';
 export class Schedule implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
 
+  private readonly handleAddEvent = (): void => {
+    console.log('Adicionar evento');
+  };
+
   public ngOnInit(): void {
     this.headerStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar evento',
+        onClick: this.handleAddEvent,
       },
     ]);
   }
@@ -25,4 +30,3 @@ export class Schedule implements OnInit, OnDestroy {
     this.headerStore.clearButtonsActions();
   }
 }
-

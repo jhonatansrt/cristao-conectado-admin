@@ -5,6 +5,7 @@ import { ButtonClass } from '../../presentation/common/button/button.data';
 export interface HeaderButtonAction {
   btnClass: ButtonClass;
   label: string;
+  onClick?: () => void;
 }
 
 @Injectable({
