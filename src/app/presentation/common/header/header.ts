@@ -1,20 +1,24 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
+import { ButtonComponent } from '../button/button.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
+import { HeaderStore } from '../../../application/header/header-store';
 import { MenuStore } from '../../../application/menu/menu-store';
 import { namedRoutes } from '../../../named-routes';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule],
+  imports: [MatIconModule, ButtonComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   private readonly menuStore = inject(MenuStore);
+  private readonly headerStore = inject(HeaderStore);
   private readonly navController = inject(Router);
 
   private readonly currentUrl = toSignal(
@@ -34,6 +38,9 @@ export class Header {
     [namedRoutes.notices]: 'Avisos',
     [namedRoutes.church]: 'Igreja',
   };
+
+
+  protected readonly buttonsActions = this.headerStore.getButtonsActions();
 
   protected readonly title = computed(() => {
     const route = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
