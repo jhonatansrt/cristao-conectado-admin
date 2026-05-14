@@ -22,7 +22,11 @@ export class Notices implements OnInit {
     this.tableStore.setTable(columns, []);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
+    this.getNotices();
+  }
+
+  private getNotices() {
     this.noticesService.getNotices().subscribe((rows) => {
       this.tableStore.setRows(rows);
     });
