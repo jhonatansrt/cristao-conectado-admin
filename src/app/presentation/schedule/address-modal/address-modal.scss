@@ -1,0 +1,67 @@
+app-modal {
+  .body-modal {
+    background-color: #dce2e8;
+    gap: 24px;
+
+    > section {
+      gap: 12px;
+
+      label {
+        font-size: var(--font-size-16);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+      }
+
+      > div {
+        background-color: var(--color-white);
+        border-radius: 6px;
+        padding: 12px 14px;
+
+        input {
+          border: none;
+          outline: none;
+          width: 100%;
+          font-size: var(--font-size-14);
+          background-color: transparent;
+          color: var(--color-text-primary);
+        }
+
+        mat-icon {
+          color: var(--color-text-secondary);
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      article {
+        background-color: var(--color-white);
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+
+        h4 {
+          font-size: var(--font-size-18);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-text-primary);
+        }
+
+        p {
+          font-size: var(--font-size-13);
+          color: var(--color-text-secondary);
+        }
+
+        > div:last-child {
+          gap: 6px;
+
+          mat-icon {
+            color: var(--color-text-secondary);
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+}

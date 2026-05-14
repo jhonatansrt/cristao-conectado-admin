@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { HeaderStore } from '../../application/header/header-store';
+import { Container } from '../../util/container.service';
+import { AddressModal } from './address-modal/address-modal';
 import { NativeCalendar } from './native-calendar/native-calendar';
 
 @Component({
@@ -11,9 +13,10 @@ import { NativeCalendar } from './native-calendar/native-calendar';
 })
 export class Schedule implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
+  private readonly container = inject(Container);
 
   private readonly handleAddEvent = (): void => {
-    console.log('Adicionar evento');
+    this.container.vcr?.createComponent(AddressModal);
   };
 
   public ngOnInit(): void {

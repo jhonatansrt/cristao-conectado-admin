@@ -1,0 +1,29 @@
+<app-modal title="Endereço">
+  <section class="body-modal flex flex-column">
+    <section class="flex flex-column">
+      <label for="new-address">Novo endereço</label>
+      <div class="flex items-center">
+        <input id="new-address" type="text" />
+        <mat-icon>search</mat-icon>
+      </div>
+    </section>
+
+    <section class="flex flex-column">
+      <label>Selecionar existente</label>
+
+      @for (_ of existingAddresses; track $index) {
+        <article class="flex justify-between items-center">
+          <div>
+            <h4>PIB</h4>
+            <p>Icui-guajará, Ananindeua - PA</p>
+          </div>
+
+          <div class="flex items-center">
+            <mat-icon>edit</mat-icon>
+            <mat-icon>delete_outline</mat-icon>
+          </div>
+        </article>
+      }
+    </section>
+  </section>
+</app-modal>
