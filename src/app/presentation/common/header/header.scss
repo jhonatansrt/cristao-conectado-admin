@@ -30,14 +30,20 @@ header {
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
   }
+}
 
-  @media screen and (max-width: $breakpoint-mobile) {
-    .buttons-actions {
-      display: none;
+@media screen and (max-width: $breakpoint-mobile) {
+  header {
+    padding: calc(20px + env(safe-area-inset-top)) 24px 20px;
+
+    .header-content {
+      mat-icon {
+        display: block;
+      }
     }
 
-    mat-icon {
-      display: block;
+    .buttons-actions {
+      display: none;
     }
   }
 }
