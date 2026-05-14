@@ -26,9 +26,12 @@ export class Playlists implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getPlaylists();
+  }
+
+  private getPlaylists() {
     this.playlistsService.getPlaylists().subscribe((rows) => {
       this.tableStore.setRows(rows);
     });
   }
-
 }
