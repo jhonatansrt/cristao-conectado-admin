@@ -112,22 +112,22 @@ section {
       }
 
       button {
-        width: 36px;
-        height: 36px;
-        font-size: 28px;
+        width: 32px;
+        height: 32px;
       }
     }
 
     ol {
       border-radius: 10px;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
 
       li {
         min-height: 88px;
         padding: 8px;
-        gap: 6px;
+        gap: 4px;
 
         small {
-          font-size: 10px;
+          font-size: var(--font-size-10);
         }
 
         strong {
@@ -138,7 +138,7 @@ section {
         span {
           width: 24px;
           height: 24px;
-          font-size: 10px;
+          font-size: var(--font-size-10);
         }
       }
     }
