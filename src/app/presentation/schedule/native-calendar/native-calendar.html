@@ -11,33 +11,37 @@
         <li>
           <app-skeleton width="28px" height="16px" />
           <app-skeleton width="40px" height="34px" />
-          <app-skeleton width="22px" height="22px" borderRadius="999px" />
         </li>
       }
     </ol>
   </section>
 } @else {
   <section>
-  <header class="flex items-center justify-between">
-    <button type="button" [disabled]="!canGoPreviousMonth" (click)="goToPreviousMonth()" aria-label="Mês anterior">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <h2>{{ monthTitle }}</h2>
-    <button type="button" (click)="goToNextMonth()" aria-label="Próximo mês">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-  </header>
+    <header class="flex items-center justify-between">
+      <button
+        type="button"
+        [disabled]="!canGoPreviousMonth"
+        (click)="goToPreviousMonth()"
+        aria-label="Mês anterior"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h2>{{ monthTitle }}</h2>
+      <button type="button" (click)="goToNextMonth()" aria-label="Próximo mês">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </header>
 
-  <ol>
-    @for (cell of calendarCells; track $index) {
-      <li [attr.data-current-month]="cell.isCurrentMonth">
-        <small>{{ cell.weekDay }}</small>
-        <strong>{{ cell.dayNumber }}</strong>
-        @if (cell.isCurrentMonth && cell.count) {
-          <span>{{ cell.count }}</span>
-        }
-      </li>
-    }
-  </ol>
-</section>
+    <ol>
+      @for (cell of calendarCells; track $index) {
+        <li [attr.data-current-month]="cell.isCurrentMonth">
+          <small>{{ cell.weekDay }}</small>
+          <strong>{{ cell.dayNumber }}</strong>
+          @if (cell.isCurrentMonth && cell.count) {
+            <span>{{ cell.count }}</span>
+          }
+        </li>
+      }
+    </ol>
+  </section>
 }
