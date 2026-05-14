@@ -13,10 +13,12 @@ main {
 
     section {
       padding: 32px;
-
-      @media screen and (max-width: $breakpoint-mobile) {
-        padding: 24px;
-      }
     }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  main article section {
+    padding: 24px;
   }
 }
