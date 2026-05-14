@@ -1,13 +1,13 @@
-<article>
-  <header class="flex items-center">
+<article class="flex items-center justify-between">
+  <div class="flex flex-column">
     <h3>{{ title() }}</h3>
     <p>{{ description() }}</p>
-  </header>
+  </div>
 
   @if (icons().length) {
     <menu class="flex items-center">
       @for (icon of icons(); track $index) {
-        <li>
+        <li class="flex">
           <mat-icon (click)="icon.action()">{{ icon.name }}</mat-icon>
         </li>
       }

@@ -1,20 +1,14 @@
-:host {
-  .body-modal {
-    background-color: var(--color-background);
-    gap: 28px;
-  }
+app-modal .body-modal {
+  background-color: var(--color-background);
+  gap: 24px;
 
-  .form-field {
-    gap: 12px;
+  div {
+    gap: 8px;
 
     h3 {
       color: var(--color-text-primary);
-      font-size: var(--font-size-20);
-      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-semibold);
     }
-  }
-
-  .cards-list {
-    gap: 14px;
   }
 }

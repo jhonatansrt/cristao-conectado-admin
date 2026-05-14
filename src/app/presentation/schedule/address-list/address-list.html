@@ -1,21 +1,17 @@
 <app-modal title="Endereço">
   <section class="body-modal flex flex-column">
-    <div class="form-field flex flex-column">
-      <app-input label="Novo endereço" placeholder="" />
-    </div>
+    <app-input label="Novo endereço" />
 
-    <div class="form-field flex flex-column">
+    <div class="flex flex-column">
       <h3>Selecionar existente</h3>
 
-      <div class="cards-list flex flex-column">
-        @for (address of addresses; track $index) {
-          <app-card
-            [title]="address.title"
-            [description]="address.description"
-            [icons]="getCardActions(address)"
-          />
-        }
-      </div>
+      @for (address of addresses; track $index) {
+        <app-card
+          [title]="address.title"
+          [description]="address.description"
+          [icons]="getCardActions(address)"
+        />
+      }
     </div>
   </section>
 </app-modal>
