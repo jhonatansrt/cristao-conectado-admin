@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 type CalendarCell = {
   weekDay: string;
@@ -8,7 +9,7 @@ type CalendarCell = {
 
 @Component({
   selector: 'app-native-calendar',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './native-calendar.html',
   styleUrl: './native-calendar.scss',
 })
