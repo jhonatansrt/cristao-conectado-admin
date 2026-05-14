@@ -1,3 +1,5 @@
+@use '../../../../theme/breakpoint.scss' as *;
+
 section {
   display: grid;
   gap: 16px;
@@ -94,6 +96,50 @@ section {
         font-weight: var(--font-weight-regular);
         background-color: var(--color-background);
         color: var(--color-text-primary);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  section {
+    gap: 12px;
+
+    header {
+      h2 {
+        font-size: var(--font-size-16);
+        text-align: center;
+      }
+
+      button {
+        width: 36px;
+        height: 36px;
+        font-size: 28px;
+      }
+    }
+
+    ol {
+      border-radius: 10px;
+
+      li {
+        min-height: 88px;
+        padding: 8px;
+        gap: 6px;
+
+        small {
+          font-size: 10px;
+        }
+
+        strong {
+          font-size: var(--font-size-20);
+          line-height: 1;
+        }
+
+        span {
+          width: 24px;
+          height: 24px;
+          font-size: 10px;
+        }
       }
     }
   }
