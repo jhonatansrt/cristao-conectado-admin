@@ -14,7 +14,7 @@ export class NoticesRepository implements INoticesRepository {
     const url = environment.apiBaseURL + '/registers/0';
     const params = new HttpParams({
       fromObject: {
-        churchId: props.churchId,
+        church_id: props.churchId,
         limit: String(props.limit ?? 10),
         offset: String(props.offset ?? 0),
       },
