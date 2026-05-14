@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NativeCalendar } from './components/native-calendar/native-calendar';
+import { NativeCalendar } from './native-calendar/native-calendar';
 
 @Component({
   selector: 'app-schedule',
