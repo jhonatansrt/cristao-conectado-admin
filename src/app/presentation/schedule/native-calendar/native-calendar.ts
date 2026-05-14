@@ -1,22 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { finalize } from 'rxjs';
+import { SchedulesService } from '../../../application/schedules/schedules-service';
+import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 
 type CalendarCell = {
   weekDay: string;
   dayNumber: number;
   isCurrentMonth: boolean;
+  count: number | null;
 };
 
 @Component({
   selector: 'app-native-calendar',
-  imports: [MatIconModule],
+  imports: [MatIconModule, SkeletonComponent],
   templateUrl: './native-calendar.html',
   styleUrl: './native-calendar.scss',
 })
-export class NativeCalendar {
+export class NativeCalendar implements OnInit {
+  private schedulesService = inject(SchedulesService);
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  private monthSchedulesByDate = new Map<string, number>();
   protected monthOffset = 0;
+  protected isLoading = true;
+
+  public ngOnInit(): void {
+    this.loadMonthSchedules();
+  }
 
   protected get monthTitle(): string {
     const date = this.visibleMonthDate;
@@ -49,6 +60,7 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: previousMonthLastDay - index + 1,
         isCurrentMonth: false,
+        count: null,
       });
     }
 
@@ -57,6 +69,7 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: day,
         isCurrentMonth: true,
+        count: this.monthSchedulesByDate.get(this.getMonthDateKey(year, month, day)) ?? 0,
       });
     }
 
@@ -65,6 +78,7 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: cells.length - (leadingDays + monthLength) + 1,
         isCurrentMonth: false,
+        count: null,
       });
     }
 
@@ -77,13 +91,40 @@ export class NativeCalendar {
     }
 
     this.monthOffset -= 1;
+    this.loadMonthSchedules();
   }
 
   protected goToNextMonth(): void {
     this.monthOffset += 1;
+    this.loadMonthSchedules();
   }
 
   private get visibleMonthDate(): Date {
     return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset, 1);
+  }
+
+  private loadMonthSchedules(): void {
+    const date = this.visibleMonthDate;
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    this.isLoading = true;
+
+    this.schedulesService
+      .getMonthSchedules(month, year)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((monthSchedules) => {
+        this.monthSchedulesByDate = new Map(
+          monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count]),
+        );
+      });
+  }
+
+  private parseEndpointDateToKey(date: string): string {
+    const [day, month, year] = date.split('-');
+    return `${year}-${month}-${day}`;
+  }
+
+  private getMonthDateKey(year: number, month: number, day: number): string {
+    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   }
 }

@@ -1,4 +1,23 @@
-<section>
+@if (isLoading) {
+  <section>
+    <header class="flex items-center justify-between">
+      <app-skeleton width="40px" height="40px" borderRadius="999px" />
+      <app-skeleton width="180px" height="30px" />
+      <app-skeleton width="40px" height="40px" borderRadius="999px" />
+    </header>
+
+    <ol>
+      @for (_ of [].constructor(35); track $index) {
+        <li>
+          <app-skeleton width="28px" height="16px" />
+          <app-skeleton width="40px" height="34px" />
+          <app-skeleton width="22px" height="22px" borderRadius="999px" />
+        </li>
+      }
+    </ol>
+  </section>
+} @else {
+  <section>
   <header class="flex items-center justify-between">
     <button type="button" [disabled]="!canGoPreviousMonth" (click)="goToPreviousMonth()" aria-label="Mês anterior">
       <mat-icon>chevron_left</mat-icon>
@@ -14,7 +33,11 @@
       <li [attr.data-current-month]="cell.isCurrentMonth">
         <small>{{ cell.weekDay }}</small>
         <strong>{{ cell.dayNumber }}</strong>
+        @if (cell.isCurrentMonth && cell.count) {
+          <span>{{ cell.count }}</span>
+        }
       </li>
     }
   </ol>
 </section>
+}
