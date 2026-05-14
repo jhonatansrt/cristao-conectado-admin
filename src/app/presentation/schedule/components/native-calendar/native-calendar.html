@@ -1,0 +1,16 @@
+<section>
+  <header class="flex items-center justify-between">
+    <button type="button" (click)="goToPreviousMonth()" aria-label="Mês anterior">‹</button>
+    <h2>{{ monthTitle }}</h2>
+    <button type="button" [disabled]="!canGoNextMonth" (click)="goToNextMonth()" aria-label="Próximo mês">›</button>
+  </header>
+
+  <ol>
+    @for (cell of calendarCells; track $index) {
+      <li [attr.data-current-month]="cell.isCurrentMonth">
+        <small>{{ cell.weekDay }}</small>
+        <strong>{{ cell.dayNumber }}</strong>
+      </li>
+    }
+  </ol>
+</section>
