@@ -1,8 +1,12 @@
 <section>
   <header class="flex items-center justify-between">
-    <button type="button" [disabled]="!canGoPreviousMonth" (click)="goToPreviousMonth()" aria-label="Mês anterior">‹</button>
+    <button type="button" [disabled]="!canGoPreviousMonth" (click)="goToPreviousMonth()" aria-label="Mês anterior">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
     <h2>{{ monthTitle }}</h2>
-    <button type="button" (click)="goToNextMonth()" aria-label="Próximo mês">›</button>
+    <button type="button" (click)="goToNextMonth()" aria-label="Próximo mês">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </header>
 
   <ol>
