@@ -1,16 +1,14 @@
 <article>
-  <header>
+  <header class="flex items-center">
     <h3>{{ title() }}</h3>
     <p>{{ description() }}</p>
   </header>
 
   @if (icons().length) {
-    <menu>
+    <menu class="flex items-center">
       @for (icon of icons(); track $index) {
         <li>
-          <button type="button" (click)="icon.action()" [attr.aria-label]="icon.ariaLabel ?? icon.name">
-            <mat-icon>{{ icon.name }}</mat-icon>
-          </button>
+          <mat-icon (click)="icon.action()">{{ icon.name }}</mat-icon>
         </li>
       }
     </menu>
