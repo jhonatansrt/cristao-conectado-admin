@@ -26,8 +26,8 @@ export class NativeCalendar {
     }).format(date);
   }
 
-  protected get canGoNextMonth(): boolean {
-    return this.monthOffset < 0;
+  protected get canGoPreviousMonth(): boolean {
+    return this.monthOffset > 0;
   }
 
   protected get calendarCells(): CalendarCell[] {
@@ -71,14 +71,14 @@ export class NativeCalendar {
   }
 
   protected goToPreviousMonth(): void {
+    if (!this.canGoPreviousMonth) {
+      return;
+    }
+
     this.monthOffset -= 1;
   }
 
   protected goToNextMonth(): void {
-    if (!this.canGoNextMonth) {
-      return;
-    }
-
     this.monthOffset += 1;
   }
 
