@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, output } from '@angular/core';
+import { Component, ViewChild, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -19,12 +19,24 @@ export class AddPlaylistModal {
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
   public playlistCreated = output<void>();
+  public readonly maxOrder = input<number>(1);
   public loading = false;
 
   public readonly addPlaylistForm = this.fb.group({
     title: ['', Validators.required],
-    order: ['', Validators.required],
+    order: ['', [Validators.required, Validators.min(1)]],
   });
+
+  constructor() {
+    effect(() => {
+      this.addPlaylistForm.controls.order.setValidators([
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.maxOrder()),
+      ]);
+      this.addPlaylistForm.controls.order.updateValueAndValidity({ emitEvent: false });
+    });
+  }
 
   public closeModal(): void {
     this.modal?.closeModal();

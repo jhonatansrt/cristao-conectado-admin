@@ -20,6 +20,7 @@ export class Playlists implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
   protected isLoading = this.tableStore.isLoading();
+  private maxOrder = 1;
 
   constructor() {
     const columns: TableColumn[] = [
@@ -51,6 +52,7 @@ export class Playlists implements OnInit, OnDestroy {
 
   private readonly handleAddPlaylist = (): void => {
     const modalRef = this.container.vcr?.createComponent(AddPlaylistModal);
+    modalRef?.setInput('maxOrder', this.maxOrder);
     modalRef?.instance.playlistCreated.subscribe(() => this.getPlaylists());
   };
 
@@ -62,6 +64,7 @@ export class Playlists implements OnInit, OnDestroy {
       .pipe(finalize(() => this.tableStore.setLoading(false)))
       .subscribe((rows) => {
         this.tableStore.setRows(rows);
+        this.maxOrder = rows.length + 1;
       });
   }
 
