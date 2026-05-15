@@ -50,7 +50,8 @@ export class Playlists implements OnInit, OnDestroy {
   }
 
   private readonly handleAddPlaylist = (): void => {
-    this.container.vcr?.createComponent(AddPlaylistModal);
+    const modalRef = this.container.vcr?.createComponent(AddPlaylistModal);
+    modalRef?.instance.playlistCreated.subscribe(() => this.getPlaylists());
   };
 
   private getPlaylists() {
