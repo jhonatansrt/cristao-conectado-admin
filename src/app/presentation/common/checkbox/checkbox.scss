@@ -1,0 +1,23 @@
+fieldset {
+  border: 0;
+  min-width: 0;
+
+  label {
+    gap: 16px;
+    cursor: pointer;
+
+    input {
+      width: 32px;
+      height: 32px;
+      margin: 0;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    span {
+      color: var(--color-text-primary);
+      font-size: var(--font-size-14);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+}
