@@ -38,9 +38,15 @@ export class MenuItems {
     { label: 'Sair', icon: 'logout', action: 'logout' },
   ];
 
-  protected readonly selectedRoute = computed(() =>
-    this.currentUrl().replace(/^\//, '').split('/')[0] ?? '',
-  );
+  protected readonly selectedRoute = computed(() => {
+    const currentRoute = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
+
+    if (currentRoute === namedRoutes.videos) {
+      return namedRoutes.playlists;
+    }
+
+    return currentRoute;
+  });
 
   protected async navigate(item: (typeof this.items)[number]): Promise<void> {
     if (item.action === 'logout') {
