@@ -19,7 +19,11 @@
         [errorMessage]="
           addPlaylistForm.controls.order.touched && addPlaylistForm.controls.order.hasError('required')
             ? 'Ordem de exibição é obrigatória'
-            : ''
+            : addPlaylistForm.controls.order.touched && addPlaylistForm.controls.order.hasError('min')
+              ? 'Ordem de exibição deve ser no mínimo 1'
+              : addPlaylistForm.controls.order.touched && addPlaylistForm.controls.order.hasError('max')
+                ? 'Ordem de exibição deve ser no máximo ' + maxOrder()
+                : ''
         "
       />
     </form>
