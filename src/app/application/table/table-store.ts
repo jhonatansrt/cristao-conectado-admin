@@ -31,6 +31,7 @@ export interface TableActionEvent<T extends TableRow = TableRow> {
 export class TableStore<T extends TableRow = TableRow> {
   private readonly columns = signal<TableColumn<T>[]>([]);
   private readonly rows = signal<T[]>([]);
+  private readonly loading = signal(false);
   private readonly actionEvent = signal<TableActionEvent<T> | null>(null);
 
   public readonly hasRows = computed(() => this.rows().length > 0);
@@ -48,6 +49,10 @@ export class TableStore<T extends TableRow = TableRow> {
     this.rows.set(rows);
   }
 
+  public setLoading(loading: boolean): void {
+    this.loading.set(loading);
+  }
+
   public emitAction(event: TableActionEvent<T>): void {
     this.actionEvent.set(event);
   }
@@ -62,5 +67,9 @@ export class TableStore<T extends TableRow = TableRow> {
 
   public getActionEvent(): Signal<TableActionEvent<T> | null> {
     return this.actionEvent;
+  }
+
+  public isLoading(): Signal<boolean> {
+    return this.loading;
   }
 }

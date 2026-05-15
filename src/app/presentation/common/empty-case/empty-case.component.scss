@@ -1,0 +1,23 @@
+.empty-case {
+  border-radius: 16px;
+  background-color: var(--color-surface);
+  padding: 48px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--color-text-secondary);
+
+  mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  p {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+  }
+}

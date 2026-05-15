@@ -1,1 +1,8 @@
-<app-table />
+@if (isLoading() || hasPlaylists()) {
+  <app-table />
+} @else {
+  <app-empty-case
+    description="Nenhuma playlist cadastrada até o momento."
+    icon="queue_music"
+  />
+}

@@ -64,6 +64,12 @@ section {
   }
 }
 
+.table-skeleton {
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
 @media (max-width: $breakpoint-mobile) {
   section {
     overflow: visible;
