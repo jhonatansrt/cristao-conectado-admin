@@ -54,9 +54,11 @@ export class Schedule implements OnInit, OnDestroy {
   }
 
   protected handleDaySelected({ day, month, year }: CalendarDaySelect): void {
-    const selectedDate = new Date(Date.UTC(year, month - 1, day)).toISOString();
+    const selectedDate = new Date(Date.UTC(year, month - 1, day));
+    const selectedDateISO = selectedDate.toISOString();
+    const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-    this.schedulesService.getDaySchedules(selectedDate).subscribe((daySchedules) => {
+    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe((daySchedules) => {
       const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
 
       if (!eventModal) {

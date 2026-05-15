@@ -20,13 +20,13 @@ export class SchedulesService {
     return this.schedulesRepository.getMonthSchedules({ churchId, month, year });
   }
 
-  public getDaySchedules(date: string): Observable<DaySchedule[]> {
+  public getDaySchedules(date: string, day: 0 | 1 | 2 | 3 | 4 | 5 | 6): Observable<DaySchedule[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
     if (!churchId) {
       return of([]);
     }
 
-    return this.schedulesRepository.getDaySchedules({ churchId, date });
+    return this.schedulesRepository.getDaySchedules({ churchId, date, day });
   }
 }
