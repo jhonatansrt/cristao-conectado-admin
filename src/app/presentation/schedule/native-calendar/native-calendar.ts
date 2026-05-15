@@ -1,16 +1,24 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { finalize } from 'rxjs';
-import { SchedulesService } from '../../../application/schedules/schedules-service';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
-import { Container } from '../../../util/container.service';
-import { DayEventItem, EventsOfDayModal } from '../events-of-day-modal/events-of-day-modal';
 
-type CalendarCell = {
+export type CalendarCell = {
   weekDay: string;
   dayNumber: number;
   isCurrentMonth: boolean;
   count: number | null;
+};
+
+export type CalendarMonthChange = {
+  month: number;
+  year: number;
+};
+
+export type CalendarDaySelect = {
+  day: number;
+  month: number;
+  year: number;
+  count: number;
 };
 
 @Component({
@@ -20,16 +28,18 @@ type CalendarCell = {
   styleUrl: './native-calendar.scss',
 })
 export class NativeCalendar implements OnInit {
-  private schedulesService = inject(SchedulesService);
-  private readonly container = inject(Container);
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  private monthSchedulesByDate = new Map<string, number>();
+
+  @Input() public isLoading = true;
+  @Input() public monthSchedulesByDate = new Map<string, number>();
+  @Output() public monthChanged = new EventEmitter<CalendarMonthChange>();
+  @Output() public daySelected = new EventEmitter<CalendarDaySelect>();
+
   protected monthOffset = 0;
-  protected isLoading = true;
 
   public ngOnInit(): void {
-    this.loadMonthSchedules();
+    this.emitMonthChange();
   }
 
   protected get monthTitle(): string {
@@ -88,26 +98,18 @@ export class NativeCalendar implements OnInit {
     return cells;
   }
 
-
-  protected openDayEvents(cell: CalendarCell): void {
+  protected selectDay(cell: CalendarCell): void {
     if (!cell.isCurrentMonth || !cell.count) {
       return;
     }
 
-    const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
-
-    if (!eventModal) {
-      return;
-    }
-
-    eventModal.setInput('events', this.buildDayEvents(cell.count));
-  }
-
-  private buildDayEvents(eventCount: number): DayEventItem[] {
-    return Array.from({ length: eventCount }, (_, index) => ({
-      title: `Igreja Batista Transcoqueiro ${index + 1}`,
-      description: 'Av. XYZ, 123 - Belém/PA',
-    }));
+    const date = this.visibleMonthDate;
+    this.daySelected.emit({
+      day: cell.dayNumber,
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+      count: cell.count,
+    });
   }
 
   protected goToPreviousMonth(): void {
@@ -116,37 +118,24 @@ export class NativeCalendar implements OnInit {
     }
 
     this.monthOffset -= 1;
-    this.loadMonthSchedules();
+    this.emitMonthChange();
   }
 
   protected goToNextMonth(): void {
     this.monthOffset += 1;
-    this.loadMonthSchedules();
+    this.emitMonthChange();
   }
 
   private get visibleMonthDate(): Date {
     return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset, 1);
   }
 
-  private loadMonthSchedules(): void {
+  private emitMonthChange(): void {
     const date = this.visibleMonthDate;
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    this.isLoading = true;
-
-    this.schedulesService
-      .getMonthSchedules(month, year)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe((monthSchedules) => {
-        this.monthSchedulesByDate = new Map(
-          monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count]),
-        );
-      });
-  }
-
-  private parseEndpointDateToKey(date: string): string {
-    const [day, month, year] = date.split('-');
-    return `${year}-${month}-${day}`;
+    this.monthChanged.emit({
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+    });
   }
 
   private getMonthDateKey(year: number, month: number, day: number): string {
