@@ -34,7 +34,7 @@
 
     <ol>
       @for (cell of calendarCells; track $index) {
-        <li [attr.data-current-month]="cell.isCurrentMonth" [class.clickable]="cell.isCurrentMonth && !!cell.count" (click)="openDayEvents(cell)">
+        <li [attr.data-current-month]="cell.isCurrentMonth" [class.clickable]="cell.isCurrentMonth && !!cell.count" (click)="selectDay(cell)">
           <small>{{ cell.weekDay }}</small>
           <strong>{{ cell.dayNumber }}</strong>
           @if (cell.isCurrentMonth && cell.count) {
