@@ -1,5 +1,10 @@
 <article class="background-dialog flex justify-center items-center">
   <section class="content-dialog flex flex-column items-center">
+    <header class="flex justify-between items-center">
+      <h2>{{ title() }}</h2>
+      <mat-icon (click)="onClose()">close</mat-icon>
+    </header>
+
     <ng-content></ng-content>
   </section>
 </article>
