@@ -1,0 +1,18 @@
+<section>
+  <header
+    role="button"
+    tabindex="0"
+    [attr.aria-expanded]="isOpen()"
+    (click)="toggle()"
+    (keydown.enter)="toggle()"
+    (keydown.space)="toggle(); $event.preventDefault()"
+  >
+    <app-card [title]="title()" [description]="description()" [icons]="headerIcons()"></app-card>
+  </header>
+
+  @if (isOpen()) {
+    <article>
+      <ng-content></ng-content>
+    </article>
+  }
+</section>
