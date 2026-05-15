@@ -6,6 +6,7 @@ export interface TableAction {
   key: string;
   icon: string;
   label: string;
+  onClick?: () => void;
 }
 
 export interface TableColumn<T extends TableRow = TableRow> {
@@ -19,11 +20,6 @@ export interface TableRow {
   [key: string]: TableValue | TableAction[] | undefined;
 }
 
-export interface TableActionEvent<T extends TableRow = TableRow> {
-  actionKey: string;
-  rowId: string | number;
-  row: T;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +28,6 @@ export class TableStore<T extends TableRow = TableRow> {
   private readonly columns = signal<TableColumn<T>[]>([]);
   private readonly rows = signal<T[]>([]);
   private readonly loading = signal(false);
-  private readonly actionEvent = signal<TableActionEvent<T> | null>(null);
 
   public readonly hasRows = computed(() => this.rows().length > 0);
 
@@ -53,9 +48,6 @@ export class TableStore<T extends TableRow = TableRow> {
     this.loading.set(loading);
   }
 
-  public emitAction(event: TableActionEvent<T>): void {
-    this.actionEvent.set(event);
-  }
 
   public getColumns(): Signal<TableColumn<T>[]> {
     return this.columns;
@@ -65,9 +57,6 @@ export class TableStore<T extends TableRow = TableRow> {
     return this.rows;
   }
 
-  public getActionEvent(): Signal<TableActionEvent<T> | null> {
-    return this.actionEvent;
-  }
 
   public isLoading(): Signal<boolean> {
     return this.loading;

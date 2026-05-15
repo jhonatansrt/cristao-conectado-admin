@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { TableAction, TableRow, TableStore } from '../../../application/table/table-store';
+import { TableRow, TableStore } from '../../../application/table/table-store';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 @Component({
@@ -17,11 +17,4 @@ export class TableComponent {
   public readonly rows = this.tableStore.getRows();
   public readonly isLoading = this.tableStore.isLoading();
 
-  public handleActionClick(action: TableAction, row: TableRow): void {
-    this.tableStore.emitAction({
-      actionKey: action.key,
-      rowId: row.id,
-      row,
-    });
-  }
 }

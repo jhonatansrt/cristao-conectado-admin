@@ -30,4 +30,11 @@ export class PlaylistsRepository implements IPlaylistsRepository {
       order: props.order,
     });
   }
+
+  public deletePlaylist(props: { id: string }): Observable<void> {
+    const url = environment.apiBaseURL + `/videosFolder/${props.id}`;
+
+    return this.httpClient.delete<void>(url);
+  }
 }
+

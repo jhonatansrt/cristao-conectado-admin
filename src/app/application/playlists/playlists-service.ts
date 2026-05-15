@@ -51,6 +51,11 @@ export class PlaylistsService {
     }).pipe(map(() => void 0));
   }
 
+
+  public deletePlaylist(props: { id: string }): Observable<void> {
+    return this.playlistsRepository.deletePlaylist({ id: props.id });
+  }
+
   private formatDate(date: string): string {
     return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
   }
