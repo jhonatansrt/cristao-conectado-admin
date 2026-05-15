@@ -1,0 +1,16 @@
+.background-dialog {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-overlay);
+  backdrop-filter: blur(3px);
+  z-index: 9999;
+
+  .content-dialog {
+    width: auto;
+    max-width: 90%;
+    border-radius: 25px;
+    background: var(--color-surface);
+    padding: 32px;
+    gap: 32px;
+  }
+}
