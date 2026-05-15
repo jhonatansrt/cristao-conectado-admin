@@ -1,17 +1,20 @@
 import { Component, input } from '@angular/core';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { CardComponent } from '../../common/card/card.component';
+import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 
 export interface DayEventItem {
   id: string;
   title: string;
   description: string;
+  hourInitial?: number;
+  hourFinal?: number;
 }
 
 @Component({
   selector: 'app-events-of-day-modal',
   standalone: true,
-  imports: [ModalComponent, CardComponent],
+  imports: [ModalComponent, CardComponent, HourRangePipe],
   templateUrl: './events-of-day-modal.html',
   styleUrl: './events-of-day-modal.scss',
 })
