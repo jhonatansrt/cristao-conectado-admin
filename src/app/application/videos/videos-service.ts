@@ -1,0 +1,55 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { map, Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { PlaylistSelectedStore } from '../playlists/playlist-selected-store';
+import { TableRow } from '../table/table-store';
+
+type VideoResponse = {
+  id?: string;
+  title?: string;
+  video_id?: string;
+  videoId?: string;
+  featured?: boolean;
+  order?: number;
+};
+
+@Injectable({
+  providedIn: 'root',
+})
+export class VideosService {
+  private readonly httpClient = inject(HttpClient);
+  private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
+
+  public getVideos(): Observable<TableRow[]> {
+    const folderId = this.playlistSelectedStore.getPlaylistSelected()()[0]?.id;
+
+    if (!folderId) {
+      return of([]);
+    }
+
+    const url = environment.apiBaseURL + '/videos/getByFolderId';
+    const params = new HttpParams({
+      fromObject: {
+        folder_id: folderId,
+      },
+    });
+
+    return this.httpClient.get<VideoResponse[]>(url, { params }).pipe(
+      map((videos) =>
+        videos.map((video, index) => ({
+          id: video.id ?? `${index + 1}`,
+          title: video.title ?? '-',
+          videoId: video.video_id ?? video.videoId ?? '-',
+          featured: video.featured ? 'Sim' : 'Não',
+          order: video.order ?? index + 1,
+          actions: [
+            { key: `edit-${index}`, icon: 'edit', label: 'Editar vídeo' },
+            { key: `delete-${index}`, icon: 'delete', label: 'Excluir vídeo' },
+            { key: `open-${index}`, icon: 'chevron_right', label: 'Abrir vídeo' },
+          ],
+        })),
+      ),
+    );
+  }
+}

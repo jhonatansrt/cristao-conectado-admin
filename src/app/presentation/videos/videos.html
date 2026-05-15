@@ -1,1 +1,8 @@
-<app-table />
+@if (isLoading() || hasVideos()) {
+  <app-table />
+} @else {
+  <app-empty-case
+    description="Nenhum vídeo cadastrado para esta playlist até o momento."
+    icon="videocam_off"
+  />
+}
