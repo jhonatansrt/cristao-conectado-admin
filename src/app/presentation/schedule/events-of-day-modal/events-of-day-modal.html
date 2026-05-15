@@ -4,6 +4,7 @@
       <app-card
         [title]="event.title"
         [description]="event.hourInitial !== undefined && event.hourFinal !== undefined ? (event.hourInitial | hourRange: event.hourFinal) : event.description"
+        [icons]="eventCardIcons"
       />
     }
   </section>

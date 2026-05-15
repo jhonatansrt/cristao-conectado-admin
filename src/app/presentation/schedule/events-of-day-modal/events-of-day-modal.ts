@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ModalComponent } from '../../common/modal/modal.component';
-import { CardComponent } from '../../common/card/card.component';
+import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 
 export interface DayEventItem {
@@ -20,4 +20,11 @@ export interface DayEventItem {
 })
 export class EventsOfDayModal {
   public readonly events = input<DayEventItem[]>([]);
+  public readonly eventCardIcons: CardIconAction[] = [
+    {
+      name: 'chevron_right',
+      action: () => {},
+      ariaLabel: 'Ver detalhes do evento',
+    },
+  ];
 }
