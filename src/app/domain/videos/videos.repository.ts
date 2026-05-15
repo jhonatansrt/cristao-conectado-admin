@@ -1,0 +1,14 @@
+import { Observable } from 'rxjs';
+
+type CreateVideoDTO = {
+  churchId: string;
+  folderId: string;
+  youtubeId: string;
+  order: number;
+  name: string;
+  showHome: boolean;
+};
+
+export abstract class IVideosRepository {
+  abstract createVideo(props: CreateVideoDTO): Observable<{ id?: string }>;
+}

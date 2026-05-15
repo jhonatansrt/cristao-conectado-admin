@@ -1,6 +1,8 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
+import { VideosService } from '../../../application/videos/videos-service';
 import { ButtonComponent } from '../../common/button/button.component';
 import { InputComponent } from '../../common/input/input';
 import { CheckboxComponent } from '../../common/checkbox/checkbox';
@@ -14,8 +16,11 @@ import { ModalComponent } from '../../common/modal/modal.component';
 })
 export class AddVideoModal {
   private readonly fb = inject(FormBuilder);
+  private readonly videosService = inject(VideosService);
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
+  public videoCreated = output<void>();
+  public loading = false;
 
   public readonly addVideoForm = this.fb.group({
     youtubeUrl: ['', Validators.required],
@@ -33,11 +38,34 @@ export class AddVideoModal {
   }
 
   public onConfirm(): void {
-    if (this.addVideoForm.invalid) {
+    if (this.addVideoForm.invalid || this.loading) {
       this.addVideoForm.markAllAsTouched();
       return;
     }
 
-    this.closeModal();
+    const { youtubeUrl, title, order, featured } = this.addVideoForm.getRawValue();
+    const youtubeId = this.extractYoutubeId(youtubeUrl ?? '');
+
+    this.loading = true;
+    this.videosService
+      .createVideo({
+        youtubeId,
+        name: title ?? '',
+        order: Number(order),
+        showHome: Boolean(featured),
+      })
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(() => {
+        this.videoCreated.emit();
+        this.closeModal();
+      });
+  }
+
+  private extractYoutubeId(value: string): string {
+    const sanitized = value.trim();
+    const regex = /(?:youtu\.be\/|v=|\/shorts\/)([a-zA-Z0-9_-]{11})/;
+    const match = sanitized.match(regex);
+
+    return match?.[1] ?? sanitized;
   }
 }
