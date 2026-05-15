@@ -9,7 +9,11 @@
 
       <app-input label="Ordem de exibição" type="number" formControlName="order" />
 
-      <app-checkbox label="Vídeo de destaque" [isChecked]="!!addVideoForm.value.featured" />
+      <app-checkbox
+        label="Vídeo de destaque"
+        [isChecked]="!!addVideoForm.value.featured"
+        (isCheckedChange)="onFeaturedChange($event)"
+      />
     </form>
   </section>
 
