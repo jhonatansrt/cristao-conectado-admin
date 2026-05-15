@@ -31,6 +31,6 @@ export class SchedulesRepository implements ISchedulesRepository {
       },
     });
 
-    return this.httpClient.post<DaySchedule[]>(url, { date: props.date }, { params });
+    return this.httpClient.post<DaySchedule[]>(url, { date: props.date, day: props.day }, { params });
   }
 }
