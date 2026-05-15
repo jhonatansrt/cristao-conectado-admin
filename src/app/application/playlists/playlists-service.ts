@@ -37,6 +37,20 @@ export class PlaylistsService {
     );
   }
 
+  public createPlaylist(props: { name: string; order: number }): Observable<void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of(void 0);
+    }
+
+    return this.playlistsRepository.createPlaylist({
+      churchId,
+      name: props.name,
+      order: props.order,
+    }).pipe(map(() => void 0));
+  }
+
   private formatDate(date: string): string {
     return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
   }

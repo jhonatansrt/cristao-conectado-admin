@@ -27,7 +27,7 @@
 
   <footer class="flex justify-end">
     <app-button btnClass="btn-secondary" (click)="closeModal()">Cancelar</app-button>
-    <app-button btnClass="btn-primary" [disabled]="addPlaylistForm.invalid" (click)="onConfirm()">
+    <app-button btnClass="btn-primary" [disabled]="addPlaylistForm.invalid" [loading]="loading" (click)="onConfirm()">
       Confirmar
     </app-button>
   </footer>

@@ -20,4 +20,14 @@ export class PlaylistsRepository implements IPlaylistsRepository {
 
     return this.httpClient.get<Playlist[]>(url, { params });
   }
+
+  public createPlaylist(props: { churchId: string; name: string; order: number }): Observable<Playlist> {
+    const url = environment.apiBaseURL + '/videosFolder';
+
+    return this.httpClient.post<Playlist>(url, {
+      church_id: props.churchId,
+      name: props.name,
+      order: props.order,
+    });
+  }
 }
