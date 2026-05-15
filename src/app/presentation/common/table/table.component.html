@@ -52,7 +52,7 @@
                 @for (action of row.actions ?? []; track action.key) {
                   <button
                     type="button"
-                    (click)="handleActionClick(action, row)"
+                    (click)="action.onClick?.()"
                     [attr.aria-label]="action.label"
                   >
                     <mat-icon aria-hidden="true">{{ action.icon }}</mat-icon>

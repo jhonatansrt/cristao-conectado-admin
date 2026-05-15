@@ -11,4 +11,5 @@ type CreatePlaylistDTO = {
 export abstract class IPlaylistsRepository {
   abstract getPlaylists(props: GetPlaylistsDTO): Observable<Playlist[]>;
   abstract createPlaylist(props: CreatePlaylistDTO): Observable<Playlist>;
+  abstract deletePlaylist(props: { id: string }): Observable<void>;
 }

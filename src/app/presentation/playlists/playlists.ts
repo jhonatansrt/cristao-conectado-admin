@@ -6,6 +6,7 @@ import { finalize } from 'rxjs';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 import { HeaderStore } from '../../application/header/header-store';
 import { Container } from '../../util/container.service';
+import { AlertService } from '../common/alert/alert.service';
 import { AddPlaylistModal } from './add-playlist-modal/add-playlist-modal';
 
 @Component({
@@ -19,6 +20,7 @@ export class Playlists implements OnInit, OnDestroy {
   private playlistsService = inject(PlaylistsService);
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
+  private readonly alertService = inject(AlertService);
   protected isLoading = this.tableStore.isLoading();
   private maxOrder = 1;
 
@@ -32,6 +34,7 @@ export class Playlists implements OnInit, OnDestroy {
     ];
 
     this.tableStore.setTable(columns, []);
+
   }
 
   ngOnInit(): void {
@@ -63,9 +66,42 @@ export class Playlists implements OnInit, OnDestroy {
       .getPlaylists()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
       .subscribe((rows) => {
-        this.tableStore.setRows(rows);
+        this.tableStore.setRows(
+          rows.map((row) => ({
+            ...row,
+            actions: row.actions?.map((action) => {
+              if (action.key !== 'delete') {
+                return action;
+              }
+
+              return {
+                ...action,
+                onClick: () => this.handleDeletePlaylist(String(row.id)),
+              };
+            }),
+          })),
+        );
+
         this.maxOrder = rows.length + 1;
       });
+  }
+
+
+  private async handleDeletePlaylist(playlistId: string): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir a playlist?',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.tableStore.setLoading(true);
+
+    this.playlistsService
+      .deletePlaylist({ id: playlistId })
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe(() => this.getPlaylists());
   }
 
   protected hasPlaylists(): boolean {
