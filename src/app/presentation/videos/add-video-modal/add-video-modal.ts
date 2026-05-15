@@ -28,6 +28,10 @@ export class AddVideoModal {
     this.modal?.closeModal();
   }
 
+  public onFeaturedChange(value: boolean): void {
+    this.addVideoForm.patchValue({ featured: value });
+  }
+
   public onConfirm(): void {
     if (this.addVideoForm.invalid) {
       this.addVideoForm.markAllAsTouched();
