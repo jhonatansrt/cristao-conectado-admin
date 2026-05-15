@@ -1,0 +1,34 @@
+<app-modal title="Nova playlist">
+  <section class="body-modal">
+    <form class="flex flex-column" [formGroup]="addPlaylistForm" (ngSubmit)="onConfirm()">
+      <app-input
+        label="Título"
+        placeholder="Ex: Pregações"
+        formControlName="title"
+        [errorMessage]="
+          addPlaylistForm.controls.title.touched && addPlaylistForm.controls.title.hasError('required')
+            ? 'Título é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Ordem de exibição"
+        type="number"
+        formControlName="order"
+        [errorMessage]="
+          addPlaylistForm.controls.order.touched && addPlaylistForm.controls.order.hasError('required')
+            ? 'Ordem de exibição é obrigatória'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="closeModal()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [disabled]="addPlaylistForm.invalid" (click)="onConfirm()">
+      Confirmar
+    </app-button>
+  </footer>
+</app-modal>
