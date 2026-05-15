@@ -1,6 +1,6 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
-    @for (event of events(); track $index) {
+    @for (event of events(); track event.id) {
       <app-card [title]="event.title" [description]="event.description" />
     }
   </section>
