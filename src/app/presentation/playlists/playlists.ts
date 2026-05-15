@@ -101,7 +101,9 @@ export class Playlists implements OnInit, OnDestroy {
     this.playlistsService
       .deletePlaylist({ id: playlistId })
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe(() => this.getPlaylists());
+      .subscribe({
+        complete: () => this.getPlaylists(),
+      });
   }
 
   protected hasPlaylists(): boolean {
