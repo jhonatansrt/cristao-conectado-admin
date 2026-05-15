@@ -31,7 +31,7 @@ export class VideosRepository implements IVideosRepository {
   }
 
   public deleteVideo(props: { id: string }): Observable<void> {
-    const url = environment.apiBaseURL + `/video/${props.id}`;
+    const url = environment.apiBaseURL + `/videos/${props.id}`;
 
     return this.httpClient.delete<void>(url);
   }
