@@ -1,12 +1,11 @@
 import { Component, ElementRef, Input, OnInit, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { DialogComponent } from '../../common/dialog/dialog.component';
 
 @Component({
   selector: 'app-play-video',
-  imports: [DialogComponent, MatIconModule],
+  imports: [DialogComponent],
   templateUrl: './play-video.html',
   styleUrl: './play-video.scss',
 })

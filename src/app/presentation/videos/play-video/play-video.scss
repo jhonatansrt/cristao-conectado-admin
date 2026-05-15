@@ -2,17 +2,6 @@
   display: block;
 }
 
-.dialog-header {
-  width: 100%;
-}
-
-button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--color-text-primary);
-}
-
 iframe {
   width: min(900px, 80vw);
   height: min(500px, 60vh);

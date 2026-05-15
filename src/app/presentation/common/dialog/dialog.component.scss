@@ -12,5 +12,20 @@
     background: var(--color-surface);
     padding: 32px;
     gap: 32px;
+
+    header {
+      width: 100%;
+
+      h2 {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-20);
+        font-weight: var(--font-weight-bold);
+      }
+
+      mat-icon {
+        color: var(--color-text-primary);
+        cursor: pointer;
+      }
+    }
   }
 }
