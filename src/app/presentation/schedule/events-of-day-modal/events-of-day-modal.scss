@@ -1,0 +1,10 @@
+app-modal .body-modal {
+  gap: 12px;
+  background-color: var(--color-background);
+}
+
+.date-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+}

@@ -3,6 +3,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { finalize } from 'rxjs';
 import { SchedulesService } from '../../../application/schedules/schedules-service';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
+import { Container } from '../../../util/container.service';
+import { DayEventItem, EventsOfDayModal } from '../events-of-day-modal/events-of-day-modal';
 
 type CalendarCell = {
   weekDay: string;
@@ -19,6 +21,7 @@ type CalendarCell = {
 })
 export class NativeCalendar implements OnInit {
   private schedulesService = inject(SchedulesService);
+  private readonly container = inject(Container);
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   private monthSchedulesByDate = new Map<string, number>();
@@ -85,6 +88,38 @@ export class NativeCalendar implements OnInit {
     return cells;
   }
 
+
+  protected openDayEvents(cell: CalendarCell): void {
+    if (!cell.isCurrentMonth || !cell.count) {
+      return;
+    }
+
+    const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
+
+    if (!eventModal) {
+      return;
+    }
+
+    eventModal.setInput('dateLabel', this.getDateLabel(cell.dayNumber));
+    eventModal.setInput('events', this.buildDayEvents(cell.count));
+  }
+
+  private buildDayEvents(eventCount: number): DayEventItem[] {
+    return Array.from({ length: eventCount }, (_, index) => ({
+      title: `Igreja Batista Transcoqueiro ${index + 1}`,
+      description: 'Av. XYZ, 123 - Belém/PA',
+    }));
+  }
+
+  private getDateLabel(dayNumber: number): string {
+    const date = this.visibleMonthDate;
+
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(date.getFullYear(), date.getMonth(), dayNumber));
+  }
   protected goToPreviousMonth(): void {
     if (!this.canGoPreviousMonth) {
       return;

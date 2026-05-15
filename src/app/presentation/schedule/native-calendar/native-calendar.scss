@@ -61,6 +61,15 @@ section {
         border-bottom: none;
       }
 
+
+      &.clickable {
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--color-background);
+        }
+      }
+
       &[data-current-month='false'] {
         background-color: var(--color-background);
 
