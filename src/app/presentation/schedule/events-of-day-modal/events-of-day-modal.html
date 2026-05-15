@@ -1,9 +1,5 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
-    @if (dateLabel()) {
-      <p class="date-label">{{ dateLabel() }}</p>
-    }
-
     @for (event of events(); track $index) {
       <app-card [title]="event.title" [description]="event.description" />
     }

@@ -100,7 +100,6 @@ export class NativeCalendar implements OnInit {
       return;
     }
 
-    eventModal.setInput('dateLabel', this.getDateLabel(cell.dayNumber));
     eventModal.setInput('events', this.buildDayEvents(cell.count));
   }
 
@@ -111,15 +110,6 @@ export class NativeCalendar implements OnInit {
     }));
   }
 
-  private getDateLabel(dayNumber: number): string {
-    const date = this.visibleMonthDate;
-
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(date.getFullYear(), date.getMonth(), dayNumber));
-  }
   protected goToPreviousMonth(): void {
     if (!this.canGoPreviousMonth) {
       return;

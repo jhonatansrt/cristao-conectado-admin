@@ -15,6 +15,5 @@ export interface DayEventItem {
   styleUrl: './events-of-day-modal.scss',
 })
 export class EventsOfDayModal {
-  public readonly dateLabel = input<string>('');
   public readonly events = input<DayEventItem[]>([]);
 }
