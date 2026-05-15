@@ -70,7 +70,9 @@ export class Schedule implements OnInit, OnDestroy {
         daySchedules.map((schedule) => ({
           id: schedule.id,
           title: schedule.title,
-          description: schedule.schedule_date ?? `${schedule.hour_initial} - ${schedule.hour_final}`,
+          description: schedule.schedule_date ?? '',
+          hourInitial: schedule.hour_initial,
+          hourFinal: schedule.hour_final,
         })),
       );
     });

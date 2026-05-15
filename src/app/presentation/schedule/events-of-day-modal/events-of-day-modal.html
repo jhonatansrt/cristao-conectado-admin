@@ -1,7 +1,10 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
     @for (event of events(); track event.id) {
-      <app-card [title]="event.title" [description]="event.description" />
+      <app-card
+        [title]="event.title"
+        [description]="event.hourInitial !== undefined && event.hourFinal !== undefined ? (event.hourInitial | hourRange: event.hourFinal) : event.description"
+      />
     }
   </section>
 </app-modal>
