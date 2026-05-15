@@ -1,0 +1,20 @@
+<app-modal title="Novo vídeo">
+  <section class="body-modal">
+    <form class="flex flex-column" [formGroup]="addVideoForm" (ngSubmit)="onConfirm()">
+      <app-input label="Link do YouTube" placeholder="https://www.youtube.com/watch?v=WiykDM" formControlName="youtubeUrl" />
+
+      <app-input label="Título" formControlName="title" />
+
+      
+
+      <app-input label="Ordem de exibição" type="number" formControlName="order" />
+
+      <app-checkbox label="Vídeo de destaque" [isChecked]="!!addVideoForm.value.featured" />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="closeModal()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [disabled]="addVideoForm.invalid" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>
