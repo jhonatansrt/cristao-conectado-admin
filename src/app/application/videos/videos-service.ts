@@ -9,10 +9,9 @@ import { TableRow } from '../table/table-store';
 
 type VideoResponse = {
   id?: string;
-  title?: string;
-  video_id?: string;
-  videoId?: string;
-  featured?: boolean;
+  name?: string;
+  youtube_id?: string;
+  show_home?: boolean;
   order?: number;
 };
 
@@ -43,9 +42,9 @@ export class VideosService {
       map((videos) =>
         videos.map((video, index) => ({
           id: video.id ?? `${index + 1}`,
-          title: video.title ?? '-',
-          videoId: video.video_id ?? video.videoId ?? '-',
-          featured: video.featured ? 'Sim' : 'Não',
+          title: video.name ?? '-',
+          videoId: video.youtube_id ?? '-',
+          featured: video.show_home ? 'Sim' : 'Não',
           order: video.order ?? index + 1,
           actions: [
             { key: `edit-${index}`, icon: 'edit', label: 'Editar vídeo' },
