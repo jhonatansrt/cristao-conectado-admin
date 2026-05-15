@@ -75,4 +75,8 @@ export class VideosService {
       })
       .pipe(map(() => void 0));
   }
+
+  public deleteVideo(props: { id: string }): Observable<void> {
+    return this.videosRepository.deleteVideo({ id: props.id });
+  }
 }

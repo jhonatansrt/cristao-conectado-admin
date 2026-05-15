@@ -29,4 +29,10 @@ export class VideosRepository implements IVideosRepository {
       show_home: props.showHome,
     });
   }
+
+  public deleteVideo(props: { id: string }): Observable<void> {
+    const url = environment.apiBaseURL + `/video/${props.id}`;
+
+    return this.httpClient.delete<void>(url);
+  }
 }

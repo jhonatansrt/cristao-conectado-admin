@@ -11,4 +11,5 @@ type CreateVideoDTO = {
 
 export abstract class IVideosRepository {
   abstract createVideo(props: CreateVideoDTO): Observable<{ id?: string }>;
+  abstract deleteVideo(props: { id: string }): Observable<void>;
 }
