@@ -1,24 +1,46 @@
-@if (isLoading()) {
-  <section class="table-skeleton">
-    <app-skeleton width="100%" height="64px" borderRadius="0" />
-    @for (row of [1, 2, 3, 4, 5]; track row) {
-      <app-skeleton width="100%" height="68px" borderRadius="0" />
-    }
-  </section>
-} @else {
-  <section>
-    <table>
-      <thead>
-        <tr>
-          @for (column of columns(); track column.key) {
-            <th>{{ column.header }}</th>
+<section>
+  <table>
+    <thead>
+      <tr>
+        @for (column of columns(); track column.key) {
+          <th>
+            @if (isLoading()) {
+              <app-skeleton width="70%" height="16px" />
+            } @else {
+              {{ column.header }}
+            }
+          </th>
+        }
+
+        <th>
+          @if (isLoading()) {
+            <app-skeleton width="50%" height="16px" />
+          } @else {
+            Ações
           }
+        </th>
+      </tr>
+    </thead>
 
-          <th>Ações</th>
-        </tr>
-      </thead>
+    <tbody>
+      @if (isLoading()) {
+        @for (row of [1, 2, 3, 4, 5]; track row) {
+          <tr>
+            @for (column of columns(); track column.key) {
+              <td [attr.data-label]="column.header">
+                <app-skeleton width="85%" height="16px" />
+              </td>
+            }
 
-      <tbody>
+            <td data-label="Ações">
+              <div class="actions-skeleton">
+                <app-skeleton width="20px" height="20px" borderRadius="999px" />
+                <app-skeleton width="20px" height="20px" borderRadius="999px" />
+              </div>
+            </td>
+          </tr>
+        }
+      } @else {
         @for (row of rows(); track row.id) {
           <tr>
             @for (column of columns(); track column.key) {
@@ -40,7 +62,7 @@
             </td>
           </tr>
         }
-      </tbody>
-    </table>
-  </section>
-}
+      }
+    </tbody>
+  </table>
+</section>

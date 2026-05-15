@@ -64,10 +64,10 @@ section {
   }
 }
 
-.table-skeleton {
-  border-radius: 16px;
-  overflow: hidden;
-  background-color: var(--color-surface);
+.actions-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 @media (max-width: $breakpoint-mobile) {
