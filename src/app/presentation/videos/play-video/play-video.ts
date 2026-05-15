@@ -12,8 +12,6 @@ import { DialogComponent } from '../../common/dialog/dialog.component';
 })
 export class PlayVideo implements OnInit {
   @Input({ required: true }) public videoId = '';
-
-  public indexDialog = 1;
   public videoUrl: SafeResourceUrl = '';
 
   private readonly sanitizer = inject(DomSanitizer);
@@ -21,7 +19,6 @@ export class PlayVideo implements OnInit {
   constructor(private readonly el: ElementRef) {}
 
   ngOnInit(): void {
-    this.indexDialog = document.querySelectorAll('.background-dialog').length;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://www.youtube.com/embed/${this.videoId}?autoplay=1`,
     );
@@ -30,6 +27,8 @@ export class PlayVideo implements OnInit {
   public closeDialog(): void {
     const selector = this.el.nativeElement.parentElement.tagName.toLowerCase();
 
-    document.querySelector(selector + ':nth-last-of-type(1)')?.remove();
+    setTimeout(() => {
+      document.querySelector(selector + ':nth-last-of-type(1)')?.remove();
+    }, 0);
   }
 }
