@@ -7,6 +7,7 @@ import { Container } from '../../util/container.service';
 import { AddVideoModal } from './add-video-modal/add-video-modal';
 import { TableComponent } from '../common/table/table.component';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
+import { AlertService } from '../common/alert/alert.service';
 
 @Component({
   selector: 'app-videos',
@@ -19,6 +20,7 @@ export class Videos implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
   private readonly videosService = inject(VideosService);
   private readonly container = inject(Container);
+  private readonly alertService = inject(AlertService);
 
   protected readonly isLoading = this.tableStore.isLoading();
 
@@ -61,7 +63,40 @@ export class Videos implements OnInit, OnDestroy {
     this.videosService
       .getVideos()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe((rows) => this.tableStore.setRows(rows));
+      .subscribe((rows) => {
+        this.tableStore.setRows(
+          rows.map((row) => ({
+            ...row,
+            actions: row.actions?.map((action) => {
+              if (action.key.includes('delete')) {
+                return {
+                  ...action,
+                  onClick: () => this.handleDeleteVideo(String(row.id)),
+                };
+              }
+
+              return action;
+            }),
+          })),
+        );
+      });
+  }
+
+  private async handleDeleteVideo(videoId: string): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir o vídeo?',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.tableStore.setLoading(true);
+
+    this.videosService
+      .deleteVideo({ id: videoId })
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe(() => this.getVideos());
   }
 
   protected hasVideos(): boolean {
