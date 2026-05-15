@@ -9,6 +9,7 @@ import { filter, map, startWith } from 'rxjs';
 import { HeaderStore } from '../../../application/header/header-store';
 import { MenuStore } from '../../../application/menu/menu-store';
 import { namedRoutes } from '../../../named-routes';
+import { PlaylistSelectedStore } from '../../../application/playlists/playlist-selected-store';
 
 @Component({
   selector: 'app-header',
@@ -20,6 +21,7 @@ export class Header {
   private readonly menuStore = inject(MenuStore);
   private readonly headerStore = inject(HeaderStore);
   private readonly navController = inject(Router);
+  private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
 
   private readonly currentUrl = toSignal(
     this.navController.events.pipe(
@@ -44,6 +46,11 @@ export class Header {
 
   protected readonly title = computed(() => {
     const route = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
+
+    if (route === namedRoutes.videos) {
+      return this.playlistSelectedStore.getPlaylistSelected()()[0]?.name ?? 'Vídeos';
+    }
+
     return this.routeTitles[route] ?? 'Igreja';
   });
 

@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { PlaylistsService } from '../../application/playlists/playlists-service';
@@ -8,6 +9,9 @@ import { HeaderStore } from '../../application/header/header-store';
 import { Container } from '../../util/container.service';
 import { AlertService } from '../common/alert/alert.service';
 import { AddPlaylistModal } from './add-playlist-modal/add-playlist-modal';
+import { PlaylistSelectedStore } from '../../application/playlists/playlist-selected-store';
+import { namedRoutes } from '../../named-routes';
+import { Playlist } from '../../domain/playlists/entities/playlist.entity';
 
 @Component({
   selector: 'app-playlists',
@@ -21,6 +25,8 @@ export class Playlists implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
+  private readonly navController = inject(Router);
+  private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
   protected isLoading = this.tableStore.isLoading();
   private maxOrder = 1;
 
@@ -70,14 +76,29 @@ export class Playlists implements OnInit, OnDestroy {
           rows.map((row) => ({
             ...row,
             actions: row.actions?.map((action) => {
-              if (action.key !== 'delete') {
-                return action;
+              if (action.key === 'delete') {
+                return {
+                  ...action,
+                  onClick: () => this.handleDeletePlaylist(String(row.id)),
+                };
               }
 
-              return {
-                ...action,
-                onClick: () => this.handleDeletePlaylist(String(row.id)),
-              };
+              if (action.key === 'open') {
+                return {
+                  ...action,
+                  onClick: () => this.handleOpenPlaylist({
+                    id: String(row.id),
+                    church_id: '',
+                    order: Number(row['order'] ?? 0),
+                    name: String(row['title'] ?? ''),
+                    created_at: '',
+                    updated_at: '',
+                    videoCount: Number(String(row['videos'] ?? '0').split(' ')[0]) || 0,
+                  }),
+                };
+              }
+
+              return action;
             }),
           })),
         );
@@ -102,6 +123,11 @@ export class Playlists implements OnInit, OnDestroy {
       .deletePlaylist({ id: playlistId })
       .pipe(finalize(() => this.tableStore.setLoading(false)))
       .subscribe(() => this.getPlaylists());
+  }
+
+  private handleOpenPlaylist(playlist: Playlist): void {
+    this.playlistSelectedStore.setPlaylistSelected(playlist);
+    void this.navController.navigate([namedRoutes.videos]);
   }
 
   protected hasPlaylists(): boolean {

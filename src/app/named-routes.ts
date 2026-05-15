@@ -5,5 +5,6 @@ export const namedRoutes = {
   playlists: 'playlists',
   notices: 'notices',
   church: 'church',
+  videos: 'videos',
   login: 'login',
 } as const;
