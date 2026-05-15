@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
+import { IVideosRepository } from '../../domain/videos';
 import { environment } from '../../../environments/environment';
+import { AuthStore } from '../auth/auth-store';
 import { PlaylistSelectedStore } from '../playlists/playlist-selected-store';
 import { TableRow } from '../table/table-store';
 
@@ -19,7 +21,9 @@ type VideoResponse = {
 })
 export class VideosService {
   private readonly httpClient = inject(HttpClient);
+  private readonly authStore = inject(AuthStore);
   private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
+  private readonly videosRepository = inject(IVideosRepository);
 
   public getVideos(): Observable<TableRow[]> {
     const folderId = this.playlistSelectedStore.getPlaylistSelected()()[0]?.id;
@@ -51,5 +55,25 @@ export class VideosService {
         })),
       ),
     );
+  }
+
+  public createVideo(props: { youtubeId: string; name: string; order: number; showHome: boolean }): Observable<void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+    const folderId = this.playlistSelectedStore.getPlaylistSelected()()[0]?.id;
+
+    if (!churchId || !folderId) {
+      return of(void 0);
+    }
+
+    return this.videosRepository
+      .createVideo({
+        churchId,
+        folderId,
+        youtubeId: props.youtubeId,
+        order: props.order,
+        name: props.name,
+        showHome: props.showHome,
+      })
+      .pipe(map(() => void 0));
   }
 }

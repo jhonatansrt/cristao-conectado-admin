@@ -51,7 +51,8 @@ export class Videos implements OnInit, OnDestroy {
 
 
   private readonly handleAddVideo = (): void => {
-    this.container.vcr?.createComponent(AddVideoModal);
+    const componentRef = this.container.vcr?.createComponent(AddVideoModal);
+    componentRef?.instance.videoCreated.subscribe(() => this.getVideos());
   };
 
   private getVideos(): void {
