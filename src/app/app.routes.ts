@@ -9,6 +9,7 @@ import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
 import { Template } from './presentation/template/template';
+import { Videos } from './presentation/videos/videos';
 import { loginGuard, userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
@@ -45,6 +46,10 @@ export const routes: Routes = [
       {
         path: namedRoutes.church,
         component: Church,
+      },
+      {
+        path: namedRoutes.videos,
+        component: Videos,
       },
     ],
   },
