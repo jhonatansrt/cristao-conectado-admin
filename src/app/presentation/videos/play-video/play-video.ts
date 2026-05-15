@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { DialogComponent } from '../../common/dialog/dialog.component';
@@ -12,10 +12,9 @@ import { DialogComponent } from '../../common/dialog/dialog.component';
 export class PlayVideo implements OnInit {
   @Input({ required: true }) public videoId = '';
   public videoUrl: SafeResourceUrl = '';
+  @ViewChild(DialogComponent) private dialog?: DialogComponent;
 
   private readonly sanitizer = inject(DomSanitizer);
-
-  constructor(private readonly el: ElementRef) {}
 
   ngOnInit(): void {
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -24,10 +23,6 @@ export class PlayVideo implements OnInit {
   }
 
   public closeDialog(): void {
-    const selector = this.el.nativeElement.parentElement.tagName.toLowerCase();
-
-    setTimeout(() => {
-      document.querySelector(selector + ':nth-last-of-type(1)')?.remove();
-    }, 0);
+    this.dialog?.closeDialog();
   }
 }
