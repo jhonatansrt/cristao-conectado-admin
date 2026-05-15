@@ -59,10 +59,6 @@
   animation: fadeOutBackgroundModal 0.1s both linear;
 }
 
-/* ============================= */
-/* 🎞️ ANIMAÇÕES */
-/* ============================= */
-
 @keyframes fadeInBackgroundModal {
   from {
     background-color: transparent;
@@ -89,6 +85,7 @@
     transform: translateX(0);
   }
 }
+
 
 @keyframes fadeOutContentModal {
   from {
