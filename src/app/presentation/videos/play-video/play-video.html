@@ -1,0 +1,15 @@
+<app-dialog>
+  <header class="dialog-header flex justify-end">
+    <button type="button" aria-label="Fechar vídeo" (click)="closeDialog()">
+      <mat-icon aria-hidden="true">close</mat-icon>
+    </button>
+  </header>
+
+  <iframe
+    [src]="videoUrl"
+    title="Reprodução do vídeo"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+</app-dialog>
