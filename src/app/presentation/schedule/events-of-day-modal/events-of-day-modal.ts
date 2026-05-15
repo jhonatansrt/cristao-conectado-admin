@@ -3,6 +3,7 @@ import { ModalComponent } from '../../common/modal/modal.component';
 import { CardComponent } from '../../common/card/card.component';
 
 export interface DayEventItem {
+  id: string;
   title: string;
   description: string;
 }

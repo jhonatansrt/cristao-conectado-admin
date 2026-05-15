@@ -53,21 +53,25 @@ export class Schedule implements OnInit, OnDestroy {
       });
   }
 
-  protected handleDaySelected({ count }: CalendarDaySelect): void {
-    const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
+  protected handleDaySelected({ day, month, year }: CalendarDaySelect): void {
+    const selectedDate = new Date(Date.UTC(year, month - 1, day)).toISOString();
 
-    if (!eventModal) {
-      return;
-    }
+    this.schedulesService.getDaySchedules(selectedDate).subscribe((daySchedules) => {
+      const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
 
-    eventModal.setInput('events', this.buildDayEvents(count));
-  }
+      if (!eventModal) {
+        return;
+      }
 
-  private buildDayEvents(eventCount: number): DayEventItem[] {
-    return Array.from({ length: eventCount }, (_, index) => ({
-      title: `Igreja Batista Transcoqueiro ${index + 1}`,
-      description: 'Av. XYZ, 123 - Belém/PA',
-    }));
+      eventModal.setInput(
+        'events',
+        daySchedules.map((schedule) => ({
+          id: schedule.id,
+          title: schedule.title,
+          description: schedule.schedule_date ?? `${schedule.hour_initial} - ${schedule.hour_final}`,
+        })),
+      );
+    });
   }
 
   private parseEndpointDateToKey(date: string): string {
