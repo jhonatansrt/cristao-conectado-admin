@@ -3,6 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 
 import { AuthService } from '../application/auth/auth-service';
 import { AuthStore } from '../application/auth/auth-store';
+import { PlaylistSelectedStore } from '../application/playlists/playlist-selected-store';
 import { namedRoutes } from '../named-routes';
 
 export const userGuard: CanActivateFn = async () => {
@@ -28,6 +29,17 @@ export const loginGuard: CanActivateFn = async () => {
 
   if (authStore.getUserLogged()()) {
     return router.createUrlTree([`/${namedRoutes.home}`]);
+  }
+
+  return true;
+};
+
+export const playlistSelectedGuard: CanActivateFn = () => {
+  const playlistSelectedStore = inject(PlaylistSelectedStore);
+  const router = inject(Router);
+
+  if (!playlistSelectedStore.getPlaylistSelected()().length) {
+    return router.createUrlTree([`/${namedRoutes.playlists}`]);
   }
 
   return true;

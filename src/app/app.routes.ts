@@ -10,7 +10,7 @@ import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
-import { loginGuard, userGuard } from './guards/user.guard';
+import { loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
@@ -50,6 +50,7 @@ export const routes: Routes = [
       {
         path: namedRoutes.videos,
         component: Videos,
+        canActivate: [playlistSelectedGuard],
       },
     ],
   },
