@@ -10,6 +10,8 @@ import { IPlaylistsRepository } from '../../domain/playlists';
 import { PlaylistsRepository } from '../playlists/playlists-repository';
 import { IVideosRepository } from '../../domain/videos';
 import { VideosRepository } from '../videos/videos-repository';
+import { IGoogleMapsRepository } from '../../domain/google-maps';
+import { GoogleMapsRepository } from '../google-maps/google-maps-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -41,6 +43,19 @@ const videosProvider = {
   useClass: VideosRepository,
 };
 
-const commonProviders = [storageProvider, authProvider, noticesProvider, schedulesProvider, playlistsProvider, videosProvider];
+const googleMapsProvider = {
+  provide: IGoogleMapsRepository,
+  useClass: GoogleMapsRepository,
+};
+
+const commonProviders = [
+  storageProvider,
+  authProvider,
+  noticesProvider,
+  schedulesProvider,
+  playlistsProvider,
+  videosProvider,
+  googleMapsProvider,
+];
 
 export const providers = [...commonProviders];

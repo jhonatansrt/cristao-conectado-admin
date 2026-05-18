@@ -1,17 +1,29 @@
 <app-modal title="Endereço">
   <section class="body-modal flex flex-column">
-    <app-input label="Novo endereço" />
+    <app-input label="Novo endereço" (valueChange)="onSearchAddress($event)" />
 
-    <div class="flex flex-column">
-      <h3>Selecionar existente</h3>
+    @if (predictions.length) {
+      <div class="predictions-container flex flex-column">
+        <h3>Predições</h3>
 
-      @for (address of addresses; track $index) {
-        <app-card
-          [title]="address.title"
-          [description]="address.description"
-          [icons]="getCardActions(address)"
-        />
-      }
-    </div>
+        @for (prediction of predictions; track $index) {
+          <app-card [title]="prediction" [description]="prediction" />
+        }
+      </div>
+    }
+
+    @if (shouldShowRegisteredAddresses) {
+      <div class="flex flex-column">
+        <h3>Selecionar existente</h3>
+
+        @for (address of addresses; track $index) {
+          <app-card
+            [title]="address.title"
+            [description]="address.description"
+            [icons]="getCardActions(address)"
+          />
+        }
+      </div>
+    }
   </section>
 </app-modal>

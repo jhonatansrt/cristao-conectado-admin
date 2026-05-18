@@ -2,6 +2,10 @@ app-modal .body-modal {
   background-color: var(--color-background);
   gap: 24px;
 
+  .predictions-container {
+    gap: 8px;
+  }
+
   div {
     gap: 8px;
 
