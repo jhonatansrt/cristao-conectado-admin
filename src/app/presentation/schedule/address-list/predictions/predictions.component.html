@@ -1,9 +1,16 @@
 @if (predictions().length) {
-  <div class="predictions-container flex flex-column">
-    <h3>Predições</h3>
-
+  <ul>
     @for (prediction of predictions(); track $index) {
-      <app-card [title]="prediction" [description]="prediction" />
+      <li class="flex items-center">
+        <mat-icon>location_on</mat-icon>
+
+        <div class="flex flex-column">
+          <strong>{{ getPredictionTitle(prediction) }}</strong>
+          <small>{{ getPredictionSubtitle(prediction) }}</small>
+        </div>
+
+        <mat-icon>chevron_right</mat-icon>
+      </li>
     }
-  </div>
+  </ul>
 }

@@ -1,13 +1,22 @@
 import { Component, input } from '@angular/core';
-import { CardComponent } from '../../../common/card/card.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-predictions',
   standalone: true,
-  imports: [CardComponent],
+  imports: [MatIconModule],
   templateUrl: './predictions.component.html',
   styleUrl: './predictions.component.scss',
 })
 export class PredictionsComponent {
   public readonly predictions = input.required<string[]>();
+
+  public getPredictionTitle(prediction: string): string {
+    return prediction.split(',')[0]?.trim() ?? prediction;
+  }
+
+  public getPredictionSubtitle(prediction: string): string {
+    const parts = prediction.split(',');
+    return parts.slice(1).join(',').trim();
+  }
 }

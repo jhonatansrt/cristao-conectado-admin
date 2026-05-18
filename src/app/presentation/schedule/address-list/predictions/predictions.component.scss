@@ -1,9 +1,38 @@
-.predictions-container {
-  gap: 8px;
+ul {
+  list-style: none;
 
-  h3 {
-    color: var(--color-text-primary);
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semibold);
+  li {
+    gap: 12px;
+    padding: 16px 0;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    div {
+      flex: 1;
+
+      strong {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-secondary);
+      }
+
+      small {
+        font-size: var(--font-size-12);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-text-muted);
+      }
+    }
+
+    mat-icon:first-child {
+      color: var(--color-primary);
+    }
+
+    mat-icon:last-child {
+      color: var(--color-text-muted);
+    }
   }
 }
