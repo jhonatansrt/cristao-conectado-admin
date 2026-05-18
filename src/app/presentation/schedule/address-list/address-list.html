@@ -2,15 +2,7 @@
   <section class="body-modal flex flex-column">
     <app-input label="Novo endereço" (valueChange)="onSearchAddress($event)" />
 
-    @if (predictions.length) {
-      <div class="predictions-container flex flex-column">
-        <h3>Predições</h3>
-
-        @for (prediction of predictions; track $index) {
-          <app-card [title]="prediction" [description]="prediction" />
-        }
-      </div>
-    }
+    <app-address-predictions [predictions]="predictions" />
 
     @if (shouldShowRegisteredAddresses) {
       <div class="flex flex-column">

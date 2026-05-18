@@ -1,0 +1,9 @@
+@if (predictions().length) {
+  <div class="predictions-container flex flex-column">
+    <h3>Predições</h3>
+
+    @for (prediction of predictions(); track $index) {
+      <app-card [title]="prediction" [description]="prediction" />
+    }
+  </div>
+}
