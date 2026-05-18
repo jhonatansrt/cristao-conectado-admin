@@ -2,7 +2,7 @@
   <section class="body-modal flex flex-column">
     <app-input label="Novo endereço" (valueChange)="onSearchAddress($event)" />
 
-    <app-address-predictions [predictions]="predictions" />
+    <app-predictions [predictions]="predictions" />
 
     @if (shouldShowRegisteredAddresses) {
       <div class="flex flex-column">
