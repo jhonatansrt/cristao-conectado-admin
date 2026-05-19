@@ -25,13 +25,11 @@
               : ''
           "
         />
-        <fieldset class="flex flex-column">
-          <label>Evento fixo</label>
-          <select formControlName="isFixed">
-            <option value="false">Não</option>
-            <option value="true">Sim</option>
-          </select>
-        </fieldset>
+        <app-select
+          label="Evento fixo"
+          formControlName="isFixed"
+          [options]="[{ label: 'Não', value: 'false' }, { label: 'Sim', value: 'true' }]"
+        />
       </div>
 
       <div class="flex">
