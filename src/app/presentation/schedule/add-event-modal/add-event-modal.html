@@ -2,15 +2,11 @@
   <section class="body-modal flex flex-column">
     <fieldset class="flex flex-column">
       <label>Endereço</label>
-      <div class="flex items-center justify-between">
-        <div class="flex flex-column">
-          <strong>{{ currentAddress()?.place }}</strong>
-          <small>{{ addressDescription() }}</small>
-        </div>
-        <button type="button" (click)="onChangeAddress()">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
+      <app-card
+        [title]="currentAddress()?.place ?? ''"
+        [description]="addressDescription()"
+        [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
+      />
     </fieldset>
 
     <form class="flex flex-column" [formGroup]="form">
