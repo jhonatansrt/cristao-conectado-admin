@@ -50,16 +50,15 @@ section {
 
   app-accordion footer {
     border-top: 1px solid var(--color-border);
-    padding-top: 12px;
+    padding-top: 16px;
 
     button {
       gap: 4px;
       background: none;
       border: none;
       cursor: pointer;
-      padding: 8px 16px;
-      border-radius: 8px;
-      color: var(--color-text-secondary);
+      color: var(--color-text-muted);
+      flex-grow: 1;
 
       mat-icon {
         font-size: 20px;
