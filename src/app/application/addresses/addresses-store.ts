@@ -34,4 +34,12 @@ export class AddressesStore {
       }),
     );
   }
+
+  public deleteAddress(id: string): Observable<void> {
+    return this.addressesService.deleteAddress(id).pipe(
+      tap(() => {
+        this.loadAddresses();
+      }),
+    );
+  }
 }
