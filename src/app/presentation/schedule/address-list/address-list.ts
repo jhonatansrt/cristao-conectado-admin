@@ -21,14 +21,22 @@ export class AddressList implements OnInit {
   public addresses: Address[] = [];
   public searchAddress = '';
   public predictions: string[] = [];
+  public isLoading = false;
 
   ngOnInit() {
     this.getAddresses();
   }
 
   private getAddresses() {
-    this.addressesService.getAddresses().subscribe((addresses) => {
-      this.addresses = addresses;
+    this.isLoading = true;
+    this.addressesService.getAddresses().subscribe({
+      next: (addresses) => {
+        this.addresses = addresses;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
     });
   }
 

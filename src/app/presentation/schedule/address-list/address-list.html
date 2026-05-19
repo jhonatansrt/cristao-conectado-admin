@@ -8,12 +8,27 @@
       <div class="flex flex-column">
         <h3>Selecionar existente</h3>
 
-        @for (address of addresses; track address.id) {
-          <app-card
-            [title]="address.place"
-            [description]="getAddressDescription(address)"
-            [icons]="getCardActions(address)"
-          />
+        @if (isLoading) {
+          @for (skeleton of [1, 2, 3]; track skeleton) {
+            <div class="card-skeleton">
+              <div class="skeleton-content">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-description"></div>
+              </div>
+              <div class="skeleton-actions">
+                <div class="skeleton-icon"></div>
+                <div class="skeleton-icon"></div>
+              </div>
+            </div>
+          }
+        } @else {
+          @for (address of addresses; track address.id) {
+            <app-card
+              [title]="address.place"
+              [description]="getAddressDescription(address)"
+              [icons]="getCardActions(address)"
+            />
+          }
         }
       </div>
     }
