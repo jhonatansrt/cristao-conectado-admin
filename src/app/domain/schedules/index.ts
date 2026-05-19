@@ -1,3 +1,4 @@
+export * from './dto/create-schedule.dto';
 export * from './dto/get-day-schedules.dto';
 export * from './schedules.repository';
 export * from './dto/get-month-schedules.dto';
