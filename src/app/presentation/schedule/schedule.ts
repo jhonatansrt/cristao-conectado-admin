@@ -22,8 +22,14 @@ export class Schedule implements OnInit, OnDestroy {
   protected isLoading = true;
   protected monthSchedulesByDate = new Map<string, number>();
 
+  private currentMonth = new Date().getMonth() + 1;
+  private currentYear = new Date().getFullYear();
+
   private readonly handleAddEvent = (): void => {
-    this.container.vcr?.createComponent(AddressList);
+    const addressList = this.container.vcr?.createComponent(AddressList);
+    addressList?.instance.eventCreated.subscribe(() => {
+      this.handleMonthChanged({ month: this.currentMonth, year: this.currentYear });
+    });
   };
 
   public ngOnInit(): void {
@@ -41,6 +47,8 @@ export class Schedule implements OnInit, OnDestroy {
   }
 
   protected handleMonthChanged({ month, year }: CalendarMonthChange): void {
+    this.currentMonth = month;
+    this.currentYear = year;
     this.isLoading = true;
 
     this.schedulesService

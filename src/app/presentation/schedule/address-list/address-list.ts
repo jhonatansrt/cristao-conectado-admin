@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, NgZone, OnInit, output, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
@@ -29,6 +29,8 @@ export class AddressList implements OnInit {
   private readonly container = inject(Container);
   private readonly ngZone = inject(NgZone);
   public readonly addressesStore = inject(AddressesStore);
+
+  public readonly eventCreated = output<void>();
 
   public searchAddress = '';
   public predictions: string[] = [];
@@ -77,6 +79,7 @@ export class AddressList implements OnInit {
     this.modal.closeModal();
     const eventModal = this.container.vcr?.createComponent(AddEventModal);
     eventModal?.setInput('address', address);
+    eventModal?.instance.eventCreated.subscribe(() => this.eventCreated.emit());
   }
 
   public onAddressCreated(): void {
