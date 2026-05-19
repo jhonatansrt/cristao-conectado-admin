@@ -3,7 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../../application/google-maps/google-maps-service';
 import { Container } from '../../../../util/container.service';
 import { MapComponent } from '../../../common/map/map.component';
-import { AddPlaceDialog } from '../add-place-dialog/add-place-dialog';
 
 @Component({
   selector: 'app-predictions',
@@ -37,20 +36,8 @@ export class PredictionsComponent {
 
       mapRef.setInput('coordinates', coords);
 
-      mapRef.instance.confirm.subscribe((confirmedCoords) => {
-        const dialogRef = this.container.vcr?.createComponent(AddPlaceDialog);
-        if (!dialogRef) return;
-
-        dialogRef.setInput('coordinates', confirmedCoords);
-
-        dialogRef.instance.confirm.subscribe((result) => {
-          mapRef.location.nativeElement.remove();
-          console.log('Lugar confirmado:', result);
-        });
-
-        dialogRef.instance.close.subscribe(() => {
-          mapRef.location.nativeElement.remove();
-        });
+      mapRef.instance.confirm.subscribe((result) => {
+        console.log('Lugar confirmado:', result);
       });
     });
   }
