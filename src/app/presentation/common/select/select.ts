@@ -1,5 +1,6 @@
 import { Component, forwardRef, input, output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface SelectOption {
   label: string;
@@ -8,6 +9,7 @@ export interface SelectOption {
 
 @Component({
   selector: 'app-select',
+  imports: [MatIconModule],
   templateUrl: './select.html',
   styleUrl: './select.scss',
   providers: [
