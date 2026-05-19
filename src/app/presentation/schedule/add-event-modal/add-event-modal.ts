@@ -1,7 +1,9 @@
-import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { finalize } from 'rxjs';
 
+import { SchedulesService } from '../../../application/schedules/schedules-service';
 import { Address } from '../../../domain/addresses';
 import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
@@ -31,8 +33,10 @@ export class AddEventModal implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
+  private readonly schedulesService = inject(SchedulesService);
 
   public readonly address = input<Address | null>(null);
+  public readonly eventCreated = output<void>();
   protected readonly currentAddress = signal<Address | null>(null);
 
   public loading = false;
@@ -83,14 +87,45 @@ export class AddEventModal implements OnInit {
   }
 
   protected onConfirm(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
       return;
     }
-    this.modal.closeModal();
+
+    const addr = this.currentAddress();
+    if (!addr) return;
+
+    const { title, description, startTime, endTime, dayOfWeek, date } = this.form.getRawValue();
+
+    this.loading = true;
+    this.schedulesService
+      .createSchedule({
+        addressId: addr.id,
+        title: title ?? '',
+        description: description ?? '',
+        hourInitial: this.parseTime(startTime ?? ''),
+        hourFinal: this.parseTime(endTime ?? ''),
+        ...(this.isFixed
+          ? { day: Number(dayOfWeek) }
+          : { scheduleDate: this.parseDate(date ?? '') }),
+      })
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(() => {
+        this.eventCreated.emit();
+        this.modal.closeModal();
+      });
   }
 
   protected onCancel(): void {
     this.modal.closeModal();
+  }
+
+  private parseTime(value: string): number {
+    return parseInt(value.replace(':', ''), 10) || 0;
+  }
+
+  private parseDate(value: string): string {
+    const [day, month, year] = value.split('/');
+    return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
   }
 }
