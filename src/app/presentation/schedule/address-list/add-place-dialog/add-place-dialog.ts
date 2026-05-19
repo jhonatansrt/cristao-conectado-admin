@@ -1,7 +1,9 @@
 import { Component, ElementRef, inject, input, output } from '@angular/core';
+import { AddressesStore } from '../../../../application/addresses/addresses-store';
+import { GeocodedAddress } from '../../../../domain/google-maps';
+import { ButtonComponent } from '../../../common/button/button.component';
 import { DialogComponent } from '../../../common/dialog/dialog.component';
 import { InputComponent } from '../../../common/input/input';
-import { ButtonComponent } from '../../../common/button/button.component';
 
 @Component({
   selector: 'app-add-place-dialog',
@@ -11,11 +13,11 @@ import { ButtonComponent } from '../../../common/button/button.component';
   styleUrl: './add-place-dialog.scss',
 })
 export class AddPlaceDialog {
-  public readonly coordinates = input.required<{ lat: number; lng: number }>();
-  public readonly confirm = output<{ place: string; coordinates: { lat: number; lng: number } }>();
+  public readonly geocodedAddress = input.required<GeocodedAddress>();
   public readonly close = output<void>();
 
   private readonly el = inject(ElementRef);
+  private readonly addressesStore = inject(AddressesStore);
 
   public place = '';
 
@@ -25,7 +27,7 @@ export class AddPlaceDialog {
 
   public onConfirm(): void {
     if (!this.place.trim()) return;
-    this.confirm.emit({ place: this.place.trim(), coordinates: this.coordinates() });
+    this.addressesStore.createAddress(this.geocodedAddress(), this.place.trim());
     this.el.nativeElement.remove();
   }
 

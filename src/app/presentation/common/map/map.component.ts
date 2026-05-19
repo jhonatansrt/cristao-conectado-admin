@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
-import { GoogleMapRef } from '../../../domain/google-maps';
+import { GeocodedAddress, GoogleMapRef } from '../../../domain/google-maps';
 import { Container } from '../../../util/container.service';
 import { AddPlaceDialog } from '../../schedule/address-list/add-place-dialog/add-place-dialog';
 import { ButtonComponent } from '../button/button.component';
@@ -15,9 +15,8 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrl: './map.component.scss',
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  public readonly coordinates = input.required<{ lat: number; lng: number }>();
+  public readonly geocodedAddress = input.required<GeocodedAddress>();
   public readonly close = output<void>();
-  public readonly confirm = output<{ place: string; coordinates: { lat: number; lng: number } }>();
 
   @ViewChild('mapContainer') private readonly mapContainer!: ElementRef<HTMLDivElement>;
 
@@ -28,7 +27,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private readonly el = inject(ElementRef);
 
   ngAfterViewInit(): void {
-    this.mapRef = this.googleMapsService.initMap(this.mapContainer.nativeElement, this.coordinates());
+    const { lat, lng } = this.geocodedAddress();
+    this.mapRef = this.googleMapsService.initMap(this.mapContainer.nativeElement, { lat, lng });
   }
 
   ngOnDestroy(): void {
@@ -43,16 +43,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public onConfirm(): void {
     if (!this.mapRef) return;
 
-    const confirmedCoords = this.mapRef.getCenter();
+    const center = this.mapRef.getCenter();
+    const geocodedWithCenter: GeocodedAddress = { ...this.geocodedAddress(), ...center };
+
     const dialogRef = this.container.vcr?.createComponent(AddPlaceDialog);
     if (!dialogRef) return;
 
-    dialogRef.setInput('coordinates', confirmedCoords);
-
-    dialogRef.instance.confirm.subscribe((result) => {
-      this.confirm.emit(result);
-      this.el.nativeElement.remove();
-    });
+    dialogRef.setInput('geocodedAddress', geocodedWithCenter);
 
     dialogRef.instance.close.subscribe(() => {
       this.el.nativeElement.remove();
