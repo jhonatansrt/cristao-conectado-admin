@@ -29,8 +29,8 @@ export class AddressesStore {
 
   public createAddress(geocoded: GeocodedAddress, place: string): Observable<Address> {
     return this.addressesService.createAddress(geocoded, place).pipe(
-      tap((address) => {
-        this.addresses.update((list) => [...list, address]);
+      tap(() => {
+        this.loadAddresses();
       }),
     );
   }
