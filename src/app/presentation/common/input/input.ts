@@ -2,10 +2,11 @@ import { Component, forwardRef, input, output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { DateOfBirthMaskDirective } from '../../../masks/date-of-birth-mask.directive';
+import { TimeMaskDirective } from '../../../masks/time-mask.directive';
 
 @Component({
   selector: 'app-input',
-  imports: [DateOfBirthMaskDirective],
+  imports: [DateOfBirthMaskDirective, TimeMaskDirective],
   templateUrl: './input.html',
   styleUrl: './input.scss',
   providers: [
@@ -23,6 +24,7 @@ export class InputComponent implements ControlValueAccessor {
   public readonly placeholder = input<string>('');
   public readonly errorMessage = input<string>('');
   public readonly dateOfBirth = input<boolean>(false);
+  public readonly timeMask = input<boolean>(false);
 
   public readonly valueChange = output<string>();
 
