@@ -14,6 +14,7 @@ section {
   overflow: hidden;
   width: 400px;
   max-width: calc(100% - 32px);
+  z-index: 99;
 
   mat-icon {
     font-size: 25px;
