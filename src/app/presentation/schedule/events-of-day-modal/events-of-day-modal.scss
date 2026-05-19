@@ -1,13 +1,15 @@
-app-modal .body-modal {
+section {
   gap: 12px;
   background-color: var(--color-background);
 }
 
-.event-details {
+ul {
   gap: 16px;
   padding: 4px 0 8px;
+  list-style: none;
+  margin: 0;
 
-  .detail-row {
+  li {
     gap: 12px;
 
     mat-icon {
@@ -15,17 +17,20 @@ app-modal .body-modal {
       flex-shrink: 0;
     }
 
-    div {
+    div,
+    address {
       gap: 2px;
     }
 
-    .detail-label {
+    strong {
       font-weight: 600;
       font-size: 0.85rem;
       color: var(--color-text-primary, #333);
     }
 
-    span:not(.detail-label) {
+    span,
+    small,
+    time {
       font-size: 0.8rem;
       color: var(--color-text-secondary, #666);
     }
