@@ -1,4 +1,9 @@
 section {
   width: 320px;
+  max-width: 100%;
   gap: 32px;
+
+  form {
+    gap: 24px;
+  }
 }

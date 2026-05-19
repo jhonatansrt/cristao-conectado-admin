@@ -1,6 +1,6 @@
 <app-dialog [title]="isEditMode ? 'Editar endereço' : 'Complete o endereço'" (close)="onClose()">
   <section class="flex flex-column">
-    <form [formGroup]="form" (ngSubmit)="onConfirm()">
+    <form class="flex flex-column" [formGroup]="form" (ngSubmit)="onConfirm()">
       <app-input
         label="Lugar"
         placeholder="Ex: Igreja"
@@ -21,7 +21,12 @@
             : ''
         "
       />
-      <app-button btnClass="btn-primary" [disabled]="form.invalid" [loading]="loading" (click)="onConfirm()">
+      <app-button
+        btnClass="btn-primary"
+        [disabled]="form.invalid"
+        [loading]="loading"
+        (click)="onConfirm()"
+      >
         {{ isEditMode ? 'Salvar' : 'Adicionar' }}
       </app-button>
     </form>
