@@ -48,6 +48,11 @@ export class AddressList implements OnInit {
   public onSearchAddress(value: string): void {
     this.searchAddress = value;
 
+    if (!this.searchAddress.length) {
+      this.predictions = [];
+      return;
+    }
+
     this.googleMapsService.getPlacePredictions(this.searchAddress).subscribe((predictions) => {
       this.predictions = predictions;
     });

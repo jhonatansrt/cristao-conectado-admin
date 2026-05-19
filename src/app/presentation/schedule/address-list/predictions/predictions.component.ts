@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule],
   templateUrl: './predictions.component.html',
   styleUrl: './predictions.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class PredictionsComponent {
   public readonly predictions = input.required<string[]>();
