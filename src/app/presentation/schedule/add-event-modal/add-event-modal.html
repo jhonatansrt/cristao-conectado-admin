@@ -1,0 +1,53 @@
+<app-modal title="Novo evento">
+  <section class="body-modal flex flex-column">
+    <fieldset class="flex flex-column">
+      <label>Endereço</label>
+      <div class="flex items-center justify-between">
+        <div class="flex flex-column">
+          <strong>{{ currentAddress()?.place }}</strong>
+          <small>{{ addressDescription() }}</small>
+        </div>
+        <button type="button" (click)="onChangeAddress()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </fieldset>
+
+    <form class="flex flex-column" [formGroup]="form">
+      <div class="flex">
+        <app-input
+          label="Título"
+          placeholder="Ex: Culto"
+          formControlName="title"
+          [errorMessage]="
+            form.controls.title.touched && form.controls.title.hasError('required')
+              ? 'Título é obrigatório'
+              : ''
+          "
+        />
+        <fieldset class="flex flex-column">
+          <label>Evento fixo</label>
+          <select formControlName="isFixed">
+            <option value="false">Não</option>
+            <option value="true">Sim</option>
+          </select>
+        </fieldset>
+      </div>
+
+      <div class="flex">
+        <app-input label="Data" type="date" formControlName="date" />
+        <app-input label="Hora" type="time" formControlName="time" />
+      </div>
+
+      <fieldset class="flex flex-column">
+        <label>Descrição</label>
+        <textarea formControlName="description" placeholder="Descreva o evento..."></textarea>
+      </fieldset>
+    </form>
+  </section>
+
+  <footer class="flex">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>

@@ -27,6 +27,7 @@
               [title]="address.place"
               [description]="getAddressDescription(address)"
               [icons]="getCardActions(address)"
+              (click)="onSelectAddress(address)"
             />
           }
         }

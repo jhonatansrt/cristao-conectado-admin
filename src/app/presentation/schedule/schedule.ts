@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { HeaderStore } from '../../application/header/header-store';
+import { Address } from '../../domain/addresses';
 import { Container } from '../../util/container.service';
+import { AddEventModal } from './add-event-modal/add-event-modal';
 import { AddressList } from './address-list/address-list';
 import { NativeCalendar, CalendarDaySelect, CalendarMonthChange } from './native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
@@ -23,7 +25,11 @@ export class Schedule implements OnInit, OnDestroy {
   protected monthSchedulesByDate = new Map<string, number>();
 
   private readonly handleAddEvent = (): void => {
-    this.container.vcr?.createComponent(AddressList);
+    const ref = this.container.vcr?.createComponent(AddressList);
+    ref?.instance.addressSelected.subscribe((address: Address) => {
+      const eventModal = this.container.vcr?.createComponent(AddEventModal);
+      eventModal?.setInput('address', address);
+    });
   };
 
   public ngOnInit(): void {

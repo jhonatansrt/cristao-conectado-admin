@@ -1,9 +1,10 @@
-import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, NgZone, OnInit, output, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
 import { Container } from '../../../util/container.service';
+import { Address } from '../../../domain/addresses';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -21,6 +22,9 @@ import { AlertService } from '../../common/alert/alert.service';
 })
 export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
+  @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
+
+  public readonly addressSelected = output<Address>();
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
@@ -69,6 +73,11 @@ export class AddressList implements OnInit {
         action: () => this.handleDeleteAddress(address),
       },
     ];
+  }
+
+  public onSelectAddress(address: Address): void {
+    this.addressSelected.emit(address);
+    this.modal.closeModal();
   }
 
   public onAddressCreated(): void {
