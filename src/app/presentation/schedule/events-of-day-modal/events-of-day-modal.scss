@@ -3,3 +3,32 @@ app-modal .body-modal {
   background-color: var(--color-background);
 }
 
+.event-details {
+  gap: 16px;
+  padding: 4px 0 8px;
+
+  .detail-row {
+    gap: 12px;
+
+    mat-icon {
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    div {
+      gap: 2px;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--color-text-primary, #333);
+    }
+
+    span:not(.detail-label) {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary, #666);
+    }
+  }
+}
+
