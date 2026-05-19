@@ -74,5 +74,4 @@ const MOCK_EVENTS: DayEventItem[] = [
 })
 export class EventsOfDayModal {
   public readonly events = input<DayEventItem[]>([]);
-  protected readonly displayEvents = computed<DayEventItem[]>(() => MOCK_EVENTS);
 }

@@ -1,6 +1,6 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
-    @for (event of displayEvents(); track event.id) {
+    @for (event of events(); track event.id) {
       <app-accordion [title]="event.title" [description]="event.subtitle">
         <article class="flex flex-column">
           <ul class="flex flex-column">
