@@ -23,12 +23,12 @@
                   <mat-icon>location_on</mat-icon>
                 </figure>
 
-                <address class="flex flex-column">
+                <div class="flex flex-column">
                   <strong>{{ event.location }}</strong>
                   @if (event.address) {
                     <small>{{ event.address }}</small>
                   }
-                </address>
+                </div>
               </li>
             }
 
