@@ -1,6 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
+import { SchedulesService } from '../../../application/schedules/schedules-service';
+import { ScheduleDetails } from '../../../domain/schedules';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -18,53 +20,6 @@ export interface DayEventItem {
   hourFinal?: number;
 }
 
-const MOCK_EVENTS: DayEventItem[] = [
-  {
-    id: 'mock-1',
-    title: 'EBD',
-    subtitle: 'IBT - Igreja Batista Transcoqueiro',
-    description: 'Estudo bíblico para todas as idades',
-    location: 'IBT',
-    address: 'Av. Independência, 200 - Coqueiro, Ananindeua - PA',
-    dayOfWeek: 'Domingo',
-    hourInitial: 900,
-    hourFinal: 1000,
-  },
-  {
-    id: 'mock-2',
-    title: 'Culto',
-    subtitle: 'PIB do Icuí',
-    description: 'Venha e traga a sua família',
-    location: 'PIB do Icuí',
-    address: 'R. Leonardo da Silva, 1111 - Icuí-Guajará, Ananindeua - PA',
-    dayOfWeek: 'Domingo',
-    hourInitial: 1900,
-    hourFinal: 2030,
-  },
-  {
-    id: 'mock-3',
-    title: 'Reunião de Oração',
-    subtitle: 'Igreja Sede',
-    description: 'Momento de intercessão e adoração coletiva',
-    location: 'Igreja Sede',
-    address: 'Av. Principal, 500 - Centro, Belém - PA',
-    dayOfWeek: 'Quarta-feira',
-    hourInitial: 1900,
-    hourFinal: 2000,
-  },
-  {
-    id: 'mock-4',
-    title: 'Célula de Jovens',
-    subtitle: 'Casa do líder',
-    description: 'Encontro semanal da célula de jovens',
-    location: 'Casa do Líder',
-    address: 'R. das Flores, 88 - Mangueirão, Belém - PA',
-    dayOfWeek: 'Sexta-feira',
-    hourInitial: 1930,
-    hourFinal: 2100,
-  },
-];
-
 @Component({
   selector: 'app-events-of-day-modal',
   standalone: true,
@@ -73,5 +28,33 @@ const MOCK_EVENTS: DayEventItem[] = [
   styleUrl: './events-of-day-modal.scss',
 })
 export class EventsOfDayModal {
+  private readonly schedulesService = inject(SchedulesService);
+
   public readonly events = input<DayEventItem[]>([]);
+
+  protected readonly detailsMap = signal<Map<string, ScheduleDetails | 'loading'>>(new Map());
+
+  protected onAccordionOpened(id: string): void {
+    if (this.detailsMap().has(id)) return;
+
+    const map = new Map(this.detailsMap());
+    map.set(id, 'loading');
+    this.detailsMap.set(map);
+
+    this.schedulesService.getScheduleDetails(id).subscribe({
+      next: (details) => {
+        const updated = new Map(this.detailsMap());
+        updated.set(id, details);
+        this.detailsMap.set(updated);
+      },
+    });
+  }
+
+  protected getDetails(id: string): ScheduleDetails | 'loading' | null {
+    return this.detailsMap().get(id) ?? null;
+  }
+
+  protected formatAddress(details: ScheduleDetails): string {
+    return `${details.street}, ${details.number} - ${details.district}, ${details.city} - ${details.state}`;
+  }
 }
