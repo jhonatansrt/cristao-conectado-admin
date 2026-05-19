@@ -1,4 +1,4 @@
-<article [style.borderRadius]="borderRadius()" class="flex items-center justify-between">
+<article [style.borderRadius]="borderRadius()" [style.cursor]="clickable() ? 'pointer' : null" class="flex items-center justify-between">
   <div class="flex flex-column">
     <h3>{{ title() }}</h3>
 
