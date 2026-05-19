@@ -1,0 +1,15 @@
+<app-dialog (close)="onClose()">
+  <section>
+    <div #mapContainer role="application" aria-label="Mapa para seleção de endereço"></div>
+
+    <figure aria-hidden="true">
+      <mat-icon>location_on</mat-icon>
+    </figure>
+
+    <footer class="flex justify-center">
+      <app-button btnClass="btn-primary" (click)="onConfirm()">
+        Confirmar endereço
+      </app-button>
+    </footer>
+  </section>
+</app-dialog>
