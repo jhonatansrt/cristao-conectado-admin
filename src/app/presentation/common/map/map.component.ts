@@ -1,16 +1,9 @@
-import { AfterViewInit, Component, ElementRef, input, OnDestroy, output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
+import { GoogleMapRef } from '../../../domain/google-maps';
 import { ButtonComponent } from '../button/button.component';
 import { DialogComponent } from '../dialog/dialog.component';
-
-type GoogleMapInstance = {
-  getCenter: () => { lat: () => number; lng: () => number };
-  setCenter: (location: unknown) => void;
-};
-
-type GoogleGeocodeResult = {
-  geometry: { location: unknown };
-};
 
 @Component({
   selector: 'app-map',
@@ -20,59 +13,33 @@ type GoogleGeocodeResult = {
   styleUrl: './map.component.scss',
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  public readonly prediction = input.required<string>();
+  public readonly coordinates = input.required<{ lat: number; lng: number }>();
   public readonly close = output<void>();
   public readonly confirm = output<{ lat: number; lng: number }>();
 
   @ViewChild('mapContainer') private readonly mapContainer!: ElementRef<HTMLDivElement>;
 
-  private map: GoogleMapInstance | null = null;
+  private mapRef: GoogleMapRef | null = null;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private readonly googleApi = (window as any).google;
+  private readonly googleMapsService = inject(GoogleMapsService);
+  private readonly el = inject(ElementRef);
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.mapRef = this.googleMapsService.initMap(this.mapContainer.nativeElement, this.coordinates());
   }
 
   ngOnDestroy(): void {
-    this.map = null;
-  }
-
-  private initMap(): void {
-    if (!this.googleApi?.maps) return;
-
-    this.map = new this.googleApi.maps.Map(this.mapContainer.nativeElement, {
-      center: { lat: -23.5505, lng: -46.6333 },
-      zoom: 15,
-      disableDefaultUI: true,
-      gestureHandling: 'greedy',
-    }) as GoogleMapInstance;
-
-    this.geocodePrediction();
-  }
-
-  private geocodePrediction(): void {
-    if (!this.googleApi?.maps?.Geocoder || !this.map) return;
-
-    const geocoder = new this.googleApi.maps.Geocoder();
-    geocoder.geocode(
-      { address: this.prediction() },
-      (results: GoogleGeocodeResult[], status: string) => {
-        if (status === 'OK' && results?.[0]?.geometry?.location) {
-          this.map?.setCenter(results[0].geometry.location);
-        }
-      },
-    );
+    this.mapRef = null;
   }
 
   public onClose(): void {
     this.close.emit();
+    this.el.nativeElement.remove();
   }
 
   public onConfirm(): void {
-    if (!this.map) return;
-    const center = this.map.getCenter();
-    this.confirm.emit({ lat: center.lat(), lng: center.lng() });
+    if (!this.mapRef) return;
+    this.confirm.emit(this.mapRef.getCenter());
+    this.el.nativeElement.remove();
   }
 }

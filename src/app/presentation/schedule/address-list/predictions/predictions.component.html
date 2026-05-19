@@ -1,7 +1,7 @@
 @if (predictions().length) {
   <ul>
     @for (prediction of predictions(); track $index) {
-      <li class="flex items-center">
+      <li class="flex items-center" (click)="onPredictionClick(prediction)">
         <mat-icon>location_on</mat-icon>
 
         <div class="flex flex-column">
