@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
+import { Address } from '../../../domain/addresses';
 import { GeocodedAddress, GoogleMapRef } from '../../../domain/google-maps';
 import { Container } from '../../../util/container.service';
 import { AddPlaceDialog } from '../../schedule/address-list/add-place-dialog/add-place-dialog';
@@ -16,6 +17,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   public readonly geocodedAddress = input.required<GeocodedAddress>();
+  public readonly existingAddress = input<Address | null>(null);
   public readonly close = output<void>();
   public readonly confirmed = output<void>();
 
@@ -51,6 +53,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     if (!dialogRef) return;
 
     dialogRef.setInput('geocodedAddress', geocodedWithCenter);
+
+    const existing = this.existingAddress();
+    if (existing) {
+      dialogRef.setInput('existingAddress', existing);
+    }
 
     dialogRef.instance.close.subscribe(() => {
       this.confirmed.emit();
