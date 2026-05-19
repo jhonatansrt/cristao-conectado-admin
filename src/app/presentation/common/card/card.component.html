@@ -8,7 +8,7 @@
   </div>
 
   @if (icons().length) {
-    <menu class="flex items-center">
+    <menu class="flex items-center" (click)="$event.stopPropagation()">
       @for (icon of icons(); track $index) {
         <li class="flex">
           <mat-icon (click)="icon.action()">{{ icon.name }}</mat-icon>

@@ -1,0 +1,91 @@
+fieldset {
+  border: 0;
+  min-width: 0;
+  gap: 8px;
+
+  label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  > div {
+    background-color: var(--color-input-background);
+    border: 1px solid var(--color-input-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+
+    > div {
+      gap: 2px;
+
+      strong {
+        font-size: var(--font-size-16);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      small {
+        font-size: var(--font-size-12);
+        color: var(--color-text-secondary);
+      }
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 4px;
+      border-radius: 4px;
+
+      mat-icon {
+        display: block;
+      }
+
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--color-input-border);
+    border-radius: 8px;
+    outline: none;
+    background-color: var(--color-input-background);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-16);
+    font-family: inherit;
+
+    &:focus {
+      border-color: var(--color-input-border-focus);
+    }
+  }
+
+  select {
+    appearance: auto;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+}
+
+form {
+  gap: 16px;
+
+  > div {
+    gap: 16px;
+    align-items: flex-start;
+
+    app-input,
+    fieldset {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
