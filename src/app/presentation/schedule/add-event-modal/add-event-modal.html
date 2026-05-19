@@ -36,13 +36,13 @@
             [options]="daysOfWeek"
           />
         } @else {
-          <app-input label="Data" type="date" formControlName="date" />
+          <app-input label="Data" type="tel" [dateOfBirth]="true" placeholder="dd/mm/aaaa" formControlName="date" />
         }
       </div>
 
       <div class="flex">
-        <app-input label="Início" type="time" formControlName="startTime" />
-        <app-input label="Fim" type="time" formControlName="endTime" />
+        <app-input label="Início" type="tel" [timeMask]="true" placeholder="HH:MM" formControlName="startTime" />
+        <app-input label="Fim" type="tel" [timeMask]="true" placeholder="HH:MM" formControlName="endTime" />
       </div>
 
       <fieldset class="flex flex-column">
