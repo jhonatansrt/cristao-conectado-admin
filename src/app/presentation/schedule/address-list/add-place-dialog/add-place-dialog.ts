@@ -53,8 +53,13 @@ export class AddPlaceDialog implements OnInit {
 
     const existing = this.existingAddress();
     if (existing) {
+      const geocoded = this.geocodedAddress();
+      const addressToUpdate = geocoded
+        ? { ...existing, latitude: String(geocoded.lat), longitude: String(geocoded.lng) }
+        : existing;
+
       this.addressesStore
-        .updateAddress(existing, place!.trim(), number!.trim())
+        .updateAddress(addressToUpdate, place!.trim(), number!.trim())
         .pipe(finalize(() => (this.loading = false)))
         .subscribe({
           next: () => {
