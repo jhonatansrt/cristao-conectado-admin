@@ -20,14 +20,21 @@ export class AddPlaceDialog {
   private readonly addressesStore = inject(AddressesStore);
 
   public place = '';
+  public number = '';
 
-  public onValueChange(value: string): void {
+  public onPlaceChange(value: string): void {
     this.place = value;
+  }
+
+  public onNumberChange(value: string): void {
+    this.number = value;
   }
 
   public onConfirm(): void {
     if (!this.place.trim()) return;
-    this.addressesStore.createAddress(this.geocodedAddress(), this.place.trim()).subscribe({
+    const geocoded = this.geocodedAddress();
+    const addressWithNumber = { ...geocoded, number: this.number.trim() || geocoded.number };
+    this.addressesStore.createAddress(addressWithNumber, this.place.trim()).subscribe({
       next: () => {
         this.close.emit();
         this.el.nativeElement.remove();
