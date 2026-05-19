@@ -14,7 +14,15 @@ import { AddressList } from '../address-list/address-list';
 @Component({
   selector: 'app-add-event-modal',
   standalone: true,
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, MatIconModule, SelectComponent, CardComponent],
+  imports: [
+    ModalComponent,
+    InputComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+    MatIconModule,
+    SelectComponent,
+    CardComponent,
+  ],
   templateUrl: './add-event-modal.html',
   styleUrl: './add-event-modal.scss',
 })
@@ -52,6 +60,7 @@ export class AddEventModal implements OnInit {
 
   protected onChangeAddress(): void {
     const ref = this.container.vcr?.createComponent(AddressList);
+    this.modal.closeModal();
     // ref?.instance.addressSelected.subscribe((address: Address) => {
     //   this.currentAddress.set(address);
     // });
