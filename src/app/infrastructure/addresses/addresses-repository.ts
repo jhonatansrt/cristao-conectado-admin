@@ -33,4 +33,9 @@ export class AddressesRepository implements IAddressesRepository {
     };
     return this.httpClient.post<Address>(url, body);
   }
+
+  public deleteAddress(id: string): Observable<void> {
+    const url = `${environment.apiBaseURL}/adresses/${id}/`;
+    return this.httpClient.delete<void>(url);
+  }
 }

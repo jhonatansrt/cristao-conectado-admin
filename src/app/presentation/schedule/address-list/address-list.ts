@@ -7,6 +7,7 @@ import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 import { PredictionsComponent } from './predictions/predictions.component';
+import { AlertService } from '../../common/alert/alert.service';
 
 @Component({
   selector: 'app-address-list',
@@ -19,6 +20,7 @@ export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
 
   private readonly googleMapsService = inject(GoogleMapsService);
+  private readonly alertService = inject(AlertService);
   public readonly addressesStore = inject(AddressesStore);
 
   public searchAddress = '';
@@ -74,7 +76,13 @@ export class AddressList implements OnInit {
     console.log('Editar endereço', address);
   }
 
-  private handleDeleteAddress(address: Address): void {
-    console.log('Excluir endereço', address);
+  private async handleDeleteAddress(address: Address): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir o endereço?',
+    });
+
+    if (!confirmed) return;
+
+    this.addressesStore.deleteAddress(address.id).subscribe();
   }
 }

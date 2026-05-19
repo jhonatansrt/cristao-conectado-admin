@@ -36,4 +36,8 @@ export class AddressesService {
       churchId,
     });
   }
+
+  public deleteAddress(id: string): Observable<void> {
+    return this.addressesRepository.deleteAddress(id);
+  }
 }
