@@ -54,9 +54,12 @@ export class AddPlaylistModal {
     this.playlistsService
       .createPlaylist({ name: title ?? '', order: Number(order) })
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => {
-        this.playlistCreated.emit();
-        this.closeModal();
+      .subscribe({
+        next: () => {
+          this.playlistCreated.emit();
+          this.closeModal();
+        },
+        error: () => {},
       });
   }
 }

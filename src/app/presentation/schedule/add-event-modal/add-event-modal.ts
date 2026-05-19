@@ -107,9 +107,12 @@ export class AddEventModal implements OnInit {
           : { scheduleDate: this.parseDate(date ?? '') }),
       })
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => {
-        this.eventCreated.emit();
-        this.modal.closeModal();
+      .subscribe({
+        next: () => {
+          this.eventCreated.emit();
+          this.modal.closeModal();
+        },
+        error: () => {},
       });
   }
 

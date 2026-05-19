@@ -71,39 +71,42 @@ export class Playlists implements OnInit, OnDestroy {
     this.playlistsService
       .getPlaylists()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe((rows) => {
-        this.tableStore.setRows(
-          rows.map((row) => ({
-            ...row,
-            actions: row.actions?.map((action) => {
-              if (action.key === 'delete') {
-                return {
-                  ...action,
-                  onClick: () => this.handleDeletePlaylist(String(row.id)),
-                };
-              }
+      .subscribe({
+        next: (rows) => {
+          this.tableStore.setRows(
+            rows.map((row) => ({
+              ...row,
+              actions: row.actions?.map((action) => {
+                if (action.key === 'delete') {
+                  return {
+                    ...action,
+                    onClick: () => this.handleDeletePlaylist(String(row.id)),
+                  };
+                }
 
-              if (action.key === 'open') {
-                return {
-                  ...action,
-                  onClick: () => this.handleOpenPlaylist({
-                    id: String(row.id),
-                    church_id: '',
-                    order: Number(row['order'] ?? 0),
-                    name: String(row['title'] ?? ''),
-                    created_at: '',
-                    updated_at: '',
-                    videoCount: Number(String(row['videos'] ?? '0').split(' ')[0]) || 0,
-                  }),
-                };
-              }
+                if (action.key === 'open') {
+                  return {
+                    ...action,
+                    onClick: () => this.handleOpenPlaylist({
+                      id: String(row.id),
+                      church_id: '',
+                      order: Number(row['order'] ?? 0),
+                      name: String(row['title'] ?? ''),
+                      created_at: '',
+                      updated_at: '',
+                      videoCount: Number(String(row['videos'] ?? '0').split(' ')[0]) || 0,
+                    }),
+                  };
+                }
 
-              return action;
-            }),
-          })),
-        );
+                return action;
+              }),
+            })),
+          );
 
-        this.maxOrder = rows.length + 1;
+          this.maxOrder = rows.length + 1;
+        },
+        error: () => {},
       });
   }
 
@@ -122,7 +125,10 @@ export class Playlists implements OnInit, OnDestroy {
     this.playlistsService
       .deletePlaylist({ id: playlistId })
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe(() => this.getPlaylists());
+      .subscribe({
+        next: () => this.getPlaylists(),
+        error: () => {},
+      });
   }
 
   private handleOpenPlaylist(playlist: Playlist): void {

@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { DaySchedule, ISchedulesRepository, MonthSchedule, ScheduleDetails } from '../../domain/schedules';
+import { ToastService } from '../../presentation/common/toast/toast.service';
 
 export type CreateScheduleParams = {
   addressId: string;
@@ -19,6 +20,7 @@ export type CreateScheduleParams = {
 export class SchedulesService {
   private schedulesRepository = inject(ISchedulesRepository);
   private authStore = inject(AuthStore);
+  private toastService = inject(ToastService);
 
   public createSchedule(params: CreateScheduleParams): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -27,7 +29,12 @@ export class SchedulesService {
       return of(void 0);
     }
 
-    return this.schedulesRepository.createSchedule({ ...params, churchId });
+    return this.schedulesRepository.createSchedule({ ...params, churchId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   public getMonthSchedules(month: number, year: number): Observable<MonthSchedule[]> {
@@ -37,7 +44,12 @@ export class SchedulesService {
       return of([]);
     }
 
-    return this.schedulesRepository.getMonthSchedules({ churchId, month, year });
+    return this.schedulesRepository.getMonthSchedules({ churchId, month, year }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   public getDaySchedules(date: string, day: 0 | 1 | 2 | 3 | 4 | 5 | 6): Observable<DaySchedule[]> {
@@ -47,10 +59,20 @@ export class SchedulesService {
       return of([]);
     }
 
-    return this.schedulesRepository.getDaySchedules({ churchId, date, day });
+    return this.schedulesRepository.getDaySchedules({ churchId, date, day }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   public getScheduleDetails(id: string): Observable<ScheduleDetails> {
-    return this.schedulesRepository.getScheduleDetails(id);
+    return this.schedulesRepository.getScheduleDetails(id).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 }

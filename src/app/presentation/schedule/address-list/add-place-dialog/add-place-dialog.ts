@@ -66,6 +66,7 @@ export class AddPlaceDialog implements OnInit {
             this.close.emit();
             this.el.nativeElement.remove();
           },
+          error: () => {},
         });
       return;
     }
@@ -82,6 +83,7 @@ export class AddPlaceDialog implements OnInit {
           this.close.emit();
           this.el.nativeElement.remove();
         },
+        error: () => {},
       });
   }
 

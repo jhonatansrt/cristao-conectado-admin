@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { TableRow } from '../table/table-store';
 import { AuthStore } from '../auth/auth-store';
 import { INoticesRepository } from '../../domain/notices';
+import { ToastService } from '../../presentation/common/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { INoticesRepository } from '../../domain/notices';
 export class NoticesService {
   private noticesRepository = inject(INoticesRepository);
   private authStore = inject(AuthStore);
+  private toastService = inject(ToastService);
 
   public getNotices(): Observable<TableRow[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -29,6 +31,10 @@ export class NoticesService {
             { key: 'delete', icon: 'delete', label: 'Excluir aviso' },
           ],
         }));
+      }),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
       }),
     );
   }

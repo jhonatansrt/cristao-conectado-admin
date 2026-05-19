@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { TableRow } from '../table/table-store';
 import { IPlaylistsRepository } from '../../domain/playlists';
+import { ToastService } from '../../presentation/common/toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { IPlaylistsRepository } from '../../domain/playlists';
 export class PlaylistsService {
   private playlistsRepository = inject(IPlaylistsRepository);
   private authStore = inject(AuthStore);
+  private toastService = inject(ToastService);
 
   public getPlaylists(): Observable<TableRow[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -34,6 +36,10 @@ export class PlaylistsService {
           ],
         })),
       ),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
     );
   }
 
@@ -48,12 +54,22 @@ export class PlaylistsService {
       churchId,
       name: props.name,
       order: props.order,
-    }).pipe(map(() => void 0));
+    }).pipe(
+      map(() => void 0),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
-
   public deletePlaylist(props: { id: string }): Observable<void> {
-    return this.playlistsRepository.deletePlaylist({ id: props.id });
+    return this.playlistsRepository.deletePlaylist({ id: props.id }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   private formatDate(date: string): string {

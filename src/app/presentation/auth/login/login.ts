@@ -55,6 +55,7 @@ export class Login {
         next: async () => {
           await this.router.navigate([namedRoutes.home]);
         },
+        error: () => {},
       });
   }
 }
