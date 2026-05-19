@@ -6,6 +6,7 @@ import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
 import { NativeCalendar, CalendarDaySelect, CalendarMonthChange } from './native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
+import { DaySchedule } from '../../domain/schedules';
 import { DayEventItem, EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
 
 @Component({
@@ -24,6 +25,7 @@ export class Schedule implements OnInit, OnDestroy {
 
   private currentMonth = new Date().getMonth() + 1;
   private currentYear = new Date().getFullYear();
+  private selectedDate: { iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null = null;
 
   private readonly handleAddEvent = (): void => {
     const addressList = this.container.vcr?.createComponent(AddressList);
@@ -69,6 +71,8 @@ export class Schedule implements OnInit, OnDestroy {
     const selectedDateISO = selectedDate.toISOString();
     const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+    this.selectedDate = { iso: selectedDateISO, weekDay: selectedWeekDay };
+
     this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe({
       next: (daySchedules) => {
         const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
@@ -77,21 +81,32 @@ export class Schedule implements OnInit, OnDestroy {
           return;
         }
 
-        eventModal.setInput(
-          'events',
-          daySchedules.map((schedule) => ({
-            id: schedule.id,
-            title: schedule.title,
-            description: schedule.schedule_date ?? '',
-            hourInitial: schedule.hour_initial,
-            hourFinal: schedule.hour_final,
-            day: schedule.day,
-            scheduleDate: schedule.schedule_date,
-          })),
-        );
+        eventModal.setInput('events', this.mapDaySchedules(daySchedules));
+
+        eventModal.instance.eventEdited.subscribe(() => {
+          this.handleMonthChanged({ month: this.currentMonth, year: this.currentYear });
+
+          if (!this.selectedDate) return;
+          this.schedulesService.getDaySchedules(this.selectedDate.iso, this.selectedDate.weekDay).subscribe({
+            next: (updated) => eventModal.setInput('events', this.mapDaySchedules(updated)),
+            error: () => {},
+          });
+        });
       },
       error: () => {},
     });
+  }
+
+  private mapDaySchedules(daySchedules: DaySchedule[]): DayEventItem[] {
+    return daySchedules.map((schedule) => ({
+      id: schedule.id,
+      title: schedule.title,
+      description: schedule.schedule_date ?? '',
+      hourInitial: schedule.hour_initial,
+      hourFinal: schedule.hour_final,
+      day: schedule.day,
+      scheduleDate: schedule.schedule_date,
+    }));
   }
 
   private parseEndpointDateToKey(date: string): string {

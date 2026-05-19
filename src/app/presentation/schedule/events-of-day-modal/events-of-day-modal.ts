@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { SchedulesService } from '../../../application/schedules/schedules-service';
@@ -36,6 +36,7 @@ export class EventsOfDayModal {
   private readonly container = inject(Container);
 
   public readonly events = input<DayEventItem[]>([]);
+  public readonly eventEdited = output<void>();
 
   protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
 
@@ -90,5 +91,14 @@ export class EventsOfDayModal {
     const modal = this.container.vcr?.createComponent(AddEventModal);
     modal?.setInput('address', address);
     modal?.setInput('editData', editData);
+
+    modal?.instance.eventCreated.subscribe(() => {
+      this.detailsMap.update((prev) => {
+        const updated = { ...prev };
+        delete updated[event.id];
+        return updated;
+      });
+      this.eventEdited.emit();
+    });
   }
 }
