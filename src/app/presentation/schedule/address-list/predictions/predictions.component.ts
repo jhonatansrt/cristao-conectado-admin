@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../../application/google-maps/google-maps-service';
 import { Container } from '../../../../util/container.service';
@@ -10,6 +10,7 @@ import { MapComponent } from '../../../common/map/map.component';
   imports: [MatIconModule],
   templateUrl: './predictions.component.html',
   styleUrl: './predictions.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class PredictionsComponent {
   public readonly predictions = input.required<string[]>();
