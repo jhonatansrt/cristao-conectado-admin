@@ -19,4 +19,5 @@ export class CardComponent {
   public readonly description = input.required<string | null>();
   public readonly icons = input<CardIconAction[]>([]);
   public readonly borderRadius = input<string>('8px');
+  public readonly clickable = input<boolean>(false);
 }
