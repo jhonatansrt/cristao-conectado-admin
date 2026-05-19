@@ -13,7 +13,6 @@ import { AddEventModal } from '../add-event-modal/add-event-modal';
 export interface DayEventItem {
   id: string;
   title: string;
-  subtitle: string;
   description?: string;
   location?: string;
   address?: string;
@@ -98,6 +97,9 @@ export class EventsOfDayModal {
         delete updated[event.id];
         return updated;
       });
+
+      this.onAccordionOpened(event.id);
+
       this.eventEdited.emit();
     });
   }
