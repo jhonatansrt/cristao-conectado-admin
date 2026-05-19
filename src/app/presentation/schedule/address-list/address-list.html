@@ -8,10 +8,10 @@
       <div class="flex flex-column">
         <h3>Selecionar existente</h3>
 
-        @for (address of addresses; track $index) {
+        @for (address of addresses; track address.id) {
           <app-card
-            [title]="address.title"
-            [description]="address.description"
+            [title]="address.place"
+            [description]="getAddressDescription(address)"
             [icons]="getCardActions(address)"
           />
         }

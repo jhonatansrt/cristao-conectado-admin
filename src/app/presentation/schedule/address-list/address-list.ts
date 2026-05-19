@@ -1,14 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { InputComponent } from '../../common/input/input';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
-
-interface AddressItem {
-  title: string;
-  description: string;
-}
+import { AddressesService } from '../../../application/addresses/addresses-service';
+import { Address } from '../../../domain/addresses';
 
 @Component({
   selector: 'app-address-list',
@@ -17,25 +14,23 @@ interface AddressItem {
   templateUrl: './address-list.html',
   styleUrl: './address-list.scss',
 })
-export class AddressList {
+export class AddressList implements OnInit {
   private readonly googleMapsService = inject(GoogleMapsService);
+  private readonly addressesService = inject(AddressesService);
 
+  public addresses: Address[] = [];
   public searchAddress = '';
   public predictions: string[] = [];
 
-  private readonly handleEditAddress = (address: AddressItem): void => {
-    console.log('Editar endereço', address);
-  };
+  ngOnInit() {
+    this.getAddresses();
+  }
 
-  private readonly handleDeleteAddress = (address: AddressItem): void => {
-    console.log('Excluir endereço', address);
-  };
-
-  public readonly addresses: AddressItem[] = [
-    { title: 'PIB', description: 'Icui-guajará, Ananindeua - PA' },
-    { title: 'PIB', description: 'Icui-guajará, Ananindeua - PA' },
-    { title: 'PIB', description: 'Icui-guajará, Ananindeua - PA' },
-  ];
+  private getAddresses() {
+    this.addressesService.getAddresses().subscribe((addresses) => {
+      this.addresses = addresses;
+    });
+  }
 
   public get shouldShowRegisteredAddresses(): boolean {
     return this.searchAddress.trim().length === 0;
@@ -49,7 +44,11 @@ export class AddressList {
     });
   }
 
-  public getCardActions(address: AddressItem): CardIconAction[] {
+  public getAddressDescription(address: Address): string {
+    return `${address.street}, ${address.district}, ${address.city} - ${address.state}`;
+  }
+
+  public getCardActions(address: Address): CardIconAction[] {
     return [
       {
         name: 'edit',
@@ -62,5 +61,13 @@ export class AddressList {
         action: () => this.handleDeleteAddress(address),
       },
     ];
+  }
+
+  private handleEditAddress(address: Address): void {
+    console.log('Editar endereço', address);
+  }
+
+  private handleDeleteAddress(address: Address): void {
+    console.log('Excluir endereço', address);
   }
 }
