@@ -32,26 +32,24 @@ export class EventsOfDayModal {
 
   public readonly events = input<DayEventItem[]>([]);
 
-  protected readonly detailsMap = signal<Map<string, ScheduleDetails | 'loading'>>(new Map());
+  protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
 
   protected onAccordionOpened(id: string): void {
-    if (this.detailsMap().has(id)) return;
+    if (this.detailsMap()[id]) {
+      return;
+    }
 
-    const map = new Map(this.detailsMap());
-    map.set(id, 'loading');
-    this.detailsMap.set(map);
+    this.detailsMap.update((prev) => ({ ...prev, [id]: 'loading' }));
 
     this.schedulesService.getScheduleDetails(id).subscribe({
       next: (details) => {
-        const updated = new Map(this.detailsMap());
-        updated.set(id, details);
-        this.detailsMap.set(updated);
+        this.detailsMap.update((prev) => ({ ...prev, [id]: details }));
       },
     });
   }
 
   protected getDetails(id: string): ScheduleDetails | 'loading' | null {
-    return this.detailsMap().get(id) ?? null;
+    return this.detailsMap()[id] ?? null;
   }
 
   protected formatAddress(details: ScheduleDetails): string {
