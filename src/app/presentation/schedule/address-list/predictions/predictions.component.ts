@@ -1,4 +1,4 @@
-import { Component, inject, input, output, ViewEncapsulation } from '@angular/core';
+import { Component, inject, input, NgZone, output, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../../application/google-maps/google-maps-service';
 import { Container } from '../../../../util/container.service';
@@ -18,6 +18,7 @@ export class PredictionsComponent {
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly container = inject(Container);
+  private readonly ngZone = inject(NgZone);
 
   public getPredictionTitle(prediction: string): string {
     return prediction.split(',')[0]?.trim() ?? prediction;
@@ -30,13 +31,23 @@ export class PredictionsComponent {
 
   public onPredictionClick(prediction: string): void {
     this.googleMapsService.geocodeAddress(prediction).subscribe((geocoded) => {
-      if (!geocoded) return;
+      if (!geocoded) {
+        return;
+      }
 
       const mapRef = this.container.vcr?.createComponent(MapComponent);
-      if (!mapRef) return;
+
+      if (!mapRef) {
+        return;
+      }
 
       mapRef.setInput('geocodedAddress', geocoded);
-      mapRef.instance.confirmed.subscribe(() => this.confirmed.emit());
+
+      mapRef.instance.confirmed.subscribe(() => {
+        this.ngZone.run(() => {
+          this.confirmed.emit();
+        });
+      });
     });
   }
 }
