@@ -4,6 +4,7 @@ section {
   header {
     display: block;
     cursor: pointer;
+    user-select: none;
   }
 
   article {
