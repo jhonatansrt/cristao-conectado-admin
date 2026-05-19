@@ -7,4 +7,5 @@ export type CreateScheduleDTO = {
   hourFinal: number;
   day?: number;
   scheduleDate?: string;
+  scheduleId?: string;
 };

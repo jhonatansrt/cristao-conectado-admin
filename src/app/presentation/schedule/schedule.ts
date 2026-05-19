@@ -85,6 +85,8 @@ export class Schedule implements OnInit, OnDestroy {
             description: schedule.schedule_date ?? '',
             hourInitial: schedule.hour_initial,
             hourFinal: schedule.hour_final,
+            day: schedule.day,
+            scheduleDate: schedule.schedule_date,
           })),
         );
       },
