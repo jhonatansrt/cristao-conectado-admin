@@ -3,6 +3,7 @@ import { ModalComponent } from '../../common/modal/modal.component';
 import { InputComponent } from '../../common/input/input';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { PredictionsComponent } from './predictions/predictions.component';
+import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { Address } from '../../../domain/addresses';
@@ -10,7 +11,7 @@ import { Address } from '../../../domain/addresses';
 @Component({
   selector: 'app-address-list',
   standalone: true,
-  imports: [ModalComponent, InputComponent, CardComponent, PredictionsComponent],
+  imports: [ModalComponent, InputComponent, CardComponent, PredictionsComponent, SkeletonComponent],
   templateUrl: './address-list.html',
   styleUrl: './address-list.scss',
 })
