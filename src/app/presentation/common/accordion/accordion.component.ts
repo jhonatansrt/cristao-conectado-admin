@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 
 import { CardComponent, CardIconAction } from '../card/card.component';
 
@@ -13,6 +13,8 @@ export class AccordionComponent {
   public readonly title = input.required<string>();
   public readonly description = input.required<string | null>();
 
+  public readonly opened = output<void>();
+
   protected readonly isOpen = signal(false);
 
   protected readonly headerIcons = computed<CardIconAction[]>(() => [
@@ -25,5 +27,8 @@ export class AccordionComponent {
 
   protected toggle(): void {
     this.isOpen.update((value) => !value);
+    if (this.isOpen()) {
+      this.opened.emit();
+    }
   }
 }

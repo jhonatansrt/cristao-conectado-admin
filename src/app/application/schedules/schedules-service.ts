@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
-import { DaySchedule, ISchedulesRepository, MonthSchedule } from '../../domain/schedules';
+import { DaySchedule, ISchedulesRepository, MonthSchedule, ScheduleDetails } from '../../domain/schedules';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +28,9 @@ export class SchedulesService {
     }
 
     return this.schedulesRepository.getDaySchedules({ churchId, date, day });
+  }
+
+  public getScheduleDetails(id: string): Observable<ScheduleDetails> {
+    return this.schedulesRepository.getScheduleDetails(id);
   }
 }

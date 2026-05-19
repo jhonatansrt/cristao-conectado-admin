@@ -1,6 +1,8 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
     @for (event of events(); track event.id) {
+      @let details = getDetails(event.id);
+
       <app-accordion
         [title]="event.title"
         [description]="
@@ -8,73 +10,89 @@
             ? (event.hourInitial | hourRange: event.hourFinal)
             : null
         "
+        (opened)="onAccordionOpened(event.id)"
       >
         <article class="flex flex-column">
-          <ul class="flex flex-column">
-            @if (event.description) {
-              <li class="flex items-center">
-                <figure class="flex items-center justify-center">
-                  <mat-icon>description</mat-icon>
-                </figure>
+          @if (details === 'loading') {
+            <p class="loading-text">Carregando...</p>
+          } @else if (details) {
+            <ul class="flex flex-column">
+              @if (details.description) {
+                <li class="flex items-center">
+                  <figure class="flex items-center justify-center">
+                    <mat-icon>description</mat-icon>
+                  </figure>
 
-                <div class="flex flex-column">
-                  <strong>Descrição</strong>
-                  <span>{{ event.description }}</span>
-                </div>
-              </li>
-            }
+                  <div class="flex flex-column">
+                    <strong>Descrição</strong>
+                    <span>{{ details.description }}</span>
+                  </div>
+                </li>
+              }
 
-            @if (event.location) {
-              <li class="flex items-center">
-                <figure class="flex items-center justify-center">
-                  <mat-icon>location_on</mat-icon>
-                </figure>
+              @if (details.place) {
+                <li class="flex items-center">
+                  <figure class="flex items-center justify-center">
+                    <mat-icon>location_on</mat-icon>
+                  </figure>
 
-                <div class="flex flex-column">
-                  <strong>{{ event.location }}</strong>
-                  @if (event.address) {
-                    <small>{{ event.address }}</small>
-                  }
-                </div>
-              </li>
-            }
+                  <div class="flex flex-column">
+                    <strong>{{ details.place }}</strong>
+                    <small>{{ formatAddress(details) }}</small>
+                  </div>
+                </li>
+              }
 
-            @if (event.dayOfWeek || event.hourInitial !== undefined) {
-              <li class="flex items-center">
-                <figure class="flex items-center justify-center">
-                  <mat-icon>schedule</mat-icon>
-                </figure>
+              @if (event.dayOfWeek || event.hourInitial !== undefined) {
+                <li class="flex items-center">
+                  <figure class="flex items-center justify-center">
+                    <mat-icon>schedule</mat-icon>
+                  </figure>
 
-                <div class="flex flex-column">
-                  @if (event.dayOfWeek) {
-                    <strong>{{ event.dayOfWeek }}</strong>
-                  }
-                  @if (event.hourInitial !== undefined && event.hourFinal !== undefined) {
-                    <time>{{ event.hourInitial | hourRange: event.hourFinal }}</time>
-                  }
-                </div>
-              </li>
-            }
-          </ul>
+                  <div class="flex flex-column">
+                    @if (event.dayOfWeek) {
+                      <strong>{{ event.dayOfWeek }}</strong>
+                    }
+                    @if (event.hourInitial !== undefined && event.hourFinal !== undefined) {
+                      <time>{{ event.hourInitial | hourRange: event.hourFinal }}</time>
+                    }
+                  </div>
+                </li>
+              }
 
-          <app-button btnClass="btn-primary">Ver presenças confirmadas</app-button>
+              @if (details.attendances.length > 0) {
+                <li class="flex items-center">
+                  <figure class="flex items-center justify-center">
+                    <mat-icon>group</mat-icon>
+                  </figure>
 
-          <footer class="flex justify-around">
-            <button class="flex flex-column items-center" type="button">
-              <mat-icon>edit</mat-icon>
-              <span>Editar</span>
-            </button>
+                  <div class="flex flex-column">
+                    <strong>Presenças confirmadas</strong>
+                    <span>{{ details.attendances.length }} pessoa(s)</span>
+                  </div>
+                </li>
+              }
+            </ul>
 
-            <button class="flex flex-column items-center" type="button">
-              <mat-icon>delete</mat-icon>
-              <span>Excluir</span>
-            </button>
+            <app-button btnClass="btn-primary">Ver presenças confirmadas</app-button>
 
-            <button class="flex flex-column items-center" type="button">
-              <mat-icon>map</mat-icon>
-              <span>Mapa</span>
-            </button>
-          </footer>
+            <footer class="flex justify-around">
+              <button class="flex flex-column items-center" type="button">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+
+              <button class="flex flex-column items-center" type="button">
+                <mat-icon>delete</mat-icon>
+                <span>Excluir</span>
+              </button>
+
+              <button class="flex flex-column items-center" type="button">
+                <mat-icon>map</mat-icon>
+                <span>Mapa</span>
+              </button>
+            </footer>
+          }
         </article>
       </app-accordion>
     }

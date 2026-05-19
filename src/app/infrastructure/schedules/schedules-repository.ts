@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { DaySchedule, GetDaySchedulesDTO, GetMonthSchedulesDTO, ISchedulesRepository, MonthSchedule } from '../../domain/schedules';
+import { DaySchedule, GetDaySchedulesDTO, GetMonthSchedulesDTO, ISchedulesRepository, MonthSchedule, ScheduleDetails } from '../../domain/schedules';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +32,10 @@ export class SchedulesRepository implements ISchedulesRepository {
     });
 
     return this.httpClient.post<DaySchedule[]>(url, { date: props.date, day: props.day }, { params });
+  }
+
+  public getScheduleDetails(id: string): Observable<ScheduleDetails> {
+    const url = `${environment.apiBaseURL}/schedules/details/${id}`;
+    return this.httpClient.get<ScheduleDetails>(url);
   }
 }
