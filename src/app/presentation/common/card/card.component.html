@@ -1,7 +1,10 @@
-<article class="flex items-center justify-between">
+<article [style.borderRadius]="borderRadius()" class="flex items-center justify-between">
   <div class="flex flex-column">
     <h3>{{ title() }}</h3>
-    <p>{{ description() }}</p>
+
+    @if (description()) {
+      <p>{{ description() }}</p>
+    }
   </div>
 
   @if (icons().length) {

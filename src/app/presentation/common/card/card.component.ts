@@ -16,6 +16,7 @@ export interface CardIconAction {
 })
 export class CardComponent {
   public readonly title = input.required<string>();
-  public readonly description = input.required<string>();
+  public readonly description = input.required<string | null>();
   public readonly icons = input<CardIconAction[]>([]);
+  public readonly borderRadius = input<string>('8px');
 }

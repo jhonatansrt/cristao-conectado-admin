@@ -1,44 +1,57 @@
 <app-modal title="Eventos do Dia">
-  <section class="flex flex-column">
+  <section class="body-modal flex flex-column">
     @for (event of displayEvents(); track event.id) {
       <app-accordion [title]="event.title" [description]="event.subtitle">
-        <ul class="flex flex-column">
-          @if (event.description) {
-            <li class="flex items-center">
-              <mat-icon>description</mat-icon>
-              <div class="flex flex-column">
-                <strong>Descrição</strong>
-                <span>{{ event.description }}</span>
-              </div>
-            </li>
-          }
+        <article class="flex flex-column">
+          <ul class="flex flex-column">
+            @if (event.description) {
+              <li class="flex items-center">
+                <figure class="flex items-center justify-center">
+                  <mat-icon>description</mat-icon>
+                </figure>
 
-          @if (event.location) {
-            <li class="flex items-center">
-              <mat-icon>location_on</mat-icon>
-              <address class="flex flex-column">
-                <strong>{{ event.location }}</strong>
-                @if (event.address) {
-                  <small>{{ event.address }}</small>
-                }
-              </address>
-            </li>
-          }
+                <div class="flex flex-column">
+                  <strong>Descrição</strong>
+                  <span>{{ event.description }}</span>
+                </div>
+              </li>
+            }
 
-          @if (event.dayOfWeek || event.hourInitial !== undefined) {
-            <li class="flex items-center">
-              <mat-icon>schedule</mat-icon>
-              <div class="flex flex-column">
-                @if (event.dayOfWeek) {
-                  <strong>{{ event.dayOfWeek }}</strong>
-                }
-                @if (event.hourInitial !== undefined && event.hourFinal !== undefined) {
-                  <time>{{ event.hourInitial | hourRange: event.hourFinal }}</time>
-                }
-              </div>
-            </li>
-          }
-        </ul>
+            @if (event.location) {
+              <li class="flex items-center">
+                <figure class="flex items-center justify-center">
+                  <mat-icon>location_on</mat-icon>
+                </figure>
+
+                <address class="flex flex-column">
+                  <strong>{{ event.location }}</strong>
+                  @if (event.address) {
+                    <small>{{ event.address }}</small>
+                  }
+                </address>
+              </li>
+            }
+
+            @if (event.dayOfWeek || event.hourInitial !== undefined) {
+              <li class="flex items-center">
+                <figure class="flex items-center justify-center">
+                  <mat-icon>schedule</mat-icon>
+                </figure>
+
+                <div class="flex flex-column">
+                  @if (event.dayOfWeek) {
+                    <strong>{{ event.dayOfWeek }}</strong>
+                  }
+                  @if (event.hourInitial !== undefined && event.hourFinal !== undefined) {
+                    <time>{{ event.hourInitial | hourRange: event.hourFinal }}</time>
+                  }
+                </div>
+              </li>
+            }
+          </ul>
+
+          <app-button btnClass="btn-primary">Ver presenças confirmadas</app-button>
+        </article>
       </app-accordion>
     }
   </section>

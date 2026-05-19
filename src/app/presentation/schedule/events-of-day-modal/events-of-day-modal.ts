@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
+import { ButtonComponent } from '../../common/button/button.component';
 
 export interface DayEventItem {
   id: string;
@@ -67,14 +68,11 @@ const MOCK_EVENTS: DayEventItem[] = [
 @Component({
   selector: 'app-events-of-day-modal',
   standalone: true,
-  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe],
+  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe, ButtonComponent],
   templateUrl: './events-of-day-modal.html',
   styleUrl: './events-of-day-modal.scss',
 })
 export class EventsOfDayModal {
   public readonly events = input<DayEventItem[]>([]);
-
-  protected readonly displayEvents = computed<DayEventItem[]>(() =>
-    this.events().length ? this.events() : MOCK_EVENTS,
-  );
+  protected readonly displayEvents = computed<DayEventItem[]>(() => MOCK_EVENTS);
 }

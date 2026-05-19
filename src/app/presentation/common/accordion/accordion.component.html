@@ -7,7 +7,12 @@
     (keydown.enter)="toggle()"
     (keydown.space)="toggle(); $event.preventDefault()"
   >
-    <app-card [title]="title()" [description]="description()" [icons]="headerIcons()"></app-card>
+    <app-card
+      [title]="title()"
+      [description]="isOpen() ? null : description()"
+      [icons]="headerIcons()"
+      [borderRadius]="isOpen() ? '8px 8px 0 0' : '8px'"
+    />
   </header>
 
   @if (isOpen()) {
