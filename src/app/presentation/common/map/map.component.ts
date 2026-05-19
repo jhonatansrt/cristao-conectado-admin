@@ -17,6 +17,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class MapComponent implements AfterViewInit, OnDestroy {
   public readonly geocodedAddress = input.required<GeocodedAddress>();
   public readonly close = output<void>();
+  public readonly confirmed = output<void>();
 
   @ViewChild('mapContainer') private readonly mapContainer!: ElementRef<HTMLDivElement>;
 
@@ -52,6 +53,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     dialogRef.setInput('geocodedAddress', geocodedWithCenter);
 
     dialogRef.instance.close.subscribe(() => {
+      this.confirmed.emit();
       this.el.nativeElement.remove();
     });
   }

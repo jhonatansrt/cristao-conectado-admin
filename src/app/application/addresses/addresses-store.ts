@@ -1,4 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Address } from '../../domain/addresses';
 import { GeocodedAddress } from '../../domain/google-maps';
 import { AddressesService } from './addresses-service';
@@ -25,11 +27,11 @@ export class AddressesStore {
     });
   }
 
-  public createAddress(geocoded: GeocodedAddress, place: string): void {
-    this.addressesService.createAddress(geocoded, place).subscribe({
-      next: (address) => {
+  public createAddress(geocoded: GeocodedAddress, place: string): Observable<Address> {
+    return this.addressesService.createAddress(geocoded, place).pipe(
+      tap((address) => {
         this.addresses.update((list) => [...list, address]);
-      },
-    });
+      }),
+    );
   }
 }

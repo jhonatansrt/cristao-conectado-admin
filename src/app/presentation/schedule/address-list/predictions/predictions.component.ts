@@ -1,4 +1,4 @@
-import { Component, inject, input, ViewEncapsulation } from '@angular/core';
+import { Component, inject, input, output, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleMapsService } from '../../../../application/google-maps/google-maps-service';
 import { Container } from '../../../../util/container.service';
@@ -14,6 +14,7 @@ import { MapComponent } from '../../../common/map/map.component';
 })
 export class PredictionsComponent {
   public readonly predictions = input.required<string[]>();
+  public readonly confirmed = output<void>();
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly container = inject(Container);
@@ -35,6 +36,7 @@ export class PredictionsComponent {
       if (!mapRef) return;
 
       mapRef.setInput('geocodedAddress', geocoded);
+      mapRef.instance.confirmed.subscribe(() => this.confirmed.emit());
     });
   }
 }

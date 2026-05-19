@@ -58,4 +58,9 @@ export class InputComponent implements ControlValueAccessor {
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
   }
+
+  public reset(): void {
+    this.inputValue = '';
+    this.onChange('');
+  }
 }

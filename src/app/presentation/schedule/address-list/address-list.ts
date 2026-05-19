@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
@@ -16,6 +16,8 @@ import { PredictionsComponent } from './predictions/predictions.component';
   styleUrl: './address-list.scss',
 })
 export class AddressList implements OnInit {
+  @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
+
   private readonly googleMapsService = inject(GoogleMapsService);
   public readonly addressesStore = inject(AddressesStore);
 
@@ -60,6 +62,12 @@ export class AddressList implements OnInit {
         action: () => this.handleDeleteAddress(address),
       },
     ];
+  }
+
+  public onAddressCreated(): void {
+    this.predictions = [];
+    this.searchAddress = '';
+    this.searchInput?.reset();
   }
 
   private handleEditAddress(address: Address): void {
