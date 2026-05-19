@@ -27,8 +27,12 @@ export class AddPlaceDialog {
 
   public onConfirm(): void {
     if (!this.place.trim()) return;
-    this.addressesStore.createAddress(this.geocodedAddress(), this.place.trim());
-    this.el.nativeElement.remove();
+    this.addressesStore.createAddress(this.geocodedAddress(), this.place.trim()).subscribe({
+      next: () => {
+        this.close.emit();
+        this.el.nativeElement.remove();
+      },
+    });
   }
 
   public onClose(): void {
