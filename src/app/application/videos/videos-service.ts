@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { IVideosRepository } from '../../domain/videos';
 import { environment } from '../../../environments/environment';
 import { AuthStore } from '../auth/auth-store';
 import { PlaylistSelectedStore } from '../playlists/playlist-selected-store';
 import { TableRow } from '../table/table-store';
+import { ToastService } from '../../presentation/common/toast/toast.service';
 
 type VideoResponse = {
   id?: string;
@@ -23,6 +24,7 @@ export class VideosService {
   private readonly authStore = inject(AuthStore);
   private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
   private readonly videosRepository = inject(IVideosRepository);
+  private readonly toastService = inject(ToastService);
 
   public getVideos(): Observable<TableRow[]> {
     const folderId = this.playlistSelectedStore.getPlaylistSelected()()[0]?.id;
@@ -53,6 +55,10 @@ export class VideosService {
           ],
         })),
       ),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
     );
   }
 
@@ -73,10 +79,21 @@ export class VideosService {
         name: props.name,
         showHome: props.showHome,
       })
-      .pipe(map(() => void 0));
+      .pipe(
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
   }
 
   public deleteVideo(props: { id: string }): Observable<void> {
-    return this.videosRepository.deleteVideo({ id: props.id });
+    return this.videosRepository.deleteVideo({ id: props.id }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 }

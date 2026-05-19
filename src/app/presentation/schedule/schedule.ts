@@ -54,10 +54,13 @@ export class Schedule implements OnInit, OnDestroy {
     this.schedulesService
       .getMonthSchedules(month, year)
       .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe((monthSchedules) => {
-        this.monthSchedulesByDate = new Map(
-          monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count]),
-        );
+      .subscribe({
+        next: (monthSchedules) => {
+          this.monthSchedulesByDate = new Map(
+            monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count]),
+          );
+        },
+        error: () => {},
       });
   }
 
@@ -66,23 +69,26 @@ export class Schedule implements OnInit, OnDestroy {
     const selectedDateISO = selectedDate.toISOString();
     const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe((daySchedules) => {
-      const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
+    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe({
+      next: (daySchedules) => {
+        const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
 
-      if (!eventModal) {
-        return;
-      }
+        if (!eventModal) {
+          return;
+        }
 
-      eventModal.setInput(
-        'events',
-        daySchedules.map((schedule) => ({
-          id: schedule.id,
-          title: schedule.title,
-          description: schedule.schedule_date ?? '',
-          hourInitial: schedule.hour_initial,
-          hourFinal: schedule.hour_final,
-        })),
-      );
+        eventModal.setInput(
+          'events',
+          daySchedules.map((schedule) => ({
+            id: schedule.id,
+            title: schedule.title,
+            description: schedule.schedule_date ?? '',
+            hourInitial: schedule.hour_initial,
+            hourFinal: schedule.hour_final,
+          })),
+        );
+      },
+      error: () => {},
     });
   }
 

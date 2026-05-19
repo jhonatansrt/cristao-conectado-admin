@@ -27,8 +27,11 @@ export class Notices implements OnInit {
   }
 
   private getNotices() {
-    this.noticesService.getNotices().subscribe((rows) => {
-      this.tableStore.setRows(rows);
+    this.noticesService.getNotices().subscribe({
+      next: (rows) => {
+        this.tableStore.setRows(rows);
+      },
+      error: () => {},
     });
   }
 }

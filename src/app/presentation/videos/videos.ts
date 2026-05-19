@@ -64,29 +64,32 @@ export class Videos implements OnInit, OnDestroy {
     this.videosService
       .getVideos()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe((rows) => {
-        this.tableStore.setRows(
-          rows.map((row) => ({
-            ...row,
-            actions: row.actions?.map((action) => {
-              if (action.key.includes('delete')) {
-                return {
-                  ...action,
-                  onClick: () => this.handleDeleteVideo(String(row.id)),
-                };
-              }
+      .subscribe({
+        next: (rows) => {
+          this.tableStore.setRows(
+            rows.map((row) => ({
+              ...row,
+              actions: row.actions?.map((action) => {
+                if (action.key.includes('delete')) {
+                  return {
+                    ...action,
+                    onClick: () => this.handleDeleteVideo(String(row.id)),
+                  };
+                }
 
-              if (action.key.includes('open')) {
-                return {
-                  ...action,
-                  onClick: () => this.handleOpenVideo(String(row['videoId'] ?? '')),
-                };
-              }
+                if (action.key.includes('open')) {
+                  return {
+                    ...action,
+                    onClick: () => this.handleOpenVideo(String(row['videoId'] ?? '')),
+                  };
+                }
 
-              return action;
-            }),
-          })),
-        );
+                return action;
+              }),
+            })),
+          );
+        },
+        error: () => {},
       });
   }
 
@@ -112,7 +115,10 @@ export class Videos implements OnInit, OnDestroy {
     this.videosService
       .deleteVideo({ id: videoId })
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe(() => this.getVideos());
+      .subscribe({
+        next: () => this.getVideos(),
+        error: () => {},
+      });
   }
 
   protected hasVideos(): boolean {

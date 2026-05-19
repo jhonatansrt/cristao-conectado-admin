@@ -55,9 +55,12 @@ export class AddVideoModal {
         showHome: Boolean(featured),
       })
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => {
-        this.videoCreated.emit();
-        this.closeModal();
+      .subscribe({
+        next: () => {
+          this.videoCreated.emit();
+          this.closeModal();
+        },
+        error: () => {},
       });
   }
 

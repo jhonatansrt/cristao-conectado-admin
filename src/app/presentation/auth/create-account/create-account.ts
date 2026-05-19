@@ -61,6 +61,7 @@ export class CreateAccount {
           this.closeModal();
           await this.router.navigate([namedRoutes.home]);
         },
+        error: () => {},
       });
   }
 
