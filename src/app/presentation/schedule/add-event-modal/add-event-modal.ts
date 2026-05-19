@@ -7,12 +7,13 @@ import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
+import { SelectComponent } from '../../common/select/select';
 import { AddressList } from '../address-list/address-list';
 
 @Component({
   selector: 'app-add-event-modal',
   standalone: true,
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, MatIconModule],
+  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, MatIconModule, SelectComponent],
   templateUrl: './add-event-modal.html',
   styleUrl: './add-event-modal.scss',
 })
