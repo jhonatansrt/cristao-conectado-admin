@@ -1,10 +1,9 @@
-import { Component, inject, NgZone, OnInit, output, ViewChild } from '@angular/core';
+import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
 import { Container } from '../../../util/container.service';
-import { Address } from '../../../domain/addresses';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -12,6 +11,7 @@ import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 import { MapComponent } from '../../common/map/map.component';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
+import { AddEventModal } from '../add-event-modal/add-event-modal';
 
 @Component({
   selector: 'app-address-list',
@@ -23,8 +23,6 @@ import { AlertService } from '../../common/alert/alert.service';
 export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
   @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
-
-  public readonly addressSelected = output<Address>();
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
@@ -76,8 +74,9 @@ export class AddressList implements OnInit {
   }
 
   public onSelectAddress(address: Address): void {
-    this.addressSelected.emit(address);
     this.modal.closeModal();
+    const eventModal = this.container.vcr?.createComponent(AddEventModal);
+    eventModal?.setInput('address', address);
   }
 
   public onAddressCreated(): void {
