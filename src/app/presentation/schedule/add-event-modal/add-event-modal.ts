@@ -79,11 +79,8 @@ export class AddEventModal implements OnInit {
   }
 
   protected onChangeAddress(): void {
-    const ref = this.container.vcr?.createComponent(AddressList);
+    this.container.vcr?.createComponent(AddressList);
     this.modal.closeModal();
-    // ref?.instance.addressSelected.subscribe((address: Address) => {
-    //   this.currentAddress.set(address);
-    // });
   }
 
   protected onConfirm(): void {
