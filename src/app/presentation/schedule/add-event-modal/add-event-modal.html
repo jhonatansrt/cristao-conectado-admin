@@ -1,4 +1,4 @@
-<app-modal title="Novo evento">
+<app-modal [title]="editData() ? 'Editar evento' : 'Novo evento'">
   <section class="body-modal flex flex-column">
     <fieldset class="flex flex-column">
       <label>Endereço</label>

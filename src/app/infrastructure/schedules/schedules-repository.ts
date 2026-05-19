@@ -27,7 +27,11 @@ export class SchedulesRepository implements ISchedulesRepository {
       body['schedule_date'] = props.scheduleDate;
     }
 
-    return this.httpClient.post<void>(url, body).pipe(map(() => void 0));
+    const params = props.scheduleId
+      ? new HttpParams({ fromObject: { schedule_id: props.scheduleId } })
+      : undefined;
+
+    return this.httpClient.post<void>(url, body, { params }).pipe(map(() => void 0));
   }
 
   public getMonthSchedules(props: GetMonthSchedulesDTO): Observable<MonthSchedule[]> {

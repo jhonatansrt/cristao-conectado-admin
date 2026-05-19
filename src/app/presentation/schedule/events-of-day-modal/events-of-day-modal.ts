@@ -7,6 +7,8 @@ import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { ButtonComponent } from '../../common/button/button.component';
+import { Container } from '../../../util/container.service';
+import { AddEventModal } from '../add-event-modal/add-event-modal';
 
 export interface DayEventItem {
   id: string;
@@ -18,6 +20,8 @@ export interface DayEventItem {
   dayOfWeek?: string;
   hourInitial?: number;
   hourFinal?: number;
+  day?: number;
+  scheduleDate?: string | null;
 }
 
 @Component({
@@ -29,6 +33,7 @@ export interface DayEventItem {
 })
 export class EventsOfDayModal {
   private readonly schedulesService = inject(SchedulesService);
+  private readonly container = inject(Container);
 
   public readonly events = input<DayEventItem[]>([]);
 
@@ -54,5 +59,36 @@ export class EventsOfDayModal {
 
   protected formatAddress(details: ScheduleDetails): string {
     return `${details.street}, ${details.number} - ${details.district}, ${details.city} - ${details.state}`;
+  }
+
+  protected onEditEvent(event: DayEventItem): void {
+    const details = this.detailsMap()[event.id];
+    if (!details || details === 'loading') return;
+
+    const address = {
+      id: details.address_id,
+      place: details.place,
+      cep: details.cep,
+      number: details.number,
+      street: details.street,
+      district: details.district,
+      city: details.city,
+      state: details.state,
+      latitude: details.latitude,
+      longitude: details.longitude,
+    };
+
+    const editData = {
+      scheduleId: details.schedule_id,
+      title: event.title,
+      description: details.description,
+      hourInitial: event.hourInitial ?? 0,
+      hourFinal: event.hourFinal ?? 0,
+      ...(event.scheduleDate ? { scheduleDate: event.scheduleDate } : { day: event.day }),
+    };
+
+    const modal = this.container.vcr?.createComponent(AddEventModal);
+    modal?.setInput('address', address);
+    modal?.setInput('editData', editData);
   }
 }

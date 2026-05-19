@@ -22,6 +22,21 @@ export class SchedulesService {
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
 
+  public updateSchedule(scheduleId: string, params: CreateScheduleParams): Observable<void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of(void 0);
+    }
+
+    return this.schedulesRepository.createSchedule({ ...params, churchId, scheduleId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
   public createSchedule(params: CreateScheduleParams): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
