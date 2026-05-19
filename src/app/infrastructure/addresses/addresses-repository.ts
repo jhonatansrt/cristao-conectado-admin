@@ -34,6 +34,23 @@ export class AddressesRepository implements IAddressesRepository {
     return this.httpClient.post<Address>(url, body);
   }
 
+  public updateAddress(id: string, props: CreateAddressDTO): Observable<Address> {
+    const url = `${environment.apiBaseURL}/adresses/${id}/`;
+    const body = {
+      cep: props.cep,
+      number: props.number,
+      street: props.street,
+      district: props.district,
+      city: props.city,
+      state: props.state,
+      latitude: props.latitude,
+      longitude: props.longitude,
+      place: props.place,
+      church_id: props.churchId,
+    };
+    return this.httpClient.put<Address>(url, body);
+  }
+
   public deleteAddress(id: string): Observable<void> {
     const url = `${environment.apiBaseURL}/adresses/${id}/`;
     return this.httpClient.delete<void>(url);

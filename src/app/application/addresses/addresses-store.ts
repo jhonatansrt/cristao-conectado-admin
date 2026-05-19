@@ -35,6 +35,14 @@ export class AddressesStore {
     );
   }
 
+  public updateAddress(address: Address, place: string, number: string): Observable<Address> {
+    return this.addressesService.updateAddress(address, place, number).pipe(
+      tap(() => {
+        this.loadAddresses();
+      }),
+    );
+  }
+
   public deleteAddress(id: string): Observable<void> {
     return this.addressesService.deleteAddress(id).pipe(
       tap(() => {

@@ -1,7 +1,8 @@
-import { Component, ElementRef, inject, input, output } from '@angular/core';
+import { Component, ElementRef, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { AddressesStore } from '../../../../application/addresses/addresses-store';
+import { Address } from '../../../../domain/addresses';
 import { GeocodedAddress } from '../../../../domain/google-maps';
 import { ButtonComponent } from '../../../common/button/button.component';
 import { DialogComponent } from '../../../common/dialog/dialog.component';
@@ -14,8 +15,9 @@ import { InputComponent } from '../../../common/input/input';
   templateUrl: './add-place-dialog.html',
   styleUrl: './add-place-dialog.scss',
 })
-export class AddPlaceDialog {
-  public readonly geocodedAddress = input.required<GeocodedAddress>();
+export class AddPlaceDialog implements OnInit {
+  public readonly geocodedAddress = input<GeocodedAddress | null>(null);
+  public readonly existingAddress = input<Address | null>(null);
   public readonly close = output<void>();
 
   private readonly el = inject(ElementRef);
@@ -29,6 +31,17 @@ export class AddPlaceDialog {
     number: ['', Validators.required],
   });
 
+  public get isEditMode(): boolean {
+    return !!this.existingAddress();
+  }
+
+  ngOnInit(): void {
+    const existing = this.existingAddress();
+    if (existing) {
+      this.form.patchValue({ place: existing.place, number: existing.number });
+    }
+  }
+
   public onConfirm(): void {
     if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
@@ -36,10 +49,26 @@ export class AddPlaceDialog {
     }
 
     const { place, number } = this.form.getRawValue();
-    const geocoded = this.geocodedAddress();
-    const addressWithNumber = { ...geocoded, number: number!.trim() };
-
     this.loading = true;
+
+    const existing = this.existingAddress();
+    if (existing) {
+      this.addressesStore
+        .updateAddress(existing, place!.trim(), number!.trim())
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe({
+          next: () => {
+            this.close.emit();
+            this.el.nativeElement.remove();
+          },
+        });
+      return;
+    }
+
+    const geocoded = this.geocodedAddress();
+    if (!geocoded) return;
+
+    const addressWithNumber = { ...geocoded, number: number!.trim() };
     this.addressesStore
       .createAddress(addressWithNumber, place!.trim())
       .pipe(finalize(() => (this.loading = false)))

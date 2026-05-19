@@ -1,4 +1,4 @@
-<app-dialog title="Complete o endereço" (close)="onClose()">
+<app-dialog [title]="isEditMode ? 'Editar endereço' : 'Complete o endereço'" (close)="onClose()">
   <section class="flex flex-column">
     <form [formGroup]="form" (ngSubmit)="onConfirm()">
       <app-input
@@ -22,7 +22,7 @@
         "
       />
       <app-button btnClass="btn-primary" [disabled]="form.invalid" [loading]="loading" (click)="onConfirm()">
-        Adicionar
+        {{ isEditMode ? 'Salvar' : 'Adicionar' }}
       </app-button>
     </form>
   </section>
