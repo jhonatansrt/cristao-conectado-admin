@@ -1,0 +1,6 @@
+<app-dialog title="Adicione o lugar" (close)="onClose()">
+  <section class="flex flex-column">
+    <app-input label="Lugar" placeholder="Ex: Igreja" (valueChange)="onValueChange($event)" />
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Adicionar</app-button>
+  </section>
+</app-dialog>

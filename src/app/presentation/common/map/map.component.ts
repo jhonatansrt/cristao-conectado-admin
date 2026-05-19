@@ -40,6 +40,5 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public onConfirm(): void {
     if (!this.mapRef) return;
     this.confirm.emit(this.mapRef.getCenter());
-    this.el.nativeElement.remove();
   }
 }
