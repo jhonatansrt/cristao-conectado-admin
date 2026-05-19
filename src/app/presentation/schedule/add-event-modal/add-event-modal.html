@@ -29,8 +29,20 @@
       </div>
 
       <div class="flex">
-        <app-input label="Data" type="date" formControlName="date" />
-        <app-input label="Hora" type="time" formControlName="time" />
+        @if (isFixed) {
+          <app-select
+            label="Dia da semana"
+            formControlName="dayOfWeek"
+            [options]="daysOfWeek"
+          />
+        } @else {
+          <app-input label="Data" type="date" formControlName="date" />
+        }
+      </div>
+
+      <div class="flex">
+        <app-input label="Início" type="time" formControlName="startTime" />
+        <app-input label="Fim" type="time" formControlName="endTime" />
       </div>
 
       <fieldset class="flex flex-column">
