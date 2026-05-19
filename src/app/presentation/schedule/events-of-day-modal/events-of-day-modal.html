@@ -1,7 +1,14 @@
 <app-modal title="Eventos do Dia">
   <section class="body-modal flex flex-column">
     @for (event of events(); track event.id) {
-      <app-accordion [title]="event.title" [description]="event.subtitle">
+      <app-accordion
+        [title]="event.title"
+        [description]="
+          event.hourInitial !== undefined && event.hourFinal !== undefined
+            ? (event.hourInitial | hourRange: event.hourFinal)
+            : null
+        "
+      >
         <article class="flex flex-column">
           <ul class="flex flex-column">
             @if (event.description) {

@@ -11,7 +11,7 @@ import { CardComponent, CardIconAction } from '../card/card.component';
 })
 export class AccordionComponent {
   public readonly title = input.required<string>();
-  public readonly description = input.required<string>();
+  public readonly description = input.required<string | null>();
 
   protected readonly isOpen = signal(false);
 
