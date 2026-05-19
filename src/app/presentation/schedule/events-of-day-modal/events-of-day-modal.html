@@ -50,25 +50,11 @@
                   </figure>
 
                   <div class="flex flex-column">
-                    @if (event.dayOfWeek) {
-                      <strong>{{ event.dayOfWeek }}</strong>
-                    }
+                    <strong>Horário</strong>
+
                     @if (event.hourInitial !== undefined && event.hourFinal !== undefined) {
                       <time>{{ event.hourInitial | hourRange: event.hourFinal }}</time>
                     }
-                  </div>
-                </li>
-              }
-
-              @if (details.attendances.length > 0) {
-                <li class="flex items-center">
-                  <figure class="flex items-center justify-center">
-                    <mat-icon>group</mat-icon>
-                  </figure>
-
-                  <div class="flex flex-column">
-                    <strong>Presenças confirmadas</strong>
-                    <span>{{ details.attendances.length }} pessoa(s)</span>
                   </div>
                 </li>
               }
