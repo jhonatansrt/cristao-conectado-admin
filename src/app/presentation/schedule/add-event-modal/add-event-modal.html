@@ -24,25 +24,43 @@
         <app-select
           label="Evento fixo"
           formControlName="isFixed"
-          [options]="[{ label: 'Não', value: 'false' }, { label: 'Sim', value: 'true' }]"
+          [options]="[
+            { label: 'Não', value: 'false' },
+            { label: 'Sim', value: 'true' },
+          ]"
         />
       </div>
 
       <div class="flex">
         @if (isFixed) {
-          <app-select
-            label="Dia da semana"
-            formControlName="dayOfWeek"
-            [options]="daysOfWeek"
-          />
+          <app-select label="Dia da semana" formControlName="dayOfWeek" [options]="daysOfWeek" />
         } @else {
-          <app-input label="Data" type="tel" [dateOfBirth]="true" placeholder="dd/mm/aaaa" formControlName="date" />
+          <app-input
+            label="Data"
+            type="tel"
+            [dateOfBirth]="true"
+            placeholder="dd/mm/aaaa"
+            formControlName="date"
+          />
         }
       </div>
 
       <div class="flex">
-        <app-input label="Início" type="tel" [timeMask]="true" placeholder="HH:MM" formControlName="startTime" />
-        <app-input label="Fim" type="tel" [timeMask]="true" placeholder="HH:MM" formControlName="endTime" />
+        <app-input
+          label="Início"
+          type="tel"
+          [timeMask]="true"
+          placeholder="HH:MM"
+          formControlName="startTime"
+        />
+
+        <app-input
+          label="Fim"
+          type="tel"
+          [timeMask]="true"
+          placeholder="HH:MM"
+          formControlName="endTime"
+        />
       </div>
 
       <fieldset class="flex flex-column">
