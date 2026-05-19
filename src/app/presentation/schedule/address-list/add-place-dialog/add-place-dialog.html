@@ -1,7 +1,29 @@
 <app-dialog title="Complete o endereço" (close)="onClose()">
   <section class="flex flex-column">
-    <app-input label="Lugar" placeholder="Ex: Igreja" (valueChange)="onPlaceChange($event)" />
-    <app-input label="Número" placeholder="Ex: 3201" (valueChange)="onNumberChange($event)" />
-    <app-button btnClass="btn-primary" (click)="onConfirm()">Adicionar</app-button>
+    <form [formGroup]="form" (ngSubmit)="onConfirm()">
+      <app-input
+        label="Lugar"
+        placeholder="Ex: Igreja"
+        formControlName="place"
+        [errorMessage]="
+          form.controls.place.touched && form.controls.place.hasError('required')
+            ? 'Lugar é obrigatório'
+            : ''
+        "
+      />
+      <app-input
+        label="Número"
+        placeholder="Ex: 3201"
+        formControlName="number"
+        [errorMessage]="
+          form.controls.number.touched && form.controls.number.hasError('required')
+            ? 'Número é obrigatório'
+            : ''
+        "
+      />
+      <app-button btnClass="btn-primary" [disabled]="form.invalid" [loading]="loading" (click)="onConfirm()">
+        Adicionar
+      </app-button>
+    </form>
   </section>
 </app-dialog>
