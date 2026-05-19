@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { GoogleMapRef, IGoogleMapsRepository } from '../../domain/google-maps';
+import { GeocodedAddress, GoogleMapRef, IGoogleMapsRepository } from '../../domain/google-maps';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class GoogleMapsService {
     return this.googleMapsRepository.initMap(container, coords);
   }
 
-  public geocodeAddress(address: string): Observable<{ lat: number; lng: number } | null> {
+  public geocodeAddress(address: string): Observable<GeocodedAddress | null> {
     return this.googleMapsRepository.geocodeAddress(address);
   }
 }

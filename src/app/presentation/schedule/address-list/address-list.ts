@@ -1,12 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { ModalComponent } from '../../common/modal/modal.component';
-import { InputComponent } from '../../common/input/input';
-import { CardComponent, CardIconAction } from '../../common/card/card.component';
-import { PredictionsComponent } from './predictions/predictions.component';
-import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
-import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
-import { AddressesService } from '../../../application/addresses/addresses-service';
+import { Component, inject, OnInit } from '@angular/core';
+import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
+import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
+import { CardComponent, CardIconAction } from '../../common/card/card.component';
+import { InputComponent } from '../../common/input/input';
+import { ModalComponent } from '../../common/modal/modal.component';
+import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
+import { PredictionsComponent } from './predictions/predictions.component';
 
 @Component({
   selector: 'app-address-list',
@@ -17,28 +17,13 @@ import { Address } from '../../../domain/addresses';
 })
 export class AddressList implements OnInit {
   private readonly googleMapsService = inject(GoogleMapsService);
-  private readonly addressesService = inject(AddressesService);
+  public readonly addressesStore = inject(AddressesStore);
 
-  public addresses: Address[] = [];
   public searchAddress = '';
   public predictions: string[] = [];
-  public isLoading = false;
 
   ngOnInit() {
-    this.getAddresses();
-  }
-
-  private getAddresses() {
-    this.isLoading = true;
-    this.addressesService.getAddresses().subscribe({
-      next: (addresses) => {
-        this.addresses = addresses;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-      },
-    });
+    this.addressesStore.loadAddresses();
   }
 
   public get shouldShowRegisteredAddresses(): boolean {

@@ -8,7 +8,7 @@
       <div class="flex flex-column">
         <h3>Selecionar existente</h3>
 
-        @if (isLoading) {
+        @if (addressesStore.isLoading()) {
           @for (skeleton of [1, 2, 3]; track skeleton) {
             <article class="flex items-center justify-between">
               <div class="flex flex-column">
@@ -22,7 +22,7 @@
             </article>
           }
         } @else {
-          @for (address of addresses; track address.id) {
+          @for (address of addressesStore.addresses(); track address.id) {
             <app-card
               [title]="address.place"
               [description]="getAddressDescription(address)"

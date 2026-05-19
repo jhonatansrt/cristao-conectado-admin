@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { GetPlacePredictionsDTO, GoogleMapRef, IGoogleMapsRepository } from '../../domain/google-maps';
+import { GeocodedAddress, GetPlacePredictionsDTO, GoogleMapRef, IGoogleMapsRepository } from '../../domain/google-maps';
 
 type AutocompleteService = {
   getPlacePredictions: (
@@ -9,8 +9,15 @@ type AutocompleteService = {
   ) => void;
 };
 
+type AddressComponent = {
+  long_name: string;
+  short_name: string;
+  types: string[];
+};
+
 type GeocodeResult = {
   geometry: { location: { lat: () => number; lng: () => number } };
+  address_components: AddressComponent[];
 };
 
 type GeocoderService = {
@@ -85,7 +92,7 @@ export class GoogleMapsRepository implements IGoogleMapsRepository {
     };
   }
 
-  public geocodeAddress(address: string): Observable<{ lat: number; lng: number } | null> {
+  public geocodeAddress(address: string): Observable<GeocodedAddress | null> {
     if (!this.googleApi?.maps?.Geocoder) {
       return of(null);
     }
@@ -95,8 +102,23 @@ export class GoogleMapsRepository implements IGoogleMapsRepository {
 
       geocoder.geocode({ address }, (results, status) => {
         if (status === 'OK' && results?.[0]?.geometry?.location) {
-          const location = results[0].geometry.location;
-          observer.next({ lat: location.lat(), lng: location.lng() });
+          const result = results[0];
+          const location = result.geometry.location;
+          const components = result.address_components ?? [];
+
+          const getComponent = (type: string, short = false) =>
+            components.find((c) => c.types.includes(type))?.[short ? 'short_name' : 'long_name'] ?? '';
+
+          observer.next({
+            lat: location.lat(),
+            lng: location.lng(),
+            street: getComponent('route'),
+            number: getComponent('street_number'),
+            district: getComponent('sublocality_level_1') || getComponent('neighborhood'),
+            city: getComponent('administrative_area_level_2'),
+            state: getComponent('administrative_area_level_1', true),
+            cep: getComponent('postal_code'),
+          });
         } else {
           observer.next(null);
         }

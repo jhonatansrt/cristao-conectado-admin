@@ -28,17 +28,13 @@ export class PredictionsComponent {
   }
 
   public onPredictionClick(prediction: string): void {
-    this.googleMapsService.geocodeAddress(prediction).subscribe((coords) => {
-      if (!coords) return;
+    this.googleMapsService.geocodeAddress(prediction).subscribe((geocoded) => {
+      if (!geocoded) return;
 
       const mapRef = this.container.vcr?.createComponent(MapComponent);
       if (!mapRef) return;
 
-      mapRef.setInput('coordinates', coords);
-
-      mapRef.instance.confirm.subscribe((result) => {
-        console.log('Lugar confirmado:', result);
-      });
+      mapRef.setInput('geocodedAddress', geocoded);
     });
   }
 }
