@@ -1,11 +1,13 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { Address } from '../../../domain/addresses';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
+import { Container } from '../../../util/container.service';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
+import { AddPlaceDialog } from './add-place-dialog/add-place-dialog';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
 
@@ -21,6 +23,8 @@ export class AddressList implements OnInit {
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
+  private readonly container = inject(Container);
+  private readonly ngZone = inject(NgZone);
   public readonly addressesStore = inject(AddressesStore);
 
   public searchAddress = '';
@@ -73,7 +77,14 @@ export class AddressList implements OnInit {
   }
 
   private handleEditAddress(address: Address): void {
-    console.log('Editar endereço', address);
+    const dialogRef = this.container.vcr?.createComponent(AddPlaceDialog);
+    if (!dialogRef) return;
+
+    dialogRef.setInput('existingAddress', address);
+
+    dialogRef.instance.close.subscribe(() => {
+      this.ngZone.run(() => {});
+    });
   }
 
   private async handleDeleteAddress(address: Address): Promise<void> {
