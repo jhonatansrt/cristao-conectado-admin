@@ -7,6 +7,7 @@ export const namedRoutes = {
   testimonials: 'testimonials',
   church: 'church',
   requests: 'requests',
+  pray: 'pray',
   videos: 'videos',
   login: 'login',
 } as const;

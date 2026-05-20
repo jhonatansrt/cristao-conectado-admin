@@ -8,6 +8,7 @@ import { Members } from './presentation/members/members';
 import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
+import { Pray } from './presentation/pray/pray';
 import { Requests } from './presentation/requests/requests';
 import { Testimonials } from './presentation/testimonials/testimonials';
 import { Template } from './presentation/template/template';
@@ -52,6 +53,10 @@ export const routes: Routes = [
       {
         path: namedRoutes.church,
         component: Church,
+      },
+      {
+        path: namedRoutes.pray,
+        component: Pray,
       },
       {
         path: namedRoutes.requests,
