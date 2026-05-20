@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { Address } from '../../../domain/addresses';
@@ -14,6 +14,10 @@ import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
 
+interface AddressCard extends Address {
+  actions: CardIconAction[];
+}
+
 @Component({
   selector: 'app-address-list',
   standalone: true,
@@ -28,15 +32,43 @@ export class AddressList implements OnInit {
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
   private readonly container = inject(Container);
-  private readonly ngZone = inject(NgZone);
   public readonly addressesStore = inject(AddressesStore);
   private readonly addressesService = inject(AddressesService);
 
   public searchAddress = '';
   public predictions: string[] = [];
+  public addresses: AddressCard[] = [];
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.loadAddresses();
+  }
+
+  private loadAddresses(): void {
     this.addressesService.loadAddresses();
+
+    this.addressesStore
+      .getAddresses()()
+      .forEach((address) => {
+        this.addAddressCard(address);
+      });
+  }
+
+  private addAddressCard(address: Address): void {
+    this.addresses.push({
+      ...address,
+      actions: [
+        {
+          name: 'edit',
+          ariaLabel: 'Editar endereço',
+          action: () => this.handleEditAddress(address),
+        },
+        {
+          name: 'delete_outline',
+          ariaLabel: 'Excluir endereço',
+          action: () => this.handleDeleteAddress(address),
+        },
+      ],
+    });
   }
 
   public onSearchAddress(value: string): void {
@@ -52,21 +84,6 @@ export class AddressList implements OnInit {
     });
   }
 
-  public getCardActions(address: Address): CardIconAction[] {
-    return [
-      {
-        name: 'edit',
-        ariaLabel: 'Editar endereço',
-        action: () => this.handleEditAddress(address),
-      },
-      {
-        name: 'delete_outline',
-        ariaLabel: 'Excluir endereço',
-        action: () => this.handleDeleteAddress(address),
-      },
-    ];
-  }
-
   public onSelectAddress(address: Address): void {
     this.modal.closeModal();
     const eventModal = this.container.vcr?.createComponent(AddEventModal);
@@ -79,8 +96,8 @@ export class AddressList implements OnInit {
     this.searchInput?.reset();
   }
 
-  private getModelGeocodedAddress(address: Address) {
-    const geocodedAddress: GeocodedAddress = {
+  private getModelGeocodedAddress(address: Address): GeocodedAddress {
+    return {
       lat: parseFloat(address.latitude),
       lng: parseFloat(address.longitude),
       street: address.street,
@@ -90,14 +107,12 @@ export class AddressList implements OnInit {
       state: address.state,
       cep: address.cep,
     };
-
-    return geocodedAddress;
   }
 
   private handleEditAddress(address: Address): void {
     const mapRef = this.container.vcr?.createComponent(MapComponent);
-    mapRef!.setInput('geocodedAddress', this.getModelGeocodedAddress(address));
-    mapRef!.setInput('existingAddress', address);
+    mapRef?.setInput('geocodedAddress', this.getModelGeocodedAddress(address));
+    mapRef?.setInput('existingAddress', address);
   }
 
   private async handleDeleteAddress(address: Address): Promise<void> {

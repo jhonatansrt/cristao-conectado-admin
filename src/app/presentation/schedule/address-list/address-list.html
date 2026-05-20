@@ -15,20 +15,26 @@
                 <app-skeleton width="40%" height="16px" />
                 <app-skeleton width="65%" height="14px" />
               </div>
+
               <menu class="flex items-center">
-                <li><app-skeleton width="20px" height="20px" /></li>
-                <li><app-skeleton width="20px" height="20px" /></li>
+                <li>
+                  <app-skeleton width="20px" height="20px" />
+                </li>
+
+                <li>
+                  <app-skeleton width="20px" height="20px" />
+                </li>
               </menu>
             </article>
           }
         } @else {
-          @for (address of addressesStore.getAddresses()(); track address.id) {
+          @for (address of addresses; track address.id) {
             <app-card
               [title]="address.place"
               [description]="
                 `${address.street}, ${address.district}, ${address.city} - ${address.state}`
               "
-              [icons]="getCardActions(address)"
+              [icons]="address.actions"
               [clickable]="true"
               (click)="onSelectAddress(address)"
             />
