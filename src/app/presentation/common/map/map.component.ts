@@ -33,6 +33,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const { lat, lng } = this.geocodedAddress();
     this.mapRef = this.googleMapsService.initMap(this.mapContainer.nativeElement, { lat, lng });
+
+    if (this.readOnly()) {
+      this.mapRef.addMarker({ lat, lng });
+    }
   }
 
   ngOnDestroy(): void {
