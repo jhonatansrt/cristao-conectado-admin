@@ -1,4 +1,4 @@
-<app-modal [title]="modalTitle()">
+<app-modal [title]="registerId() ? 'Editar aviso' : 'Adicionar aviso'">
   <section class="body-modal flex flex-column">
     <form class="flex flex-column" [formGroup]="form">
       <app-input
@@ -26,6 +26,8 @@
 
   <footer class="flex justify-end">
     <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
-    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()">Confirmar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()"
+      >Confirmar</app-button
+    >
   </footer>
 </app-modal>

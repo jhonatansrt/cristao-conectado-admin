@@ -30,14 +30,14 @@ export class CreateNotice implements OnInit {
   });
 
   ngOnInit(): void {
+    this.patchValue();
+  }
+
+  private patchValue() {
     this.form.patchValue({
       title: this.initialTitle(),
       description: this.initialDescription(),
     });
-  }
-
-  protected modalTitle(): string {
-    return this.registerId() ? 'Editar aviso' : 'Adicionar aviso';
   }
 
   protected onCancel(): void {
