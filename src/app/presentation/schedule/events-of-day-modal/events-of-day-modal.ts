@@ -11,6 +11,7 @@ import { ButtonComponent } from '../../common/button/button.component';
 import { Container } from '../../../util/container.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
 import { AlertService } from '../../common/alert/alert.service';
+import { MapComponent } from '../../common/map/map.component';
 
 export interface DayEventItem {
   id: string;
@@ -28,7 +29,7 @@ export interface DayEventItem {
 @Component({
   selector: 'app-events-of-day-modal',
   standalone: true,
-  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe, ButtonComponent],
+  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe, ButtonComponent, MapComponent],
   templateUrl: './events-of-day-modal.html',
   styleUrl: './events-of-day-modal.scss',
 })
@@ -82,6 +83,27 @@ export class EventsOfDayModal {
     });
 
     this.eventEdited.emit();
+  }
+
+  protected onOpenMap(event: DayEventItem): void {
+    const details = this.detailsMap()[event.id];
+    if (!details || details === 'loading') return;
+
+    const mapRef = this.container.vcr?.createComponent(MapComponent);
+    if (!mapRef) return;
+
+    mapRef.setInput('geocodedAddress', {
+      lat: parseFloat(details.latitude),
+      lng: parseFloat(details.longitude),
+      street: details.street,
+      number: details.number,
+      district: details.district,
+      city: details.city,
+      state: details.state,
+      cep: details.cep,
+    });
+
+    mapRef.instance.close.subscribe(() => mapRef.destroy());
   }
 
   protected onEditEvent(event: DayEventItem): void {
