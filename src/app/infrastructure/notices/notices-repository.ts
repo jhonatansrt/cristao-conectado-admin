@@ -25,20 +25,23 @@ export class NoticesRepository implements INoticesRepository {
 
   public createNotice(props: CreateNoticeDTO): Observable<{ id?: string }> {
     const url = environment.apiBaseURL + `/registers`;
+    const params = props.id
+      ? new HttpParams({
+          fromObject: {
+            registerId: props.id,
+          },
+        })
+      : undefined;
 
-    if (props.id) {
-      const params = new HttpParams({
-        fromObject: {
-          registerId: props.id,
-        },
-      });
-    }
-
-    return this.httpClient.post<{ id?: string }>(url, {
-      type: props.type,
-      title: props.title,
-      description: props.description,
-      church_id: props.churchId,
-    });
+    return this.httpClient.post<{ id?: string }>(
+      url,
+      {
+        type: props.type,
+        title: props.title,
+        description: props.description,
+        church_id: props.churchId,
+      },
+      { params },
+    );
   }
 }

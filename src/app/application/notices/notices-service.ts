@@ -39,7 +39,7 @@ export class NoticesService {
     );
   }
 
-  public createNotice(props: { title: string; description: string }): Observable<void> {
+  public createNotice(props: { id?: string; title: string; description: string }): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
     if (!churchId) {
@@ -48,6 +48,7 @@ export class NoticesService {
 
     return this.noticesRepository
       .createNotice({
+        id: props.id,
         churchId,
         type: 0,
         title: props.title,
