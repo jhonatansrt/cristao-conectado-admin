@@ -39,9 +39,9 @@ export class Header {
     [namedRoutes.playlists]: 'Playlists',
     [namedRoutes.notices]: 'Avisos',
     [namedRoutes.testimonials]: 'Testemunhos',
+    [namedRoutes.pray]: 'Pedidos de oração',
     [namedRoutes.church]: 'Igreja',
   };
-
 
   protected readonly buttonsActions = this.headerStore.getButtonsActions();
 
