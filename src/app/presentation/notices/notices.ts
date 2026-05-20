@@ -17,7 +17,7 @@ import { AlertService } from '../common/alert/alert.service';
 })
 export class Notices implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
-  private noticesService = inject(NoticesService);
+  private readonly noticesService = inject(NoticesService);
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
@@ -102,10 +102,7 @@ export class Notices implements OnInit, OnDestroy {
     this.noticesService
       .deleteNotice(noticeId)
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe({
-        next: () => this.getNotices(),
-        error: () => {},
-      });
+      .subscribe(() => this.getNotices());
   }
 
   private handleEditNotice(row: TableRow): void {
