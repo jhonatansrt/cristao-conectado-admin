@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { Address, IAddressesRepository } from '../../domain/addresses';
 import { GeocodedAddress } from '../../domain/google-maps';
 import { ToastService } from '../../presentation/common/toast/toast.service';
+import { AddressesStore } from './addresses-store';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class AddressesService {
   private addressesRepository = inject(IAddressesRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
+  private addressesStore = inject(AddressesStore);
 
   public getAddresses(): Observable<Address[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -28,7 +30,20 @@ export class AddressesService {
     );
   }
 
-  public createAddress(geocoded: GeocodedAddress, place: string): Observable<Address> {
+  public loadAddresses(): void {
+    this.addressesStore.setIsLoading(true);
+    this.getAddresses().subscribe({
+      next: (addresses) => {
+        this.addressesStore.setAddresses(addresses);
+        this.addressesStore.setIsLoading(false);
+      },
+      error: () => {
+        this.addressesStore.setIsLoading(false);
+      },
+    });
+  }
+
+  public createAddress(geocoded: GeocodedAddress, place: string): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
     return this.addressesRepository.createAddress({
       cep: geocoded.cep,
@@ -42,6 +57,9 @@ export class AddressesService {
       place,
       churchId,
     }).pipe(
+      switchMap(() => this.getAddresses()),
+      tap((addresses) => this.addressesStore.setAddresses(addresses)),
+      map(() => void 0),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -49,7 +67,7 @@ export class AddressesService {
     );
   }
 
-  public updateAddress(address: Address, place: string, number: string): Observable<Address> {
+  public updateAddress(address: Address, place: string, number: string): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
     return this.addressesRepository.updateAddress(address.id, {
       cep: address.cep,
@@ -63,6 +81,9 @@ export class AddressesService {
       place,
       churchId,
     }).pipe(
+      switchMap(() => this.getAddresses()),
+      tap((addresses) => this.addressesStore.setAddresses(addresses)),
+      map(() => void 0),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -72,6 +93,9 @@ export class AddressesService {
 
   public deleteAddress(id: string): Observable<void> {
     return this.addressesRepository.deleteAddress(id).pipe(
+      switchMap(() => this.getAddresses()),
+      tap((addresses) => this.addressesStore.setAddresses(addresses)),
+      map(() => void 0),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
