@@ -24,9 +24,9 @@ export class TestimonialsService {
       map((testimonials) => {
         return testimonials.map((testimonial) => ({
           id: testimonial.id,
+          userName: testimonial.__user__?.name ?? testimonial.user?.name ?? '-',
           title: testimonial.title,
           description: testimonial.description,
-          userName: testimonial.user?.name ?? '-',
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir testemunho' }],
         }));
       }),

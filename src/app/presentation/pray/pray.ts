@@ -25,9 +25,9 @@ export class Pray implements OnInit, OnDestroy {
 
   constructor() {
     const columns: TableColumn[] = [
+      { key: 'userName', header: 'Usuário' },
       { key: 'title', header: 'Título' },
       { key: 'description', header: 'Descrição' },
-      { key: 'userName', header: 'Usuário' },
     ];
 
     this.tableStore.setTable(columns, []);

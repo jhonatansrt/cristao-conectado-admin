@@ -24,9 +24,9 @@ export class PrayService {
       map((prayers) => {
         return prayers.map((pray) => ({
           id: pray.id,
+          userName: pray.__user__?.name ?? pray.user?.name ?? '-',
           title: pray.title,
           description: pray.description,
-          userName: pray.user?.name ?? '-',
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir pedido de oração' }],
         }));
       }),
