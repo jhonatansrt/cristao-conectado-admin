@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, output } from '@angular/core';
+import { Component, forwardRef, input, output, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -29,11 +29,11 @@ export class SelectComponent implements ControlValueAccessor {
 
   public readonly valueChange = output<string | number>();
 
-  public selectValue: string | number = '';
+  public readonly selectValue = signal<string | number>('');
   public isDisabled = false;
 
   public get effectiveValue(): string | number {
-    return this.optionSelected() ?? this.selectValue;
+    return this.optionSelected() ?? this.selectValue();
   }
 
   private onChangeFn: (value: string | number) => void = () => undefined;
@@ -41,9 +41,9 @@ export class SelectComponent implements ControlValueAccessor {
 
   public onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    this.selectValue = target.value;
-    this.valueChange.emit(this.selectValue);
-    this.onChangeFn(this.selectValue);
+    this.selectValue.set(target.value);
+    this.valueChange.emit(target.value);
+    this.onChangeFn(target.value);
   }
 
   public onBlur(): void {
@@ -51,7 +51,7 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   public writeValue(value: string | number): void {
-    this.selectValue = value ?? '';
+    this.selectValue.set(value ?? '');
   }
 
   public registerOnChange(fn: (value: string | number) => void): void {
