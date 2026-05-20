@@ -40,10 +40,19 @@ export class Playlists implements OnInit, OnDestroy {
     ];
 
     this.tableStore.setTable(columns, []);
-
   }
 
   ngOnInit(): void {
+    this.setButtonsActions();
+
+    this.getPlaylists();
+  }
+
+  ngOnDestroy(): void {
+    this.headerStore.clearButtonsActions();
+  }
+
+  private setButtonsActions() {
     this.headerStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
@@ -51,12 +60,6 @@ export class Playlists implements OnInit, OnDestroy {
         onClick: this.handleAddPlaylist,
       },
     ]);
-
-    this.getPlaylists();
-  }
-
-  ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
   }
 
   private readonly handleAddPlaylist = (): void => {
@@ -87,15 +90,16 @@ export class Playlists implements OnInit, OnDestroy {
                 if (action.key === 'open') {
                   return {
                     ...action,
-                    onClick: () => this.handleOpenPlaylist({
-                      id: String(row.id),
-                      church_id: '',
-                      order: Number(row['order'] ?? 0),
-                      name: String(row['title'] ?? ''),
-                      created_at: '',
-                      updated_at: '',
-                      videoCount: Number(String(row['videos'] ?? '0').split(' ')[0]) || 0,
-                    }),
+                    onClick: () =>
+                      this.handleOpenPlaylist({
+                        id: String(row.id),
+                        church_id: '',
+                        order: Number(row['order'] ?? 0),
+                        name: String(row['title'] ?? ''),
+                        created_at: '',
+                        updated_at: '',
+                        videoCount: Number(String(row['videos'] ?? '0').split(' ')[0]) || 0,
+                      }),
                   };
                 }
 
@@ -109,7 +113,6 @@ export class Playlists implements OnInit, OnDestroy {
         error: () => {},
       });
   }
-
 
   private async handleDeletePlaylist(playlistId: string): Promise<void> {
     const confirmed = await this.alertService.openAlert({
