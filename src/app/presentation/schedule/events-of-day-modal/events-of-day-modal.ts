@@ -84,7 +84,8 @@ export class EventsOfDayModal {
       description: details.description,
       hourInitial: event.hourInitial ?? 0,
       hourFinal: event.hourFinal ?? 0,
-      ...(event.scheduleDate ? { scheduleDate: event.scheduleDate } : { day: event.day }),
+      day: event.day,
+      scheduleDate: event.scheduleDate ?? undefined,
     };
 
     const modal = this.container.vcr?.createComponent(AddEventModal);

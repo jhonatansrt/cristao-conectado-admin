@@ -89,8 +89,8 @@ export class AddEventModal implements OnInit {
         description: edit.description,
         startTime: this.formatTime(edit.hourInitial),
         endTime: this.formatTime(edit.hourFinal),
-        isFixed: edit.day !== undefined ? 'true' : 'false',
-        dayOfWeek: edit.day !== undefined ? String(edit.day) : '',
+        isFixed: edit.scheduleDate ? 'true' : 'false',
+        dayOfWeek: !edit.scheduleDate && edit.day !== undefined ? String(edit.day) : '',
         date: edit.scheduleDate ? this.formatDateToInput(edit.scheduleDate) : '',
       });
     }
@@ -126,8 +126,8 @@ export class AddEventModal implements OnInit {
       hourInitial: this.parseTime(startTime ?? ''),
       hourFinal: this.parseTime(endTime ?? ''),
       ...(this.isFixed
-        ? { day: Number(dayOfWeek) }
-        : { scheduleDate: this.parseDate(date ?? '') }),
+        ? { scheduleDate: this.parseDate(date ?? '') }
+        : { day: Number(dayOfWeek) }),
     };
 
     this.loading = true;
