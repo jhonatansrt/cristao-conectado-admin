@@ -82,18 +82,14 @@ export class Schedule implements OnInit, OnDestroy {
           if (!this.selectedDate) return;
           this.schedulesService
             .getDaySchedules(this.selectedDate.iso, this.selectedDate.weekDay)
-            .subscribe({
-              next: (updated) => {
-                if (updated.length === 0) {
-                  eventModal.destroy();
-                  return;
-                }
-              },
-              error: () => {},
+            .subscribe((updated) => {
+              if (updated.length === 0) {
+                eventModal.destroy();
+                return;
+              }
             });
         });
       },
-      error: () => {},
     });
   }
 }
