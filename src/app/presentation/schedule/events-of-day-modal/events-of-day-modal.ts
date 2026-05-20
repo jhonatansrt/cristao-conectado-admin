@@ -43,7 +43,7 @@ export class EventsOfDayModal {
   // private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
 
   public readonly events = computed<DayEventItem[]>(() =>
-    this.schedulesStore.daySchedules().map((schedule) => ({
+    this.schedulesStore.getDaySchedules()().map((schedule) => ({
       id: schedule.id,
       title: schedule.title,
       description: schedule.schedule_date ?? '',
@@ -56,7 +56,7 @@ export class EventsOfDayModal {
   protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
 
   private reloadSchedules(): void {
-    const selectedDate = this.schedulesStore.selectedDate();
+    const selectedDate = this.schedulesStore.getSelectedDate()();
 
     if (!selectedDate) {
       return;
