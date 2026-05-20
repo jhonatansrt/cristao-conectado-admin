@@ -4,4 +4,9 @@ export interface Pray {
   title: string;
   description: string;
   createdAt: string;
+  user?: {
+    id: string;
+    name: string;
+    avatar: string | null;
+  };
 }

@@ -5,7 +5,10 @@ export type Testimonial = {
   description: string;
   approved: boolean;
   created_at: string;
-  name: string;
-  avatar: string | null;
   churchId: string;
+  user?: {
+    id: string;
+    name: string;
+    avatar: string | null;
+  };
 };

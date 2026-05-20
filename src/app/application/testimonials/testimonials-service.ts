@@ -26,6 +26,7 @@ export class TestimonialsService {
           id: testimonial.id,
           title: testimonial.title,
           description: testimonial.description,
+          userName: testimonial.user?.name ?? '-',
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir testemunho' }],
         }));
       }),
