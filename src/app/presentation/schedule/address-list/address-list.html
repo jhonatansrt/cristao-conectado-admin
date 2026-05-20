@@ -4,7 +4,7 @@
 
     <app-predictions [predictions]="predictions" (confirmed)="onAddressCreated()" />
 
-    @if (shouldShowRegisteredAddresses) {
+    @if (searchAddress.trim().length === 0) {
       <div class="flex flex-column">
         <h3>Selecionar existente</h3>
 
@@ -25,7 +25,9 @@
           @for (address of addressesStore.getAddresses()(); track address.id) {
             <app-card
               [title]="address.place"
-              [description]="getAddressDescription(address)"
+              [description]="
+                `${address.street}, ${address.district}, ${address.city} - ${address.state}`
+              "
               [icons]="getCardActions(address)"
               [clickable]="true"
               (click)="onSelectAddress(address)"

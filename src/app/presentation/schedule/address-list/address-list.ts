@@ -39,10 +39,6 @@ export class AddressList implements OnInit {
     this.addressesService.loadAddresses();
   }
 
-  public get shouldShowRegisteredAddresses(): boolean {
-    return this.searchAddress.trim().length === 0;
-  }
-
   public onSearchAddress(value: string): void {
     this.searchAddress = value;
 
@@ -54,10 +50,6 @@ export class AddressList implements OnInit {
     this.googleMapsService.getPlacePredictions(this.searchAddress).subscribe((predictions) => {
       this.predictions = predictions;
     });
-  }
-
-  public getAddressDescription(address: Address): string {
-    return `${address.street}, ${address.district}, ${address.city} - ${address.state}`;
   }
 
   public getCardActions(address: Address): CardIconAction[] {
@@ -87,7 +79,7 @@ export class AddressList implements OnInit {
     this.searchInput?.reset();
   }
 
-  private handleEditAddress(address: Address): void {
+  private getModelGeocodedAddress(address: Address) {
     const geocodedAddress: GeocodedAddress = {
       lat: parseFloat(address.latitude),
       lng: parseFloat(address.longitude),
@@ -99,15 +91,13 @@ export class AddressList implements OnInit {
       cep: address.cep,
     };
 
+    return geocodedAddress;
+  }
+
+  private handleEditAddress(address: Address): void {
     const mapRef = this.container.vcr?.createComponent(MapComponent);
-    if (!mapRef) return;
-
-    mapRef.setInput('geocodedAddress', geocodedAddress);
-    mapRef.setInput('existingAddress', address);
-
-    mapRef.instance.confirmed.subscribe(() => {
-      this.ngZone.run(() => {});
-    });
+    mapRef!.setInput('geocodedAddress', this.getModelGeocodedAddress(address));
+    mapRef!.setInput('existingAddress', address);
   }
 
   private async handleDeleteAddress(address: Address): Promise<void> {
@@ -115,8 +105,8 @@ export class AddressList implements OnInit {
       message: 'Tem certeza que deseja excluir o endereço?',
     });
 
-    if (!confirmed) return;
-
-    this.addressesService.deleteAddress(address.id).subscribe();
+    if (confirmed) {
+      this.addressesService.deleteAddress(address.id).subscribe();
+    }
   }
 }

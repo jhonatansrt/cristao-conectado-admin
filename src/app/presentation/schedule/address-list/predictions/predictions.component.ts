@@ -36,14 +36,8 @@ export class PredictionsComponent {
       }
 
       const mapRef = this.container.vcr?.createComponent(MapComponent);
-
-      if (!mapRef) {
-        return;
-      }
-
-      mapRef.setInput('geocodedAddress', geocoded);
-
-      mapRef.instance.confirmed.subscribe(() => {
+      mapRef!.setInput('geocodedAddress', geocoded);
+      mapRef!.instance.confirmed.subscribe(() => {
         this.ngZone.run(() => {
           this.confirmed.emit();
         });
