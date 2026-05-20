@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { AddressesStore } from '../../../../application/addresses/addresses-store';
+import { AddressesService } from '../../../../application/addresses/addresses-service';
 import { Address } from '../../../../domain/addresses';
 import { GeocodedAddress } from '../../../../domain/google-maps';
 import { ButtonComponent } from '../../../common/button/button.component';
@@ -22,7 +22,7 @@ export class AddPlaceDialog implements OnInit {
 
   private readonly el = inject(ElementRef);
   private readonly fb = inject(FormBuilder);
-  private readonly addressesStore = inject(AddressesStore);
+  private readonly addressesService = inject(AddressesService);
 
   public loading = false;
 
@@ -58,7 +58,7 @@ export class AddPlaceDialog implements OnInit {
         ? { ...existing, latitude: String(geocoded.lat), longitude: String(geocoded.lng) }
         : existing;
 
-      this.addressesStore
+      this.addressesService
         .updateAddress(addressToUpdate, place!.trim(), number!.trim())
         .pipe(finalize(() => (this.loading = false)))
         .subscribe({
@@ -75,7 +75,7 @@ export class AddPlaceDialog implements OnInit {
     if (!geocoded) return;
 
     const addressWithNumber = { ...geocoded, number: number!.trim() };
-    this.addressesStore
+    this.addressesService
       .createAddress(addressWithNumber, place!.trim())
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({

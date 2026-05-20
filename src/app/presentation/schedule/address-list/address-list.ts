@@ -1,5 +1,6 @@
 import { Component, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
+import { AddressesService } from '../../../application/addresses/addresses-service';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
@@ -29,13 +30,13 @@ export class AddressList implements OnInit {
   private readonly container = inject(Container);
   private readonly ngZone = inject(NgZone);
   public readonly addressesStore = inject(AddressesStore);
-
+  private readonly addressesService = inject(AddressesService);
 
   public searchAddress = '';
   public predictions: string[] = [];
 
   ngOnInit() {
-    this.addressesStore.loadAddresses();
+    this.addressesService.loadAddresses();
   }
 
   public get shouldShowRegisteredAddresses(): boolean {
@@ -116,6 +117,6 @@ export class AddressList implements OnInit {
 
     if (!confirmed) return;
 
-    this.addressesStore.deleteAddress(address.id).subscribe();
+    this.addressesService.deleteAddress(address.id).subscribe();
   }
 }
