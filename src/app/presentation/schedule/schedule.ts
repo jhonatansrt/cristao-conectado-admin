@@ -4,13 +4,9 @@ import { finalize } from 'rxjs';
 import { HeaderStore } from '../../application/header/header-store';
 import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
-import {
-  NativeCalendar,
-  CalendarDaySelect,
-  CalendarMonthChange,
-} from './native-calendar/native-calendar';
+import { NativeCalendar } from './native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
-import { EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
+import { SchedulesStore } from '../../application/schedules/schedules-store';
 
 @Component({
   selector: 'app-schedule',
@@ -22,21 +18,18 @@ export class Schedule implements OnInit, OnDestroy {
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
-
-  protected isLoading = true;
-
-  private currentMonth = new Date().getMonth() + 1;
-  private currentYear = new Date().getFullYear();
-  private selectedDate: { iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null = null;
+  private readonly schedulesStore = inject(SchedulesStore);
 
   private readonly handleAddEvent = (): void => {
     const addressList = this.container.vcr?.createComponent(AddressList);
     addressList?.instance.eventCreated.subscribe(() => {
-      this.handleMonthChanged({ month: this.currentMonth, year: this.currentYear });
+      this.loadMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear());
     });
   };
 
   public ngOnInit(): void {
+    this.loadMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear());
+
     this.headerStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
@@ -50,34 +43,13 @@ export class Schedule implements OnInit, OnDestroy {
     this.headerStore.clearButtonsActions();
   }
 
-  protected handleMonthChanged({ month, year }: CalendarMonthChange): void {
-    this.currentMonth = month;
-    this.currentYear = year;
-    this.isLoading = true;
+  protected loadMonthSchedules(month: number, year: number): void {
+    this.schedulesStore.setCurrentMonthAndYear(month, year);
+    this.schedulesStore.setIsLoadingCalendar(true);
 
     this.schedulesService
       .getMonthSchedules(month, year)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.schedulesStore.setIsLoadingCalendar(false)))
       .subscribe();
-  }
-
-  protected handleDaySelected({ day, month, year }: CalendarDaySelect): void {
-    const selectedDate = new Date(Date.UTC(year, month - 1, day));
-    const selectedDateISO = selectedDate.toISOString();
-    const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-    this.selectedDate = { iso: selectedDateISO, weekDay: selectedWeekDay };
-
-    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe({
-      next: () => {
-        const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
-
-        if (!eventModal) {
-          return;
-        }
-
-        eventModal.setInput('selectedDate', this.selectedDate);
-      },
-    });
   }
 }

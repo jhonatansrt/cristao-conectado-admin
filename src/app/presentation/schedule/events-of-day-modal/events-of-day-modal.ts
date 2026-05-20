@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal, ComponentRef } from '@angular/core';
+import { Component, computed, inject, signal, ComponentRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -42,8 +42,6 @@ export class EventsOfDayModal {
   private readonly alertService = inject(AlertService);
   private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
 
-  public readonly selectedDate = input<{ iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null>(null);
-
   public readonly events = computed<DayEventItem[]>(() =>
     this.schedulesStore.daySchedules().map((schedule) => ({
       id: schedule.id,
@@ -58,7 +56,7 @@ export class EventsOfDayModal {
   protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
 
   private reloadSchedules(): void {
-    const selectedDate = this.selectedDate();
+    const selectedDate = this.schedulesStore.selectedDate();
 
     if (!selectedDate) {
       return;
