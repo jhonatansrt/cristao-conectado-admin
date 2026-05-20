@@ -3,6 +3,8 @@ import { Component, inject } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { RequestsService } from '../../application/requests/requests-service';
 import { UserChurchRequest } from '../../domain/requests';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { TableComponent } from '../common/table/table.component';
 import { ToastService } from '../common/toast/toast.service';
 
@@ -22,6 +24,8 @@ export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly requestsService = inject(RequestsService);
   private readonly toastService = inject(ToastService);
+  private readonly capitalizeNamePipe = new CapitalizeNamePipe();
+  private readonly formatDatePipe = new FormatDatePipe();
 
   constructor() {
     const columns: TableColumn[] = [
@@ -50,9 +54,9 @@ export class Requests {
   }
 
   private buildRow(request: UserChurchRequest): RequestRow {
-    const name = request.name;
+    const name = this.capitalizeNamePipe.transform(request.name);
     const email = request.email;
-    const birthDate = request.birth_date;
+    const birthDate = this.formatDatePipe.transform(request.birth_date);
 
     return {
       id: request.id,
