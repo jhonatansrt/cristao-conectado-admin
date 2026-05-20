@@ -25,6 +25,7 @@ export class InputComponent implements ControlValueAccessor {
   public readonly errorMessage = input<string>('');
   public readonly dateOfBirth = input<boolean>(false);
   public readonly timeMask = input<boolean>(false);
+  public readonly multiline = input<boolean>(false);
 
   public readonly valueChange = output<string>();
 
@@ -35,7 +36,7 @@ export class InputComponent implements ControlValueAccessor {
   private onTouched: () => void = () => undefined;
 
   public onInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     this.inputValue = target.value;
     this.valueChange.emit(this.inputValue);
     this.onChange(this.inputValue);

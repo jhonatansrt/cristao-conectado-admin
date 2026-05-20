@@ -9,7 +9,8 @@ fieldset {
     font-weight: var(--font-weight-semibold);
   }
 
-  input {
+  input,
+  textarea {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid var(--color-input-border);
@@ -26,6 +27,12 @@ fieldset {
     &::placeholder {
       color: var(--color-input-placeholder);
     }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
   }
 
   small {
