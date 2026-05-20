@@ -12,8 +12,7 @@ import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 })
 export class ProfilePreview {
   private readonly authStore = inject(AuthStore);
-  public readonly userLogged = this.authStore.getUserLogged();
-
+  protected readonly userLogged = this.authStore.getUserLogged();
   protected readonly userTypeLabel = computed(() =>
     this.userLogged()?.type === TypeUser.MASTER ? 'Master' : 'Administrador',
   );
