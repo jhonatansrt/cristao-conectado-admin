@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
+import { SchedulesStore } from '../../../application/schedules/schedules-store';
 
 export type CalendarCell = {
   weekDay: string;
@@ -28,11 +29,11 @@ export type CalendarDaySelect = {
   styleUrl: './native-calendar.scss',
 })
 export class NativeCalendar implements OnInit {
+  private readonly schedulesStore = inject(SchedulesStore);
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
   @Input() public isLoading = true;
-  @Input() public monthSchedulesByDate = new Map<string, number>();
   @Output() public monthChanged = new EventEmitter<CalendarMonthChange>();
   @Output() public daySelected = new EventEmitter<CalendarDaySelect>();
 
@@ -82,7 +83,7 @@ export class NativeCalendar implements OnInit {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: day,
         isCurrentMonth: true,
-        count: this.monthSchedulesByDate.get(this.getMonthDateKey(year, month, day)) ?? 0,
+        count: this.schedulesStore.monthSchedulesByDate().get(this.getMonthDateKey(year, month, day)) ?? 0,
       });
     }
 
