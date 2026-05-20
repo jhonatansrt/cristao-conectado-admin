@@ -25,11 +25,16 @@ export class SelectComponent implements ControlValueAccessor {
   public readonly placeholder = input<string>('');
   public readonly options = input<SelectOption[]>([]);
   public readonly errorMessage = input<string>('');
+  public readonly optionSelected = input<string | number | null>(null);
 
   public readonly valueChange = output<string | number>();
 
   public selectValue: string | number = '';
   public isDisabled = false;
+
+  public get effectiveValue(): string | number {
+    return this.optionSelected() ?? this.selectValue;
+  }
 
   private onChangeFn: (value: string | number) => void = () => undefined;
   private onTouchedFn: () => void = () => undefined;
