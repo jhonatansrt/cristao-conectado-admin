@@ -29,7 +29,7 @@ export interface DayEventItem {
 @Component({
   selector: 'app-events-of-day-modal',
   standalone: true,
-  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe, ButtonComponent, MapComponent],
+  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe, ButtonComponent],
   templateUrl: './events-of-day-modal.html',
   styleUrl: './events-of-day-modal.scss',
 })
