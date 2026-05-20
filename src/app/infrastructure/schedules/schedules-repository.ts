@@ -62,4 +62,9 @@ export class SchedulesRepository implements ISchedulesRepository {
     const url = `${environment.apiBaseURL}/schedules/details/${id}`;
     return this.httpClient.get<ScheduleDetails>(url);
   }
+
+  public deleteSchedule(id: string): Observable<void> {
+    const url = `${environment.apiBaseURL}/schedules/${id}`;
+    return this.httpClient.delete<void>(url).pipe(map(() => void 0));
+  }
 }

@@ -90,4 +90,13 @@ export class SchedulesService {
       }),
     );
   }
+
+  public deleteSchedule(id: string): Observable<void> {
+    return this.schedulesRepository.deleteSchedule(id).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
 }

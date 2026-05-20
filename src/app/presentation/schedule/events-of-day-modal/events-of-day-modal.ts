@@ -1,4 +1,5 @@
 import { Component, inject, input, output, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
 import { SchedulesService } from '../../../application/schedules/schedules-service';
@@ -9,6 +10,7 @@ import { ModalComponent } from '../../common/modal/modal.component';
 import { ButtonComponent } from '../../common/button/button.component';
 import { Container } from '../../../util/container.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
+import { AlertService } from '../../common/alert/alert.service';
 
 export interface DayEventItem {
   id: string;
@@ -33,6 +35,7 @@ export interface DayEventItem {
 export class EventsOfDayModal {
   private readonly schedulesService = inject(SchedulesService);
   private readonly container = inject(Container);
+  private readonly alertService = inject(AlertService);
 
   public readonly events = input<DayEventItem[]>([]);
   public readonly eventEdited = output<void>();
@@ -59,6 +62,26 @@ export class EventsOfDayModal {
 
   protected formatAddress(details: ScheduleDetails): string {
     return `${details.street}, ${details.number} - ${details.district}, ${details.city} - ${details.state}`;
+  }
+
+  protected async onDeleteEvent(event: DayEventItem): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir o evento?',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    await firstValueFrom(this.schedulesService.deleteSchedule(event.id));
+
+    this.detailsMap.update((prev) => {
+      const updated = { ...prev };
+      delete updated[event.id];
+      return updated;
+    });
+
+    this.eventEdited.emit();
   }
 
   protected onEditEvent(event: DayEventItem): void {
