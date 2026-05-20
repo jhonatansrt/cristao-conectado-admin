@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
+import { RequestsService } from '../../application/requests/requests-service';
+import { UserChurchRequest } from '../../domain/requests';
 import { TableComponent } from '../common/table/table.component';
 import { ToastService } from '../common/toast/toast.service';
 
@@ -18,28 +20,8 @@ interface RequestRow extends TableRow {
 })
 export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
+  private readonly requestsService = inject(RequestsService);
   private readonly toastService = inject(ToastService);
-
-  private readonly mockRequests: RequestRow[] = [
-    {
-      id: 1,
-      name: 'Ana Souza',
-      email: 'ana.souza@email.com',
-      birthDate: '12/08/1998',
-    },
-    {
-      id: 2,
-      name: 'Carlos Ferreira',
-      email: 'carlos.ferreira@email.com',
-      birthDate: '03/11/1989',
-    },
-    {
-      id: 3,
-      name: 'Mariana Lima',
-      email: 'mariana.lima@email.com',
-      birthDate: '25/02/2001',
-    },
-  ];
 
   constructor() {
     const columns: TableColumn[] = [
@@ -48,25 +30,50 @@ export class Requests {
       { key: 'birthDate', header: 'Data de nascimento' },
     ];
 
-    const rows = this.mockRequests.map((request) => ({
-      ...request,
+    this.tableStore.setColumns(columns);
+    this.loadPendingRequests();
+  }
+
+  private loadPendingRequests(): void {
+    this.tableStore.setLoading(true);
+
+    this.requestsService.getPendingRequestsByChurch().subscribe({
+      next: (requests) => {
+        const rows = requests.map((request) => this.buildRow(request));
+        this.tableStore.setRows(rows);
+        this.tableStore.setLoading(false);
+      },
+      error: () => {
+        this.tableStore.setLoading(false);
+      },
+    });
+  }
+
+  private buildRow(request: UserChurchRequest): RequestRow {
+    const name = request.name;
+    const email = request.email;
+    const birthDate = request.birth_date;
+
+    return {
+      id: request.id,
+      name,
+      email,
+      birthDate,
       actions: [
         {
           key: `approve-${request.id}`,
           icon: 'check_circle',
           label: 'Aprovar',
-          onClick: () => this.approveRequest(request),
+          onClick: () => this.approveRequest({ id: request.id, name, email, birthDate }),
         },
         {
           key: `deny-${request.id}`,
           icon: 'cancel',
           label: 'Negar',
-          onClick: () => this.denyRequest(request),
+          onClick: () => this.denyRequest({ id: request.id, name, email, birthDate }),
         },
       ],
-    }));
-
-    this.tableStore.setTable(columns, rows);
+    };
   }
 
   private approveRequest(request: RequestRow): void {
