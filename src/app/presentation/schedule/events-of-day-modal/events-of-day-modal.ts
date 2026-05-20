@@ -12,6 +12,7 @@ import { Container } from '../../../util/container.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
 import { AlertService } from '../../common/alert/alert.service';
 import { MapComponent } from '../../common/map/map.component';
+import { ConfirmedAttendeesDialog } from './confirmed-attendees-dialog/confirmed-attendees-dialog';
 
 export interface DayEventItem {
   id: string;
@@ -105,6 +106,12 @@ export class EventsOfDayModal {
     mapRef.setInput('readOnly', true);
 
     mapRef.instance.close.subscribe(() => mapRef.destroy());
+  }
+
+
+  protected onOpenConfirmedAttendees(eventId: string): void {
+    const dialogRef = this.container.vcr?.createComponent(ConfirmedAttendeesDialog);
+    dialogRef?.setInput('eventId', eventId);
   }
 
   protected onEditEvent(event: DayEventItem): void {
