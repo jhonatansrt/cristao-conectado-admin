@@ -26,6 +26,7 @@ export class PrayService {
           id: pray.id,
           title: pray.title,
           description: pray.description,
+          userName: pray.user?.name ?? '-',
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir pedido de oração' }],
         }));
       }),

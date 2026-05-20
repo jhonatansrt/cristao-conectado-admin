@@ -27,6 +27,7 @@ export class Testimonials implements OnInit, OnDestroy {
     const columns: TableColumn[] = [
       { key: 'title', header: 'Título' },
       { key: 'description', header: 'Descrição' },
+      { key: 'userName', header: 'Usuário' },
     ];
 
     this.tableStore.setTable(columns, []);
