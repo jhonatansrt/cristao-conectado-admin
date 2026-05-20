@@ -1,4 +1,4 @@
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, computed, inject, input, signal, ComponentRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -40,6 +40,9 @@ export class EventsOfDayModal {
   private readonly schedulesStore = inject(SchedulesStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
+  private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
+
+  public readonly selectedDate = input<{ iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null>(null);
 
   public readonly events = computed<DayEventItem[]>(() =>
     this.schedulesStore.daySchedules().map((schedule) => ({
@@ -52,9 +55,26 @@ export class EventsOfDayModal {
       scheduleDate: schedule.schedule_date,
     })),
   );
-  public readonly eventEdited = output<void>();
-
   protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
+
+  private reloadSchedules(): void {
+    const selectedDate = this.selectedDate();
+
+    if (!selectedDate) {
+      return;
+    }
+
+    const date = new Date(selectedDate.iso);
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+
+    this.schedulesService.getMonthSchedules(month, year).subscribe();
+    this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe((updated) => {
+      if (updated.length === 0) {
+        this.componentRef.destroy();
+      }
+    });
+  }
 
   protected onAccordionOpened(id: string): void {
     if (this.detailsMap()[id]) {
@@ -95,7 +115,7 @@ export class EventsOfDayModal {
       return updated;
     });
 
-    this.eventEdited.emit();
+    this.reloadSchedules();
   }
 
   protected onOpenMap(event: DayEventItem): void {
@@ -169,7 +189,7 @@ export class EventsOfDayModal {
 
       this.onAccordionOpened(event.id);
 
-      this.eventEdited.emit();
+      this.reloadSchedules();
     });
   }
 }
