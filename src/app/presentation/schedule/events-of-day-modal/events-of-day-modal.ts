@@ -1,9 +1,10 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
 import { SchedulesService } from '../../../application/schedules/schedules-service';
 import { ScheduleDetails } from '../../../domain/schedules';
+import { SchedulesStore } from '../../../application/schedules/schedules-store';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -36,10 +37,21 @@ export interface DayEventItem {
 })
 export class EventsOfDayModal {
   private readonly schedulesService = inject(SchedulesService);
+  private readonly schedulesStore = inject(SchedulesStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
 
-  public readonly events = input<DayEventItem[]>([]);
+  public readonly events = computed<DayEventItem[]>(() =>
+    this.schedulesStore.daySchedules().map((schedule) => ({
+      id: schedule.id,
+      title: schedule.title,
+      description: schedule.schedule_date ?? '',
+      hourInitial: schedule.hour_initial,
+      hourFinal: schedule.hour_final,
+      day: schedule.day,
+      scheduleDate: schedule.schedule_date,
+    })),
+  );
   public readonly eventEdited = output<void>();
 
   protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
