@@ -45,12 +45,9 @@ export class CreateNotice {
         description: description ?? '',
       })
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe({
-        next: () => {
-          this.noticeCreated.emit();
-          this.modal?.closeModal();
-        },
-        error: () => {},
+      .subscribe(() => {
+        this.noticeCreated.emit();
+        this.modal?.closeModal();
       });
   }
 }

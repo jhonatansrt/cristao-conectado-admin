@@ -24,21 +24,21 @@ export class NoticesRepository implements INoticesRepository {
   }
 
   public createNotice(props: CreateNoticeDTO): Observable<{ id?: string }> {
-    const url = environment.apiBaseURL + `/registers/${props.type}`;
-    const params = new HttpParams({
-      fromObject: {
-        church_id: props.churchId,
-      },
-    });
+    const url = environment.apiBaseURL + `/registers`;
 
-    return this.httpClient.post<{ id?: string }>(
-      url,
-      {
-        _type: props.type,
-        title: props.title,
-        description: props.description,
-      },
-      { params },
-    );
+    if (props.id) {
+      const params = new HttpParams({
+        fromObject: {
+          registerId: props.id,
+        },
+      });
+    }
+
+    return this.httpClient.post<{ id?: string }>(url, {
+      type: props.type,
+      title: props.title,
+      description: props.description,
+      church_id: props.churchId,
+    });
   }
 }
