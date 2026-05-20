@@ -60,7 +60,9 @@
               }
             </ul>
 
-            <app-button btnClass="btn-primary">Ver presenças confirmadas</app-button>
+            <app-button btnClass="btn-primary" (click)="onOpenConfirmedAttendees(event.id)">
+              Ver presenças confirmadas
+            </app-button>
 
             <footer class="flex justify-around">
               <button class="flex flex-column items-center" type="button" (click)="onEditEvent(event)">

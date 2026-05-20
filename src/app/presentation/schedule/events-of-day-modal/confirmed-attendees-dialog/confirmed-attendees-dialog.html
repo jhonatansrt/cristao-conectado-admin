@@ -1,0 +1,19 @@
+<app-dialog [title]="'Confirmado por ' + attendees.length" (close)="onClose()">
+  <section>
+    <ul class="flex flex-column">
+      @for (attendee of attendees; track attendee.id) {
+        <li class="flex items-center">
+          @if (attendee.avatarUrl) {
+            <img [src]="attendee.avatarUrl" [alt]="'Foto de ' + attendee.name" />
+          } @else {
+            <figure class="flex items-center justify-center" aria-hidden="true">
+              <mat-icon>person_outline</mat-icon>
+            </figure>
+          }
+
+          <span>{{ attendee.name }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+</app-dialog>
