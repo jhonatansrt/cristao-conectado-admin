@@ -40,7 +40,7 @@ export class EventsOfDayModal {
   private readonly schedulesStore = inject(SchedulesStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
-  private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
+  // private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
 
   public readonly events = computed<DayEventItem[]>(() =>
     this.schedulesStore.daySchedules().map((schedule) => ({
@@ -67,11 +67,13 @@ export class EventsOfDayModal {
     const year = date.getUTCFullYear();
 
     this.schedulesService.getMonthSchedules(month, year).subscribe();
-    this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe((updated) => {
-      if (updated.length === 0) {
-        this.componentRef.destroy();
-      }
-    });
+    this.schedulesService
+      .getDaySchedules(selectedDate.iso, selectedDate.weekDay)
+      .subscribe((updated) => {
+        if (updated.length === 0) {
+          // this.componentRef.destroy();
+        }
+      });
   }
 
   protected onAccordionOpened(id: string): void {
@@ -137,7 +139,6 @@ export class EventsOfDayModal {
 
     mapRef.instance.close.subscribe(() => mapRef.destroy());
   }
-
 
   protected onOpenConfirmedAttendees(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];

@@ -34,7 +34,7 @@ export class NativeCalendar {
   }
 
   protected get monthTitle(): string {
-    const date = this.visibleMonthDate;
+    const date = this.visibleMonthDate();
 
     return new Intl.DateTimeFormat('pt-BR', {
       month: 'long',
@@ -47,7 +47,7 @@ export class NativeCalendar {
   }
 
   protected get calendarCells(): CalendarCell[] {
-    const currentMonthDate = this.visibleMonthDate;
+    const currentMonthDate = this.visibleMonthDate();
     const year = currentMonthDate.getFullYear();
     const month = currentMonthDate.getMonth();
 
@@ -73,7 +73,9 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: day,
         isCurrentMonth: true,
-        count: this.schedulesStore.monthSchedulesByDate().get(this.getMonthDateKey(year, month, day)) ?? 0,
+        count:
+          this.schedulesStore.monthSchedulesByDate().get(this.getMonthDateKey(year, month, day)) ??
+          0,
       });
     }
 
@@ -94,16 +96,15 @@ export class NativeCalendar {
       return;
     }
 
-    const date = this.visibleMonthDate;
+    const date = this.visibleMonthDate();
     const selectedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), cell.dayNumber));
     const selectedDateISO = selectedDate.toISOString();
     const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
     this.schedulesStore.setSelectedDate({ iso: selectedDateISO, weekDay: selectedWeekDay });
-    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe({
-      next: () => {
-        this.container.vcr?.createComponent(EventsOfDayModal);
-      },
+
+    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe(() => {
+      this.container.vcr?.createComponent(EventsOfDayModal);
     });
   }
 
@@ -121,12 +122,8 @@ export class NativeCalendar {
     this.loadMonthSchedules();
   }
 
-  private get visibleMonthDate(): Date {
-    return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset, 1);
-  }
-
   private loadMonthSchedules(): void {
-    const date = this.visibleMonthDate;
+    const date = this.visibleMonthDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
@@ -137,6 +134,10 @@ export class NativeCalendar {
       .getMonthSchedules(month, year)
       .pipe(finalize(() => this.schedulesStore.setIsLoadingCalendar(false)))
       .subscribe();
+  }
+
+  private visibleMonthDate(): Date {
+    return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset, 1);
   }
 
   private getMonthDateKey(year: number, month: number, day: number): string {
