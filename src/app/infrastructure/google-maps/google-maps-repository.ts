@@ -32,6 +32,7 @@ type GoogleMapsApi = {
     Map?: new (container: HTMLElement, options: object) => {
       getCenter: () => { lat: () => number; lng: () => number };
     };
+    Marker?: new (options: { position: { lat: number; lng: number }; map: object }) => object;
     Geocoder?: new () => GeocoderService;
     places?: {
       AutocompleteService?: new () => AutocompleteService;
@@ -88,6 +89,14 @@ export class GoogleMapsRepository implements IGoogleMapsRepository {
       getCenter: () => {
         const center = mapInstance.getCenter();
         return { lat: center.lat(), lng: center.lng() };
+      },
+      addMarker: (markerCoords) => {
+        if (!this.googleApi?.maps?.Marker) return;
+
+        new this.googleApi.maps.Marker({
+          position: markerCoords,
+          map: mapInstance,
+        });
       },
     };
   }

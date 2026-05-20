@@ -2,9 +2,11 @@
   <section>
     <div #mapContainer role="application" aria-label="Mapa para seleção de endereço"></div>
 
-    <figure aria-hidden="true">
-      <mat-icon>location_on</mat-icon>
-    </figure>
+    @if (!readOnly()) {
+      <figure aria-hidden="true">
+        <mat-icon>location_on</mat-icon>
+      </figure>
+    }
 
     @if (!readOnly()) {
       <footer class="flex justify-center">
