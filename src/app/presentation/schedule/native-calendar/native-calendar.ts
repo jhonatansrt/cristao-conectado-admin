@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
@@ -27,26 +27,22 @@ export class NativeCalendar {
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-  protected monthOffset = 0;
+  protected monthOffset = signal(0);
 
-  protected get isLoading(): boolean {
-    return this.schedulesStore.isLoadingCalendar();
-  }
+  protected isLoading = computed(() => this.schedulesStore.isLoadingCalendar());
 
-  protected get monthTitle(): string {
+  protected monthTitle = computed(() => {
     const date = this.visibleMonthDate();
 
     return new Intl.DateTimeFormat('pt-BR', {
       month: 'long',
       year: 'numeric',
     }).format(date);
-  }
+  });
 
-  protected get canGoPreviousMonth(): boolean {
-    return this.monthOffset > 0;
-  }
+  protected canGoPreviousMonth = computed(() => this.monthOffset() > 0);
 
-  protected get calendarCells(): CalendarCell[] {
+  protected calendarCells = computed((): CalendarCell[] => {
     const currentMonthDate = this.visibleMonthDate();
     const year = currentMonthDate.getFullYear();
     const month = currentMonthDate.getMonth();
@@ -89,7 +85,7 @@ export class NativeCalendar {
     }
 
     return cells;
-  }
+  });
 
   protected selectDay(cell: CalendarCell): void {
     if (!cell.isCurrentMonth || !cell.count) {
@@ -109,16 +105,16 @@ export class NativeCalendar {
   }
 
   protected goToPreviousMonth(): void {
-    if (!this.canGoPreviousMonth) {
+    if (!this.canGoPreviousMonth()) {
       return;
     }
 
-    this.monthOffset -= 1;
+    this.monthOffset.update((offset) => offset - 1);
     this.loadMonthSchedules();
   }
 
   protected goToNextMonth(): void {
-    this.monthOffset += 1;
+    this.monthOffset.update((offset) => offset + 1);
     this.loadMonthSchedules();
   }
 
@@ -137,7 +133,7 @@ export class NativeCalendar {
   }
 
   private visibleMonthDate(): Date {
-    return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset, 1);
+    return new Date(this.today.getFullYear(), this.today.getMonth() + this.monthOffset(), 1);
   }
 
   private getMonthDateKey(year: number, month: number, day: number): string {
