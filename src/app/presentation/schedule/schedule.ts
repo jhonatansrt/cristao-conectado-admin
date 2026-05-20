@@ -40,8 +40,8 @@ export class Schedule implements OnInit, OnDestroy {
   }
 
   protected loadMonthSchedules(): void {
-    const month = this.schedulesStore.currentMonth();
-    const year = this.schedulesStore.currentYear();
+    const month = this.schedulesStore.getCurrentMonth()();
+    const year = this.schedulesStore.getCurrentYear()();
     this.schedulesStore.setCurrentMonthAndYear(month, year);
     this.schedulesStore.setIsLoadingCalendar(true);
 

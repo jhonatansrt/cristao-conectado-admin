@@ -150,10 +150,10 @@ export class AddEventModal implements OnInit {
 
   private refreshSchedules(): void {
     this.schedulesService
-      .getMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear())
+      .getMonthSchedules(this.schedulesStore.getCurrentMonth()(), this.schedulesStore.getCurrentYear()())
       .subscribe();
 
-    const selectedDate = this.schedulesStore.selectedDate();
+    const selectedDate = this.schedulesStore.getSelectedDate()();
     if (!selectedDate) {
       return;
     }

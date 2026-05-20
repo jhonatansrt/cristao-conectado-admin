@@ -29,7 +29,7 @@ export class NativeCalendar {
 
   protected monthOffset = signal(0);
 
-  protected isLoading = computed(() => this.schedulesStore.isLoadingCalendar());
+  protected isLoading = computed(() => this.schedulesStore.getIsLoadingCalendar()());
 
   protected monthTitle = computed(() => {
     const date = this.visibleMonthDate();
@@ -70,7 +70,7 @@ export class NativeCalendar {
         dayNumber: day,
         isCurrentMonth: true,
         count:
-          this.schedulesStore.monthSchedulesByDate().get(this.getMonthDateKey(year, month, day)) ??
+          this.schedulesStore.getMonthSchedulesByDate()().get(this.getMonthDateKey(year, month, day)) ??
           0,
       });
     }
