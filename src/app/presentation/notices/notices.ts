@@ -61,8 +61,30 @@ export class Notices implements OnInit, OnDestroy {
       .getNotices()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
       .subscribe((rows) => {
-        this.tableStore.setRows(rows);
+        this.tableStore.setRows(
+          rows.map((row) => ({
+            ...row,
+            actions: row.actions?.map((action) => {
+              if (action.key === 'edit') {
+                return {
+                  ...action,
+                  onClick: () => this.handleEditNotice(row),
+                };
+              }
+
+              return action;
+            }),
+          })),
+        );
       });
+  }
+
+  private handleEditNotice(row: TableRow): void {
+    const componentRef = this.container.vcr?.createComponent(CreateNotice);
+    componentRef?.setInput('registerId', String(row.id ?? ''));
+    componentRef?.setInput('initialTitle', String(row['title'] ?? ''));
+    componentRef?.setInput('initialDescription', String(row['description'] ?? ''));
+    componentRef?.instance.noticeCreated.subscribe(() => this.getNotices());
   }
 
   protected hasNotices(): boolean {

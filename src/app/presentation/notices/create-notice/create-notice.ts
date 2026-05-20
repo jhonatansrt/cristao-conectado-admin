@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, output } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -13,18 +13,32 @@ import { ModalComponent } from '../../common/modal/modal.component';
   templateUrl: './create-notice.html',
   styleUrl: './create-notice.scss',
 })
-export class CreateNotice {
+export class CreateNotice implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly noticesService = inject(NoticesService);
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
   public noticeCreated = output<void>();
   public loading = false;
+  public readonly registerId = input<string>();
+  public readonly initialTitle = input<string>('');
+  public readonly initialDescription = input<string>('');
 
   public readonly form = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
   });
+
+  ngOnInit(): void {
+    this.form.patchValue({
+      title: this.initialTitle(),
+      description: this.initialDescription(),
+    });
+  }
+
+  protected modalTitle(): string {
+    return this.registerId() ? 'Editar aviso' : 'Adicionar aviso';
+  }
 
   protected onCancel(): void {
     this.modal?.closeModal();
@@ -41,6 +55,7 @@ export class CreateNotice {
     this.loading = true;
     this.noticesService
       .createNotice({
+        id: this.registerId(),
         title: title ?? '',
         description: description ?? '',
       })
