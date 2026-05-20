@@ -41,6 +41,139 @@ export class ConfirmedAttendeesDialog {
       id: '4',
       name: 'Karthik Subramanian',
     },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
+    {
+      id: '1',
+      name: 'Balaji Nair',
+      avatarUrl: 'https://i.pravatar.cc/64?img=12',
+    },
+    {
+      id: '2',
+      name: 'Nithya Menon',
+      avatarUrl: 'https://i.pravatar.cc/64?img=5',
+    },
+    {
+      id: '3',
+      name: 'Meera Gonzalez',
+      avatarUrl: 'https://i.pravatar.cc/64?img=23',
+    },
+    {
+      id: '4',
+      name: 'Karthik Subramanian',
+    },
   ];
 
   protected onClose(): void {

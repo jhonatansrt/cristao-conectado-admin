@@ -1,6 +1,13 @@
 section {
   width: 500px;
   max-width: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   ul {
     list-style: none;
