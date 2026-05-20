@@ -69,10 +69,12 @@
         />
       </div>
 
-      <fieldset class="flex flex-column">
-        <label>Descrição</label>
-        <textarea formControlName="description" placeholder="Descreva o evento..."></textarea>
-      </fieldset>
+      <app-input
+        label="Descrição"
+        formControlName="description"
+        placeholder="Descreva o evento..."
+        [multiline]="true"
+      />
     </form>
   </section>
 
