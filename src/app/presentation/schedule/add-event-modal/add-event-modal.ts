@@ -1,9 +1,10 @@
-import { Component, inject, input, OnInit, output, signal, ViewChild } from '@angular/core';
+import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { finalize } from 'rxjs';
 
 import { SchedulesService } from '../../../application/schedules/schedules-service';
+import { SchedulesStore } from '../../../application/schedules/schedules-store';
 import { Address } from '../../../domain/addresses';
 import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
@@ -44,10 +45,10 @@ export class AddEventModal implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
+  private readonly schedulesStore = inject(SchedulesStore);
 
   public readonly address = input<Address | null>(null);
   public readonly editData = input<EditScheduleData | null>(null);
-  public readonly eventCreated = output<void>();
   protected readonly currentAddress = signal<Address | null>(null);
 
   public loading = false;
@@ -135,7 +136,7 @@ export class AddEventModal implements OnInit {
 
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
-        this.eventCreated.emit();
+        this.refreshSchedules();
         this.modal.closeModal();
       },
       error: () => {},
@@ -144,6 +145,20 @@ export class AddEventModal implements OnInit {
 
   protected onCancel(): void {
     this.modal.closeModal();
+  }
+
+
+  private refreshSchedules(): void {
+    this.schedulesService
+      .getMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear())
+      .subscribe();
+
+    const selectedDate = this.schedulesStore.selectedDate();
+    if (!selectedDate) {
+      return;
+    }
+
+    this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
   }
 
   private parseTime(value: string): number {

@@ -21,10 +21,7 @@ export class Schedule implements OnInit, OnDestroy {
   private readonly schedulesStore = inject(SchedulesStore);
 
   private readonly handleAddEvent = (): void => {
-    const addressList = this.container.vcr?.createComponent(AddressList);
-    addressList?.instance.eventCreated.subscribe(() => {
-      this.loadMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear());
-    });
+    this.container.vcr?.createComponent(AddressList);
   };
 
   public ngOnInit(): void {
