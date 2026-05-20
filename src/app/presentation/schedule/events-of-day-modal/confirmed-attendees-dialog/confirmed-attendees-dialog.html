@@ -1,7 +1,7 @@
 <app-dialog [title]="'Confirmado por ' + attendees.length" (close)="onClose()">
   <section>
     <ul class="flex flex-column">
-      @for (attendee of attendees; track attendee.id) {
+      @for (attendee of attendees; track $index) {
         <li class="flex items-center">
           @if (attendee.avatarUrl) {
             <img [src]="attendee.avatarUrl" [alt]="'Foto de ' + attendee.name" />
