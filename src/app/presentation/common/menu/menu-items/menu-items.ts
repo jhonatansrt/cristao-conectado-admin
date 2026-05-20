@@ -35,6 +35,7 @@ export class MenuItems {
     { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists },
     { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices },
     { label: 'Igreja', icon: 'church', route: namedRoutes.church },
+    { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests },
     { label: 'Sair', icon: 'logout', action: 'logout' },
   ];
 
