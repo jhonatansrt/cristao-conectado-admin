@@ -13,7 +13,7 @@
         }
 
         @if (isLoading() || hasActionsColumn()) {
-          <th>
+          <th class="actions-column">
             @if (isLoading()) {
               <app-skeleton width="50%" height="16px" />
             } @else {
@@ -35,7 +35,7 @@
             }
 
             @if (isLoading() || hasActionsColumn()) {
-              <td data-label="Ações">
+              <td class="actions-column" data-label="Ações">
                 <div class="actions-skeleton">
                   <app-skeleton width="20px" height="20px" borderRadius="999px" />
                   <app-skeleton width="20px" height="20px" borderRadius="999px" />
@@ -52,7 +52,7 @@
             }
 
             @if (hasActionsColumn()) {
-              <td data-label="Ações">
+              <td class="actions-column" data-label="Ações">
                 <div>
                   @for (action of row.actions ?? []; track action.key) {
                     <button

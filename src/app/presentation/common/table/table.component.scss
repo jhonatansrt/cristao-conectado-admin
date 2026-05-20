@@ -18,7 +18,7 @@ section {
           font-weight: var(--font-weight-bold);
           font-size: var(--font-size-14);
 
-          &:last-child {
+          &.actions-column {
             width: 140px;
           }
         }
@@ -35,7 +35,7 @@ section {
           font-size: var(--font-size-14);
           vertical-align: middle;
 
-          &:last-child {
+          &.actions-column {
             div {
               display: flex;
               align-items: center;
@@ -105,7 +105,7 @@ section {
               color: var(--color-text-secondary);
             }
 
-            &:last-child {
+            &.actions-column {
               div {
                 justify-content: flex-end;
               }
