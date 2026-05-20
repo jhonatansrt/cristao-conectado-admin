@@ -58,7 +58,8 @@ export class Schedule implements OnInit, OnDestroy {
 
     this.schedulesService
       .getMonthSchedules(month, year)
-      .pipe(finalize(() => (this.isLoading = false)));
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe();
   }
 
   protected handleDaySelected({ day, month, year }: CalendarDaySelect): void {
