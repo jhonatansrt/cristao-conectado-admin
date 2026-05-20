@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TableRow, TableStore } from '../../../application/table/table-store';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
@@ -16,5 +16,8 @@ export class TableComponent {
   public readonly columns = this.tableStore.getColumns();
   public readonly rows = this.tableStore.getRows();
   public readonly isLoading = this.tableStore.isLoading();
+  public readonly hasActionsColumn = computed(() =>
+    this.rows().some((row) => (row.actions?.length ?? 0) > 0),
+  );
 
 }
