@@ -4,6 +4,7 @@ import { TableRow } from '../table/table-store';
 import { AuthStore } from '../auth/auth-store';
 import { IPrayRepository } from '../../domain/pray';
 import { ToastService } from '../../presentation/common/toast/toast.service';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class PrayService {
   private prayRepository = inject(IPrayRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
+  private capitalizeNamePipe = new CapitalizeNamePipe();
 
   public getPray(): Observable<TableRow[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -24,7 +26,7 @@ export class PrayService {
       map((prayers) => {
         return prayers.map((pray) => ({
           id: pray.id,
-          userName: pray.__user__?.name ?? pray.user?.name ?? '-',
+          userName: this.capitalizeNamePipe.transform(pray.__user__?.name ?? pray.user?.name),
           title: pray.title,
           description: pray.description,
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir pedido de oração' }],
@@ -36,6 +38,7 @@ export class PrayService {
       }),
     );
   }
+
 
   public deletePray(id: string): Observable<void> {
     return this.prayRepository.deletePray(id).pipe(
