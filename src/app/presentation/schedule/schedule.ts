@@ -10,8 +10,7 @@ import {
   CalendarMonthChange,
 } from './native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
-import { DaySchedule } from '../../domain/schedules';
-import { DayEventItem, EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
+import { EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
 
 @Component({
   selector: 'app-schedule',
@@ -70,14 +69,12 @@ export class Schedule implements OnInit, OnDestroy {
     this.selectedDate = { iso: selectedDateISO, weekDay: selectedWeekDay };
 
     this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe({
-      next: (daySchedules) => {
+      next: () => {
         const eventModal = this.container.vcr?.createComponent(EventsOfDayModal);
 
         if (!eventModal) {
           return;
         }
-
-        eventModal.setInput('events', this.mapDaySchedules(daySchedules));
 
         eventModal.instance.eventEdited.subscribe(() => {
           this.handleMonthChanged({ month: this.currentMonth, year: this.currentYear });
@@ -91,7 +88,6 @@ export class Schedule implements OnInit, OnDestroy {
                   eventModal.destroy();
                   return;
                 }
-                eventModal.setInput('events', this.mapDaySchedules(updated));
               },
               error: () => {},
             });
@@ -99,17 +95,5 @@ export class Schedule implements OnInit, OnDestroy {
       },
       error: () => {},
     });
-  }
-
-  private mapDaySchedules(daySchedules: DaySchedule[]): DayEventItem[] {
-    return daySchedules.map((schedule) => ({
-      id: schedule.id,
-      title: schedule.title,
-      description: schedule.schedule_date ?? '',
-      hourInitial: schedule.hour_initial,
-      hourFinal: schedule.hour_final,
-      day: schedule.day,
-      scheduleDate: schedule.schedule_date,
-    }));
   }
 }

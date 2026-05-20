@@ -82,6 +82,9 @@ export class SchedulesService {
     }
 
     return this.schedulesRepository.getDaySchedules({ churchId, date, day }).pipe(
+      tap((daySchedules) => {
+        this.schedulesStore.setDaySchedules(daySchedules);
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
