@@ -38,6 +38,7 @@ export class Header {
     [namedRoutes.schedule]: 'Agenda',
     [namedRoutes.playlists]: 'Playlists',
     [namedRoutes.notices]: 'Avisos',
+    [namedRoutes.testimonials]: 'Testemunhos',
     [namedRoutes.church]: 'Igreja',
   };
 

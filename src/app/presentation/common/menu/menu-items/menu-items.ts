@@ -34,6 +34,7 @@ export class MenuItems {
     { label: 'Agenda', icon: 'calendar_month', route: namedRoutes.schedule },
     { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists },
     { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices },
+    { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials },
     { label: 'Igreja', icon: 'church', route: namedRoutes.church },
     { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests },
     { label: 'Sair', icon: 'logout', action: 'logout' },

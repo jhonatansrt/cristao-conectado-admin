@@ -9,6 +9,7 @@ import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
 import { Requests } from './presentation/requests/requests';
+import { Testimonials } from './presentation/testimonials/testimonials';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
 import { loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
@@ -43,6 +44,10 @@ export const routes: Routes = [
       {
         path: namedRoutes.notices,
         component: Notices,
+      },
+      {
+        path: namedRoutes.testimonials,
+        component: Testimonials,
       },
       {
         path: namedRoutes.church,

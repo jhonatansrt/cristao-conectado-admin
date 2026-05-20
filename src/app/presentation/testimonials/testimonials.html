@@ -1,0 +1,8 @@
+@if (isLoading() || hasTestimonials()) {
+  <app-table />
+} @else {
+  <app-empty-case
+    description="Nenhum testemunho cadastrado até o momento."
+    icon="warning_amber"
+  />
+}
