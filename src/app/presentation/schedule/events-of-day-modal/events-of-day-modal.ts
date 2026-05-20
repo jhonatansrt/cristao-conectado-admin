@@ -179,16 +179,5 @@ export class EventsOfDayModal {
     modal?.setInput('address', address);
     modal?.setInput('editData', editData);
 
-    modal?.instance.eventCreated.subscribe(() => {
-      this.detailsMap.update((prev) => {
-        const updated = { ...prev };
-        delete updated[event.id];
-        return updated;
-      });
-
-      this.onAccordionOpened(event.id);
-
-      this.reloadSchedules();
-    });
   }
 }
