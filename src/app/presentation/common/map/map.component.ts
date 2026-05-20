@@ -18,6 +18,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class MapComponent implements AfterViewInit, OnDestroy {
   public readonly geocodedAddress = input.required<GeocodedAddress>();
   public readonly existingAddress = input<Address | null>(null);
+  public readonly readOnly = input<boolean>(false);
   public readonly close = output<void>();
   public readonly confirmed = output<void>();
 

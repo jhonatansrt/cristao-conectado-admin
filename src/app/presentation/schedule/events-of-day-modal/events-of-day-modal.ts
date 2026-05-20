@@ -102,6 +102,7 @@ export class EventsOfDayModal {
       state: details.state,
       cep: details.cep,
     });
+    mapRef.setInput('readOnly', true);
 
     mapRef.instance.close.subscribe(() => mapRef.destroy());
   }
