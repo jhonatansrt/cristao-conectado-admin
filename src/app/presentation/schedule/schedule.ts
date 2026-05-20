@@ -4,7 +4,11 @@ import { finalize } from 'rxjs';
 import { HeaderStore } from '../../application/header/header-store';
 import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
-import { NativeCalendar, CalendarDaySelect, CalendarMonthChange } from './native-calendar/native-calendar';
+import {
+  NativeCalendar,
+  CalendarDaySelect,
+  CalendarMonthChange,
+} from './native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
 import { DaySchedule } from '../../domain/schedules';
 import { DayEventItem, EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
@@ -54,10 +58,7 @@ export class Schedule implements OnInit, OnDestroy {
 
     this.schedulesService
       .getMonthSchedules(month, year)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        error: () => {},
-      });
+      .pipe(finalize(() => (this.isLoading = false)));
   }
 
   protected handleDaySelected({ day, month, year }: CalendarDaySelect): void {
@@ -81,16 +82,18 @@ export class Schedule implements OnInit, OnDestroy {
           this.handleMonthChanged({ month: this.currentMonth, year: this.currentYear });
 
           if (!this.selectedDate) return;
-          this.schedulesService.getDaySchedules(this.selectedDate.iso, this.selectedDate.weekDay).subscribe({
-            next: (updated) => {
-              if (updated.length === 0) {
-                eventModal.destroy();
-                return;
-              }
-              eventModal.setInput('events', this.mapDaySchedules(updated));
-            },
-            error: () => {},
-          });
+          this.schedulesService
+            .getDaySchedules(this.selectedDate.iso, this.selectedDate.weekDay)
+            .subscribe({
+              next: (updated) => {
+                if (updated.length === 0) {
+                  eventModal.destroy();
+                  return;
+                }
+                eventModal.setInput('events', this.mapDaySchedules(updated));
+              },
+              error: () => {},
+            });
         });
       },
       error: () => {},
@@ -108,5 +111,4 @@ export class Schedule implements OnInit, OnDestroy {
       scheduleDate: schedule.schedule_date,
     }));
   }
-
 }
