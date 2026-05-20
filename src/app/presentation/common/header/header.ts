@@ -41,6 +41,7 @@ export class Header {
     [namedRoutes.testimonials]: 'Testemunhos',
     [namedRoutes.pray]: 'Pedidos de oração',
     [namedRoutes.church]: 'Igreja',
+    [namedRoutes.requests]: 'Solicitações',
   };
 
   protected readonly buttonsActions = this.headerStore.getButtonsActions();
