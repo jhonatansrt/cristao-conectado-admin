@@ -37,6 +37,7 @@ export class MenuItems {
     { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials },
     { label: 'Igreja', icon: 'church', route: namedRoutes.church },
     { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests },
+    { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray },
     { label: 'Sair', icon: 'logout', action: 'logout' },
   ];
 

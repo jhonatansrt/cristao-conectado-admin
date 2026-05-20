@@ -1,0 +1,8 @@
+@if (isLoading() || hasPray()) {
+  <app-table />
+} @else {
+  <app-empty-case
+    description="Nenhum pedido de oração cadastrado até o momento."
+    icon="volunteer_activism"
+  />
+}
