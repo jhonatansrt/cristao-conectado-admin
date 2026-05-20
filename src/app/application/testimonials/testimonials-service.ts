@@ -4,6 +4,7 @@ import { TableRow } from '../table/table-store';
 import { AuthStore } from '../auth/auth-store';
 import { ITestimonialsRepository } from '../../domain/testimonials';
 import { ToastService } from '../../presentation/common/toast/toast.service';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class TestimonialsService {
   private testimonialsRepository = inject(ITestimonialsRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
+  private capitalizeNamePipe = new CapitalizeNamePipe();
 
   public getTestimonials(): Observable<TableRow[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -24,7 +26,7 @@ export class TestimonialsService {
       map((testimonials) => {
         return testimonials.map((testimonial) => ({
           id: testimonial.id,
-          userName: testimonial.__user__?.name ?? testimonial.user?.name ?? '-',
+          userName: this.capitalizeNamePipe.transform(testimonial.__user__?.name ?? testimonial.user?.name),
           title: testimonial.title,
           description: testimonial.description,
           actions: [{ key: 'delete', icon: 'delete', label: 'Excluir testemunho' }],
@@ -36,6 +38,7 @@ export class TestimonialsService {
       }),
     );
   }
+
 
   public deleteTestimonial(id: string): Observable<void> {
     return this.testimonialsRepository.deleteTestimonial(id).pipe(
