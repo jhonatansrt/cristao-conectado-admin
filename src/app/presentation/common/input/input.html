@@ -1,15 +1,26 @@
 <fieldset class="flex flex-column">
   <label>{{ label() }}</label>
-  <input
-    [type]="type()"
-    [value]="inputValue || value()"
-    [placeholder]="placeholder()"
-    [disabled]="isDisabled"
-    (input)="onInput($event)"
-    (blur)="onBlur()"
-    [appDateOfBirthMask]="dateOfBirth()"
-    [appTimeMask]="timeMask()"
-  />
+
+  @if (multiline()) {
+    <textarea
+      [value]="inputValue || value()"
+      [placeholder]="placeholder()"
+      [disabled]="isDisabled"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    ></textarea>
+  } @else {
+    <input
+      [type]="type()"
+      [value]="inputValue || value()"
+      [placeholder]="placeholder()"
+      [disabled]="isDisabled"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+      [appDateOfBirthMask]="dateOfBirth()"
+      [appTimeMask]="timeMask()"
+    />
+  }
 
   @if (errorMessage()) {
     <small>{{ errorMessage() }}</small>

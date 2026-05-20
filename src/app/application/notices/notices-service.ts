@@ -38,4 +38,27 @@ export class NoticesService {
       }),
     );
   }
+
+  public createNotice(props: { title: string; description: string }): Observable<void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of(void 0);
+    }
+
+    return this.noticesRepository
+      .createNotice({
+        churchId,
+        type: 0,
+        title: props.title,
+        description: props.description,
+      })
+      .pipe(
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
+  }
 }

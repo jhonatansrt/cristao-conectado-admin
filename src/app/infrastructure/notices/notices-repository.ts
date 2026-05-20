@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GetNoticesDTO, INoticesRepository, Notice } from '../../domain/notices';
+import { CreateNoticeDTO, GetNoticesDTO, INoticesRepository, Notice } from '../../domain/notices';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -21,5 +21,24 @@ export class NoticesRepository implements INoticesRepository {
     });
 
     return this.httpClient.get<Notice[]>(url, { params });
+  }
+
+  public createNotice(props: CreateNoticeDTO): Observable<{ id?: string }> {
+    const url = environment.apiBaseURL + `/registers/${props.type}`;
+    const params = new HttpParams({
+      fromObject: {
+        church_id: props.churchId,
+      },
+    });
+
+    return this.httpClient.post<{ id?: string }>(
+      url,
+      {
+        _type: props.type,
+        title: props.title,
+        description: props.description,
+      },
+      { params },
+    );
   }
 }
