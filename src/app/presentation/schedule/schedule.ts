@@ -20,27 +20,28 @@ export class Schedule implements OnInit, OnDestroy {
   private readonly schedulesService = inject(SchedulesService);
   private readonly schedulesStore = inject(SchedulesStore);
 
-  private readonly handleAddEvent = (): void => {
-    this.container.vcr?.createComponent(AddressList);
-  };
+  ngOnInit(): void {
+    this.loadMonthSchedules();
+    this.setButtonsActions();
+  }
 
-  public ngOnInit(): void {
-    this.loadMonthSchedules(this.schedulesStore.currentMonth(), this.schedulesStore.currentYear());
+  ngOnDestroy(): void {
+    this.headerStore.clearButtonsActions();
+  }
 
+  private setButtonsActions() {
     this.headerStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar evento',
-        onClick: this.handleAddEvent,
+        onClick: () => this.container.vcr?.createComponent(AddressList),
       },
     ]);
   }
 
-  public ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
-  }
-
-  protected loadMonthSchedules(month: number, year: number): void {
+  protected loadMonthSchedules(): void {
+    const month = this.schedulesStore.currentMonth();
+    const year = this.schedulesStore.currentYear();
     this.schedulesStore.setCurrentMonthAndYear(month, year);
     this.schedulesStore.setIsLoadingCalendar(true);
 
