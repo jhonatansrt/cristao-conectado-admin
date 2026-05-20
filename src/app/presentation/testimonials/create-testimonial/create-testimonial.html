@@ -1,0 +1,33 @@
+<app-modal title="Adicionar testemunho">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Título"
+        formControlName="title"
+        [errorMessage]="
+          form.controls.title.touched && form.controls.title.hasError('required')
+            ? 'Título é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Descrição"
+        formControlName="description"
+        [multiline]="true"
+        [errorMessage]="
+          form.controls.description.touched && form.controls.description.hasError('required')
+            ? 'Descrição é obrigatória'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()"
+      >Confirmar</app-button
+    >
+  </footer>
+</app-modal>

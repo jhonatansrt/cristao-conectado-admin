@@ -4,6 +4,7 @@ export const namedRoutes = {
   schedule: 'schedule',
   playlists: 'playlists',
   notices: 'notices',
+  testimonials: 'testimonials',
   church: 'church',
   requests: 'requests',
   videos: 'videos',
