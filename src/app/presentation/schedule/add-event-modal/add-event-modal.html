@@ -33,8 +33,6 @@
 
       <div class="flex">
         @if (isFixed) {
-          <app-select label="Dia da semana" formControlName="dayOfWeek" [options]="daysOfWeek" />
-        } @else {
           <app-input
             label="Data"
             type="tel"
@@ -42,6 +40,8 @@
             placeholder="dd/mm/aaaa"
             formControlName="date"
           />
+        } @else {
+          <app-select label="Dia da semana" formControlName="dayOfWeek" [options]="daysOfWeek" />
         }
       </div>
 
