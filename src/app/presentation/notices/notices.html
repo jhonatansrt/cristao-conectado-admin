@@ -1,1 +1,8 @@
-<app-table />
+@if (isLoading() || hasNotices()) {
+  <app-table />
+} @else {
+  <app-empty-case
+    description="Nenhum aviso cadastrado até o momento."
+    icon="warning_amber"
+  />
+}
