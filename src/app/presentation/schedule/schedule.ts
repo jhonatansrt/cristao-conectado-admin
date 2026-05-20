@@ -21,7 +21,6 @@ export class Schedule implements OnInit, OnDestroy {
   private readonly schedulesService = inject(SchedulesService);
 
   protected isLoading = true;
-  protected monthSchedulesByDate = new Map<string, number>();
 
   private currentMonth = new Date().getMonth() + 1;
   private currentYear = new Date().getFullYear();
@@ -57,11 +56,6 @@ export class Schedule implements OnInit, OnDestroy {
       .getMonthSchedules(month, year)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (monthSchedules) => {
-          this.monthSchedulesByDate = new Map(
-            monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count]),
-          );
-        },
         error: () => {},
       });
   }
@@ -115,8 +109,4 @@ export class Schedule implements OnInit, OnDestroy {
     }));
   }
 
-  private parseEndpointDateToKey(date: string): string {
-    const [day, month, year] = date.split('-');
-    return `${year}-${month}-${day}`;
-  }
 }

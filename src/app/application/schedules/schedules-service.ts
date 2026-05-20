@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of, throwError } from 'rxjs';
-import { AuthStore } from '../auth/auth-store';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { DaySchedule, ISchedulesRepository, MonthSchedule, ScheduleDetails } from '../../domain/schedules';
 import { ToastService } from '../../presentation/common/toast/toast.service';
+import { AuthStore } from '../auth/auth-store';
+import { SchedulesStore } from './schedules-store';
 
 export type CreateScheduleParams = {
   addressId: string;
@@ -21,6 +22,7 @@ export class SchedulesService {
   private schedulesRepository = inject(ISchedulesRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
+  private schedulesStore = inject(SchedulesStore);
 
   public updateSchedule(scheduleId: string, params: CreateScheduleParams): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -60,6 +62,11 @@ export class SchedulesService {
     }
 
     return this.schedulesRepository.getMonthSchedules({ churchId, month, year }).pipe(
+      tap((monthSchedules) => {
+        this.schedulesStore.setMonthSchedulesByDate(
+          new Map(monthSchedules.map((schedule) => [this.parseEndpointDateToKey(schedule.date), schedule.count])),
+        );
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -98,5 +105,10 @@ export class SchedulesService {
         return throwError(() => e);
       }),
     );
+  }
+
+  private parseEndpointDateToKey(date: string): string {
+    const [day, month, year] = date.split('-');
+    return `${year}-${month}-${day}`;
   }
 }
