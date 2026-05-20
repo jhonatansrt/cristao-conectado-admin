@@ -12,13 +12,15 @@
           </th>
         }
 
-        <th>
-          @if (isLoading()) {
-            <app-skeleton width="50%" height="16px" />
-          } @else {
-            Ações
-          }
-        </th>
+        @if (isLoading() || hasActionsColumn()) {
+          <th>
+            @if (isLoading()) {
+              <app-skeleton width="50%" height="16px" />
+            } @else {
+              Ações
+            }
+          </th>
+        }
       </tr>
     </thead>
 
@@ -32,12 +34,14 @@
               </td>
             }
 
-            <td data-label="Ações">
-              <div class="actions-skeleton">
-                <app-skeleton width="20px" height="20px" borderRadius="999px" />
-                <app-skeleton width="20px" height="20px" borderRadius="999px" />
-              </div>
-            </td>
+            @if (isLoading() || hasActionsColumn()) {
+              <td data-label="Ações">
+                <div class="actions-skeleton">
+                  <app-skeleton width="20px" height="20px" borderRadius="999px" />
+                  <app-skeleton width="20px" height="20px" borderRadius="999px" />
+                </div>
+              </td>
+            }
           </tr>
         }
       } @else {
@@ -47,19 +51,21 @@
               <td [attr.data-label]="column.header">{{ row[column.key] }}</td>
             }
 
-            <td data-label="Ações">
-              <div>
-                @for (action of row.actions ?? []; track action.key) {
-                  <button
-                    type="button"
-                    (click)="action.onClick?.()"
-                    [attr.aria-label]="action.label"
-                  >
-                    <mat-icon aria-hidden="true">{{ action.icon }}</mat-icon>
-                  </button>
-                }
-              </div>
-            </td>
+            @if (hasActionsColumn()) {
+              <td data-label="Ações">
+                <div>
+                  @for (action of row.actions ?? []; track action.key) {
+                    <button
+                      type="button"
+                      (click)="action.onClick?.()"
+                      [attr.aria-label]="action.label"
+                    >
+                      <mat-icon aria-hidden="true">{{ action.icon }}</mat-icon>
+                    </button>
+                  }
+                </div>
+              </td>
+            }
           </tr>
         }
       }
