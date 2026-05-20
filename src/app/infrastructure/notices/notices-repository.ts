@@ -23,6 +23,13 @@ export class NoticesRepository implements INoticesRepository {
     return this.httpClient.get<Notice[]>(url, { params });
   }
 
+
+  public deleteNotice(id: string): Observable<void> {
+    const url = environment.apiBaseURL + `/registers/${id}`;
+
+    return this.httpClient.delete<void>(url);
+  }
+
   public createNotice(props: CreateNoticeDTO): Observable<{ id?: string }> {
     const url = environment.apiBaseURL + `/registers`;
     const params = props.id

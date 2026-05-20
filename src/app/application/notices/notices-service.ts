@@ -39,6 +39,15 @@ export class NoticesService {
     );
   }
 
+  public deleteNotice(id: string): Observable<void> {
+    return this.noticesRepository.deleteNotice(id).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
   public createNotice(props: { id?: string; title: string; description: string }): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 

@@ -7,6 +7,7 @@ import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 import { HeaderStore } from '../../application/header/header-store';
 import { Container } from '../../util/container.service';
 import { CreateNotice } from './create-notice/create-notice';
+import { AlertService } from '../common/alert/alert.service';
 
 @Component({
   selector: 'app-notices',
@@ -19,6 +20,7 @@ export class Notices implements OnInit, OnDestroy {
   private noticesService = inject(NoticesService);
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
+  private readonly alertService = inject(AlertService);
   protected readonly isLoading = this.tableStore.isLoading();
 
   constructor() {
@@ -72,10 +74,37 @@ export class Notices implements OnInit, OnDestroy {
                 };
               }
 
+              if (action.key === 'delete') {
+                return {
+                  ...action,
+                  onClick: () => this.handleDeleteNotice(String(row.id ?? '')),
+                };
+              }
+
               return action;
             }),
           })),
         );
+      });
+  }
+
+  private async handleDeleteNotice(noticeId: string): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir o aviso?',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.tableStore.setLoading(true);
+
+    this.noticesService
+      .deleteNotice(noticeId)
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe({
+        next: () => this.getNotices(),
+        error: () => {},
       });
   }
 

@@ -6,4 +6,5 @@ import { Notice } from './entities/notice.entity';
 export abstract class INoticesRepository {
   abstract getNotices(props: GetNoticesDTO): Observable<Notice[]>;
   abstract createNotice(props: CreateNoticeDTO): Observable<{ id?: string }>;
+  abstract deleteNotice(id: string): Observable<void>;
 }
