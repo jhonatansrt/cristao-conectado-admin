@@ -5,8 +5,8 @@ import { Address } from '../../domain/addresses';
   providedIn: 'root',
 })
 export class AddressesStore {
-  public readonly addresses = signal<Address[]>([]);
-  public readonly isLoading = signal(false);
+  private readonly addresses = signal<Address[]>([]);
+  private readonly isLoading = signal(false);
 
   public setAddresses(addresses: Address[]): void {
     this.addresses.set(addresses);
@@ -14,5 +14,13 @@ export class AddressesStore {
 
   public setIsLoading(isLoading: boolean): void {
     this.isLoading.set(isLoading);
+  }
+
+  public getAddresses(): Address[] {
+    return this.addresses();
+  }
+
+  public getIsLoading(): boolean {
+    return this.isLoading();
   }
 }
