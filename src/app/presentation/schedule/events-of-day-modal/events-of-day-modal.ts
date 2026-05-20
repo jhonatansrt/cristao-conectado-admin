@@ -109,9 +109,12 @@ export class EventsOfDayModal {
   }
 
 
-  protected onOpenConfirmedAttendees(eventId: string): void {
+  protected onOpenConfirmedAttendees(event: DayEventItem): void {
+    const details = this.detailsMap()[event.id];
+    if (!details || details === 'loading') return;
+
     const dialogRef = this.container.vcr?.createComponent(ConfirmedAttendeesDialog);
-    dialogRef?.setInput('eventId', eventId);
+    dialogRef?.setInput('attendances', details.attendances);
   }
 
   protected onEditEvent(event: DayEventItem): void {
