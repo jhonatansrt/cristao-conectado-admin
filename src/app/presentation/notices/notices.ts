@@ -4,6 +4,7 @@ import { TableColumn, TableRow, TableStore } from '../../application/table/table
 import { TableComponent } from '../common/table/table.component';
 import { NoticesService } from '../../application/notices/notices-service';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
+import { HeaderStore } from '../../application/header/header-store';
 
 @Component({
   selector: 'app-notices',
@@ -14,6 +15,7 @@ import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 export class Notices implements OnInit {
   private readonly tableStore = inject(TableStore<TableRow>);
   private noticesService = inject(NoticesService);
+  private readonly headerStore = inject(HeaderStore);
   protected readonly isLoading = this.tableStore.isLoading();
 
   constructor() {
@@ -26,7 +28,18 @@ export class Notices implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setButtonsActions();
     this.getNotices();
+  }
+
+  private setButtonsActions() {
+    this.headerStore.setButtonsActions([
+      {
+        btnClass: 'btn-primary',
+        label: 'Adicionar aviso',
+        onClick: () => {},
+      },
+    ]);
   }
 
   private getNotices(): void {
@@ -35,11 +48,8 @@ export class Notices implements OnInit {
     this.noticesService
       .getNotices()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe({
-        next: (rows) => {
-          this.tableStore.setRows(rows);
-        },
-        error: () => {},
+      .subscribe((rows) => {
+        this.tableStore.setRows(rows);
       });
   }
 

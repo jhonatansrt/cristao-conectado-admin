@@ -21,7 +21,7 @@ import { Playlist } from '../../domain/playlists/entities/playlist.entity';
 })
 export class Playlists implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
-  private playlistsService = inject(PlaylistsService);
+  private readonly playlistsService = inject(PlaylistsService);
   private readonly headerStore = inject(HeaderStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
@@ -44,7 +44,6 @@ export class Playlists implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setButtonsActions();
-
     this.getPlaylists();
   }
 
