@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 import { Address } from '../../domain/addresses';
 
 @Injectable({
@@ -16,11 +16,11 @@ export class AddressesStore {
     this.isLoading.set(isLoading);
   }
 
-  public getAddresses(): Address[] {
-    return this.addresses();
+  public getAddresses(): Signal<Address[]> {
+    return this.addresses;
   }
 
-  public getIsLoading(): boolean {
-    return this.isLoading();
+  public getIsLoading(): Signal<boolean> {
+    return this.isLoading;
   }
 }
