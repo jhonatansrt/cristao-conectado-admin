@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { Address } from '../../../domain/addresses';
@@ -37,38 +37,29 @@ export class AddressList implements OnInit {
 
   public searchAddress = '';
   public predictions: string[] = [];
-  public addresses: AddressCard[] = [];
 
-  ngOnInit(): void {
-    this.loadAddresses();
-  }
-
-  private loadAddresses(): void {
-    this.addressesService.loadAddresses();
-
+  public readonly addresses = computed<AddressCard[]>(() =>
     this.addressesStore
       .getAddresses()()
-      .forEach((address) => {
-        this.addAddressCard(address);
-      });
-  }
+      .map((address) => ({
+        ...address,
+        actions: [
+          {
+            name: 'edit',
+            ariaLabel: 'Editar endereço',
+            action: () => this.handleEditAddress(address),
+          },
+          {
+            name: 'delete_outline',
+            ariaLabel: 'Excluir endereço',
+            action: () => this.handleDeleteAddress(address),
+          },
+        ],
+      })),
+  );
 
-  private addAddressCard(address: Address): void {
-    this.addresses.push({
-      ...address,
-      actions: [
-        {
-          name: 'edit',
-          ariaLabel: 'Editar endereço',
-          action: () => this.handleEditAddress(address),
-        },
-        {
-          name: 'delete_outline',
-          ariaLabel: 'Excluir endereço',
-          action: () => this.handleDeleteAddress(address),
-        },
-      ],
-    });
+  ngOnInit(): void {
+    this.addressesService.loadAddresses();
   }
 
   public onSearchAddress(value: string): void {

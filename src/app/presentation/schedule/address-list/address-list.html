@@ -28,7 +28,7 @@
             </article>
           }
         } @else {
-          @for (address of addresses; track address.id) {
+          @for (address of addresses(); track address.id) {
             <app-card
               [title]="address.place"
               [description]="
