@@ -8,6 +8,7 @@ import { Members } from './presentation/members/members';
 import { Notices } from './presentation/notices/notices';
 import { Playlists } from './presentation/playlists/playlists';
 import { Schedule } from './presentation/schedule/schedule';
+import { Requests } from './presentation/requests/requests';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
 import { loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
@@ -46,6 +47,10 @@ export const routes: Routes = [
       {
         path: namedRoutes.church,
         component: Church,
+      },
+      {
+        path: namedRoutes.requests,
+        component: Requests,
       },
       {
         path: namedRoutes.videos,
