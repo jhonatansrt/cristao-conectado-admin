@@ -11,4 +11,5 @@ export abstract class ISchedulesRepository {
   abstract getMonthSchedules(props: GetMonthSchedulesDTO): Observable<MonthSchedule[]>;
   abstract getDaySchedules(props: GetDaySchedulesDTO): Observable<DaySchedule[]>;
   abstract getScheduleDetails(id: string): Observable<ScheduleDetails>;
+  abstract deleteSchedule(id: string): Observable<void>;
 }
