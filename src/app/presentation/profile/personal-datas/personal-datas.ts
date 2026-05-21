@@ -1,5 +1,6 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../application/auth/auth-service';
 import { AuthStore } from '../../../application/auth/auth-store';
@@ -48,9 +49,8 @@ export class PersonalDatas {
     const isoDate = new Date(`${year}-${month}-${day}T00:00:00.000Z`).toISOString();
 
     this.isLoading = true;
-    this.authService.updateUser({ name, birth_date: isoDate }).subscribe({
-      next: () => this.closeModal(),
-      error: () => (this.isLoading = false),
-    });
+    this.authService.updateUser({ name, birth_date: isoDate })
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(() => this.closeModal());
   }
 }
