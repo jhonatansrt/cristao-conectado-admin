@@ -6,7 +6,6 @@ import { UserChurchRequest } from '../../domain/requests';
 import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { TableComponent } from '../common/table/table.component';
-import { ToastService } from '../common/toast/toast.service';
 import { AlertService } from '../common/alert/alert.service';
 
 interface RequestRow extends TableRow {
@@ -24,7 +23,6 @@ interface RequestRow extends TableRow {
 export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly requestsService = inject(RequestsService);
-  private readonly toastService = inject(ToastService);
   private readonly alertService = inject(AlertService);
   private readonly capitalizeNamePipe = new CapitalizeNamePipe();
   private readonly formatDatePipe = new FormatDatePipe();
@@ -83,12 +81,7 @@ export class Requests {
   }
 
   private approveRequest(request: RequestRow): void {
-    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }).subscribe(() => {
-      this.toastService.openToast({
-        message: `${request.name} foi aprovado(a) com sucesso.`,
-        success: true,
-      });
-
+    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }, request.name).subscribe(() => {
       this.removeRequest(request.id);
     });
   }
@@ -102,12 +95,7 @@ export class Requests {
       return;
     }
 
-    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }).subscribe(() => {
-      this.toastService.openToast({
-        message: `Solicitação de ${request.name} negada.`,
-        success: true,
-      });
-
+    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }, request.name).subscribe(() => {
       this.removeRequest(request.id);
     });
   }
