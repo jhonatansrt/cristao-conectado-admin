@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -36,11 +36,25 @@ export interface DayEventItem {
   styleUrl: './events-of-day-modal.scss',
 })
 export class EventsOfDayModal {
+  @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
+
   private readonly schedulesService = inject(SchedulesService);
   private readonly schedulesStore = inject(SchedulesStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
-  // private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
+
+  private hasHadEvents = false;
+
+  constructor() {
+    effect(() => {
+      const count = this.events().length;
+      if (count > 0) {
+        this.hasHadEvents = true;
+      } else if (this.hasHadEvents) {
+        this.modal?.closeModal();
+      }
+    });
+  }
 
   public readonly events = computed<DayEventItem[]>(() =>
     this.schedulesStore.getDaySchedules()().map((schedule) => ({
@@ -58,23 +72,11 @@ export class EventsOfDayModal {
 
   private reloadSchedules(): void {
     const selectedDate = this.schedulesStore.getSelectedDate()();
-
-    if (!selectedDate) {
-      return;
-    }
+    if (!selectedDate) return;
 
     const date = new Date(selectedDate.iso);
-    const month = date.getUTCMonth() + 1;
-    const year = date.getUTCFullYear();
-
-    this.schedulesService.getMonthSchedules(month, year).subscribe();
-    this.schedulesService
-      .getDaySchedules(selectedDate.iso, selectedDate.weekDay)
-      .subscribe((updated) => {
-        if (updated.length === 0) {
-          // this.componentRef.destroy();
-        }
-      });
+    this.schedulesService.getMonthSchedules(date.getUTCMonth() + 1, date.getUTCFullYear()).subscribe();
+    this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
   }
 
   protected onAccordionOpened(id: string): void {
