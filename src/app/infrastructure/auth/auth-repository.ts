@@ -6,6 +6,7 @@ import {
   CreateSessionApiResponse,
   CreateSessionDTO,
   IAuthRepository,
+  UpdateAvatarApiResponse,
   UpdateAvatarDTO,
   UpdatePasswordDTO,
   UpdateUserDTO,
@@ -44,10 +45,10 @@ export class AuthRepository implements IAuthRepository {
     return this.httpClient.patch<void>(url, props);
   }
 
-  public updateAvatar(props: UpdateAvatarDTO): Observable<void> {
+  public updateAvatar(props: UpdateAvatarDTO): Observable<UpdateAvatarApiResponse> {
     const url = environment.apiBaseURL + '/users/avatar';
     const formData = new FormData();
     formData.append('avatar', props.file);
-    return this.httpClient.patch<void>(url, formData);
+    return this.httpClient.patch<UpdateAvatarApiResponse>(url, formData);
   }
 }
