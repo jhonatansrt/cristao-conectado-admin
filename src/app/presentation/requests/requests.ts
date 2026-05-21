@@ -7,6 +7,7 @@ import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { TableComponent } from '../common/table/table.component';
 import { AlertService } from '../common/alert/alert.service';
+import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 
 interface RequestRow extends TableRow {
   name: string;
@@ -16,7 +17,7 @@ interface RequestRow extends TableRow {
 
 @Component({
   selector: 'app-requests',
-  imports: [TableComponent],
+  imports: [TableComponent, EmptyCaseComponent],
   templateUrl: './requests.html',
   styleUrl: './requests.scss',
 })
@@ -24,6 +25,7 @@ export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly requestsService = inject(RequestsService);
   private readonly alertService = inject(AlertService);
+  protected readonly isLoading = this.tableStore.isLoading();
   private readonly capitalizeNamePipe = new CapitalizeNamePipe();
   private readonly formatDatePipe = new FormatDatePipe();
 
@@ -36,6 +38,10 @@ export class Requests {
 
     this.tableStore.setColumns(columns);
     this.loadPendingRequests();
+  }
+
+  protected hasRequests(): boolean {
+    return this.tableStore.hasRows();
   }
 
   private loadPendingRequests(): void {
