@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { finalize } from 'rxjs';
@@ -45,7 +45,7 @@ export class AddEventModal implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
-  private readonly schedulesStore = inject(SchedulesStore);
+  protected readonly schedulesStore = inject(SchedulesStore);
 
   public readonly address = input<Address | null>(null);
   protected readonly currentAddress = signal<Address | null>(null);
