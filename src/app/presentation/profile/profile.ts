@@ -7,6 +7,7 @@ import { AuthStore } from '../../application/auth/auth-store';
 import { Container } from '../../util/container.service';
 import { PersonalDatas } from './personal-datas/personal-datas';
 import { UpdatePassword } from './update-password/update-password';
+import { ChangePhotoDialog } from './change-photo-dialog/change-photo-dialog';
 
 interface ProfileMenuItem {
   title: string;
@@ -25,6 +26,10 @@ export class Profile {
   private readonly container = inject(Container);
 
   protected readonly userLogged = this.authStore.getUserLogged();
+
+  protected openChangePhotoDialog(): void {
+    this.container.vcr?.createComponent(ChangePhotoDialog);
+  }
 
   protected readonly menuItems: ProfileMenuItem[] = [
     {
