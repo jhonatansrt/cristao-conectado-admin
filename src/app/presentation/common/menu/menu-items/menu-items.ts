@@ -7,6 +7,7 @@ import { filter, map, startWith } from 'rxjs';
 import { namedRoutes } from '../../../../named-routes';
 import { AlertService } from '../../alert/alert.service';
 import { AuthService } from '../../../../application/auth/auth-service';
+import { MenuStore } from '../../../../application/menu/menu-store';
 
 @Component({
   selector: 'app-menu-items',
@@ -18,6 +19,7 @@ export class MenuItems {
   private readonly navController = inject(Router);
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthService);
+  private readonly menuStore = inject(MenuStore);
 
   private readonly currentUrl = toSignal(
     this.navController.events.pipe(
@@ -68,6 +70,7 @@ export class MenuItems {
       return;
     }
 
+    this.menuStore.close();
     await this.navController.navigate([item.route]);
   }
 }
