@@ -81,9 +81,8 @@ export class AddressList implements OnInit {
     this.modal.closeModal();
     const eventModal = this.container.vcr?.createComponent(AddEventModal);
     eventModal?.setInput('address', address);
-    const edit = this.editData();
-    if (edit) {
-      eventModal?.setInput('editData', edit);
+    if (this.editData()) {
+      eventModal?.setInput('editData', this.editData());
     }
   }
 
