@@ -79,11 +79,13 @@ export class AddEventModal implements OnInit {
 
   ngOnInit(): void {
     const addr = this.address();
+
     if (addr) {
       this.currentAddress.set(addr);
     }
 
     const edit = this.editData();
+
     if (edit) {
       this.form.patchValue({
         title: edit.title,
@@ -99,7 +101,11 @@ export class AddEventModal implements OnInit {
 
   protected addressDescription(): string {
     const addr = this.currentAddress();
-    if (!addr) return '';
+
+    if (!addr) {
+      return '';
+    }
+
     return `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}`;
   }
 
@@ -115,7 +121,10 @@ export class AddEventModal implements OnInit {
     }
 
     const addr = this.currentAddress();
-    if (!addr) return;
+
+    if (!addr) {
+      return;
+    }
 
     const { title, description, startTime, endTime, dayOfWeek, date } = this.form.getRawValue();
     const edit = this.editData();
@@ -139,10 +148,10 @@ export class AddEventModal implements OnInit {
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
         this.refreshSchedules();
+        this.modal.closeModal();
         if (edit) {
           this.schedulesService.getScheduleDetails(edit.scheduleId).subscribe();
         }
-        this.modal.closeModal();
       },
       error: () => {},
     });
@@ -152,10 +161,12 @@ export class AddEventModal implements OnInit {
     this.modal.closeModal();
   }
 
-
   private refreshSchedules(): void {
     this.schedulesService
-      .getMonthSchedules(this.schedulesStore.getCurrentMonth()(), this.schedulesStore.getCurrentYear()())
+      .getMonthSchedules(
+        this.schedulesStore.getCurrentMonth()(),
+        this.schedulesStore.getCurrentYear()(),
+      )
       .subscribe();
 
     const selectedDate = this.schedulesStore.getSelectedDate()();
