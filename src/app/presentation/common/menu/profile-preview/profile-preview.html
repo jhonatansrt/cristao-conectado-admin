@@ -1,4 +1,10 @@
-<header class="flex items-center">
+<header
+  class="flex items-center"
+  role="button"
+  tabindex="0"
+  (click)="openProfileModal()"
+  (keydown.enter)="openProfileModal()"
+>
   <figure class="flex justify-center items-center">
     <mat-icon aria-hidden="true">person</mat-icon>
   </figure>

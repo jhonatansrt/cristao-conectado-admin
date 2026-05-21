@@ -1,0 +1,18 @@
+<app-modal title="Perfil">
+  <section class="body-modal flex flex-column">
+
+    <div class="flex flex-column items-center">
+      <figure class="flex justify-center items-center">
+        <mat-icon aria-hidden="true">person</mat-icon>
+      </figure>
+      <p>{{ userLogged()?.name | capitalizeName }}</p>
+    </div>
+
+    <nav class="flex flex-column">
+      @for (item of menuItems; track item.title) {
+        <app-card [title]="item.title" [description]="null" [icons]="item.icons" [clickable]="true" (click)="item.click()" />
+      }
+    </nav>
+
+  </section>
+</app-modal>
