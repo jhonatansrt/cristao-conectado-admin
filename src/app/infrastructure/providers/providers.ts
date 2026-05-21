@@ -20,6 +20,8 @@ import { IPrayRepository } from '../../domain/pray';
 import { PrayRepository } from '../pray/pray-repository';
 import { IRequestsRepository } from '../../domain/requests';
 import { RequestsRepository } from '../requests/requests-repository';
+import { IMembersRepository } from '../../domain/members';
+import { MembersRepository } from '../members/members-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -76,6 +78,11 @@ const requestsProvider = {
   useClass: RequestsRepository,
 };
 
+const membersProvider = {
+  provide: IMembersRepository,
+  useClass: MembersRepository,
+};
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -88,6 +95,7 @@ const commonProviders = [
   testimonialsProvider,
   prayProvider,
   requestsProvider,
+  membersProvider,
 ];
 
 export const providers = [...commonProviders];
