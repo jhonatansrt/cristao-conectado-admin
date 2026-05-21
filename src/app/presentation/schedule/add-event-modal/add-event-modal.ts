@@ -83,7 +83,7 @@ export class AddEventModal implements OnInit {
       this.currentAddress.set(addr);
     }
 
-    const edit = this.schedulesStore.getEditData()();
+    const edit = this.schedulesStore.getScheduleToEdit()();
 
     if (edit) {
       this.form.patchValue({
@@ -126,7 +126,7 @@ export class AddEventModal implements OnInit {
     }
 
     const { title, description, startTime, endTime, dayOfWeek, date } = this.form.getRawValue();
-    const edit = this.schedulesStore.getEditData()();
+    const edit = this.schedulesStore.getScheduleToEdit()();
 
     const scheduleParams = {
       addressId: addr.id,
@@ -147,7 +147,7 @@ export class AddEventModal implements OnInit {
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
         this.refreshSchedules();
-        this.schedulesStore.setEditData(null);
+        this.schedulesStore.setScheduleToEdit(null);
         this.modal.closeModal();
         if (edit) {
           this.schedulesService.getScheduleDetails(edit.scheduleId).subscribe();
@@ -158,7 +158,7 @@ export class AddEventModal implements OnInit {
   }
 
   protected onCancel(): void {
-    this.schedulesStore.setEditData(null);
+    this.schedulesStore.setScheduleToEdit(null);
     this.modal.closeModal();
   }
 

@@ -173,7 +173,7 @@ export class EventsOfDayModal {
       scheduleDate: event.scheduleDate ?? undefined,
     };
 
-    this.schedulesStore.setEditData(editData);
+    this.schedulesStore.setScheduleToEdit(editData);
     const modal = this.container.vcr?.createComponent(AddEventModal);
     modal?.setInput('address', address);
   }

@@ -13,7 +13,7 @@ export class SchedulesStore {
   private readonly currentMonth = signal(new Date().getMonth() + 1);
   private readonly currentYear = signal(new Date().getFullYear());
   private readonly selectedDate = signal<{ iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null>(null);
-  private readonly editData = signal<EditScheduleData | null>(null);
+  private readonly scheduleToEdit = signal<EditScheduleData | null>(null);
 
 
 
@@ -78,11 +78,11 @@ export class SchedulesStore {
     this.selectedDate.set(selectedDate);
   }
 
-  public getEditData(): Signal<EditScheduleData | null> {
-    return this.editData;
+  public getScheduleToEdit(): Signal<EditScheduleData | null> {
+    return this.scheduleToEdit;
   }
 
-  public setEditData(data: EditScheduleData | null): void {
-    this.editData.set(data);
+  public setScheduleToEdit(data: EditScheduleData | null): void {
+    this.scheduleToEdit.set(data);
   }
 }
