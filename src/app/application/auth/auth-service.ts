@@ -69,6 +69,7 @@ export class AuthService {
 
   public updatePassword(props: UpdatePasswordDTO): Observable<void> {
     return this.authRepository.updatePassword(props).pipe(
+      tap(() => this.toastService.openToast({ success: true })),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -92,6 +93,7 @@ export class AuthService {
         };
 
         this.authStore.setUserLogged(updatedUser);
+        this.toastService.openToast({ success: true });
       }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
