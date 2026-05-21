@@ -1,0 +1,13 @@
+<app-modal title="Dados pessoais">
+  <section class="body-modal">
+    <form class="flex flex-column" [formGroup]="personalDatasForm">
+      <app-input label="E-mail" formControlName="email" />
+      <app-input label="Nome" formControlName="name" />
+      <app-input label="Data de nascimento" formControlName="birthDate" [dateOfBirth]="true" />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Alterar</app-button>
+  </footer>
+</app-modal>

@@ -4,6 +4,8 @@ import { ModalComponent } from '../common/modal/modal.component';
 import { CardComponent, CardIconAction } from '../common/card/card.component';
 import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 import { AuthStore } from '../../application/auth/auth-store';
+import { Container } from '../../util/container.service';
+import { PersonalDatas } from './personal-datas/personal-datas';
 
 interface ProfileMenuItem {
   title: string;
@@ -19,6 +21,7 @@ interface ProfileMenuItem {
 })
 export class Profile {
   private readonly authStore = inject(AuthStore);
+  private readonly container = inject(Container);
 
   protected readonly userLogged = this.authStore.getUserLogged();
 
@@ -26,7 +29,7 @@ export class Profile {
     {
       title: 'Dados pessoais',
       icons: [{ name: 'navigate_next', action: () => {} }],
-      click: () => {},
+      click: () => this.container.vcr?.createComponent(PersonalDatas),
     },
     {
       title: 'Alterar senha',
