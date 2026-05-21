@@ -30,6 +30,7 @@ export class AddVideoModal implements OnInit {
   @Input() public videoData?: VideoFormData;
   public videoCreated = output<void>();
   public loading = false;
+  public isEditMode = false;
 
   public readonly addVideoForm = this.fb.group({
     youtubeUrl: ['', Validators.required],
@@ -38,12 +39,9 @@ export class AddVideoModal implements OnInit {
     featured: [false],
   });
 
-  public get isEditMode(): boolean {
-    return !!this.videoData?.id;
-  }
-
   ngOnInit(): void {
     if (this.videoData) {
+      this.isEditMode = true;
       this.addVideoForm.patchValue({
         youtubeUrl: `https://www.youtube.com/watch?v=${this.videoData.youtubeId}`,
         title: this.videoData.name,
@@ -67,32 +65,36 @@ export class AddVideoModal implements OnInit {
       return;
     }
 
-    const { youtubeUrl, title, order, featured } = this.addVideoForm.getRawValue();
-    const youtubeId = this.extractYoutubeId(youtubeUrl ?? '');
-
     this.loading = true;
 
-    const request$ = this.videoData?.id
-      ? this.videosService.updateVideo({
-          id: this.videoData.id,
-          youtubeId,
-          name: title ?? '',
-          order: Number(order),
-          showHome: Boolean(featured),
-        })
-      : this.videosService.createVideo({
-          youtubeId,
-          name: title ?? '',
-          order: Number(order),
-          showHome: Boolean(featured),
-        });
+    const request$ = this.isEditMode ? this.updateVideo() : this.createVideo();
 
-    request$.pipe(finalize(() => (this.loading = false))).subscribe({
-      next: () => {
-        this.videoCreated.emit();
-        this.closeModal();
-      },
-      error: () => {},
+    request$.pipe(finalize(() => (this.loading = false))).subscribe(() => {
+      this.videoCreated.emit();
+      this.closeModal();
+    });
+  }
+
+  private createVideo() {
+    const { youtubeUrl, title, order, featured } = this.addVideoForm.getRawValue();
+
+    return this.videosService.createVideo({
+      youtubeId: this.extractYoutubeId(youtubeUrl ?? ''),
+      name: title ?? '',
+      order: Number(order),
+      showHome: Boolean(featured),
+    });
+  }
+
+  private updateVideo() {
+    const { youtubeUrl, title, order, featured } = this.addVideoForm.getRawValue();
+
+    return this.videosService.updateVideo({
+      id: this.videoData!.id,
+      youtubeId: this.extractYoutubeId(youtubeUrl ?? ''),
+      name: title ?? '',
+      order: Number(order),
+      showHome: Boolean(featured),
     });
   }
 
