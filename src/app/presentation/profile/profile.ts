@@ -37,10 +37,5 @@ export class Profile {
       icons: [{ name: 'navigate_next', action: () => {} }],
       click: () => this.container.vcr?.createComponent(UpdatePassword),
     },
-    {
-      title: 'Configurações',
-      icons: [{ name: 'navigate_next', action: () => {} }],
-      click: () => {},
-    },
   ];
 }
