@@ -3,7 +3,7 @@
     <div class="flex flex-column items-center">
       <div class="avatar-wrapper" (click)="openFilePicker()">
         <figure class="flex justify-center items-center">
-          @if (uploadingPhoto()) {
+          @if (uploadingPhoto) {
             <mat-spinner diameter="40" />
           } @else if (userLogged()?.avatar) {
             <img [src]="userLogged()?.avatar" [alt]="userLogged()?.name" />
@@ -11,7 +11,11 @@
             <mat-icon aria-hidden="true">person</mat-icon>
           }
         </figure>
-        <button class="flex justify-center items-center" aria-label="Alterar foto" [disabled]="uploadingPhoto()">
+        <button
+          class="flex justify-center items-center"
+          aria-label="Alterar foto"
+          [disabled]="uploadingPhoto"
+        >
           <mat-icon>photo_camera</mat-icon>
         </button>
       </div>

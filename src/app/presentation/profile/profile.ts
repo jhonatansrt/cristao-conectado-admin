@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ModalComponent } from '../common/modal/modal.component';
@@ -19,7 +19,13 @@ interface ProfileMenuItem {
 
 @Component({
   selector: 'app-profile',
-  imports: [ModalComponent, MatIconModule, MatProgressSpinnerModule, CapitalizeNamePipe, CardComponent],
+  imports: [
+    ModalComponent,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    CapitalizeNamePipe,
+    CardComponent,
+  ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -29,7 +35,7 @@ export class Profile {
   private readonly container = inject(Container);
 
   protected readonly userLogged = this.authStore.getUserLogged();
-  protected readonly uploadingPhoto = signal(false);
+  protected uploadingPhoto = false;
 
   protected openFilePicker(): void {
     const input = document.createElement('input');
@@ -38,10 +44,10 @@ export class Profile {
     input.onchange = (event: Event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
-        this.uploadingPhoto.set(true);
+        this.uploadingPhoto = true;
         this.authService
           .updateAvatar({ file })
-          .pipe(finalize(() => this.uploadingPhoto.set(false)))
+          .pipe(finalize(() => (this.uploadingPhoto = false)))
           .subscribe();
       }
     };
