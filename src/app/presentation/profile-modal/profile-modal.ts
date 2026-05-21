@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ModalComponent } from '../../../modal/modal.component';
-import { CardComponent, CardIconAction } from '../../../card/card.component';
-import { CapitalizeNamePipe } from '../../../../../pipes/capitalize-name.pipe';
-import { AuthStore } from '../../../../../application/auth/auth-store';
+import { ModalComponent } from '../common/modal/modal.component';
+import { CardComponent, CardIconAction } from '../common/card/card.component';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
+import { AuthStore } from '../../application/auth/auth-store';
 
 interface ProfileMenuItem {
   title: string;

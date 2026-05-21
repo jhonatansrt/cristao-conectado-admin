@@ -4,7 +4,7 @@ import { AuthStore } from '../../../../application/auth/auth-store';
 import { TypeUser } from '../../../../domain/auth';
 import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 import { Container } from '../../../../util/container.service';
-import { ProfileModal } from './profile-modal/profile-modal';
+import { ProfileModal } from '../../../profile-modal/profile-modal';
 
 @Component({
   selector: 'app-profile-preview',
