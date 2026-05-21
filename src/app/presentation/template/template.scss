@@ -11,8 +11,23 @@ main {
     height: 100%;
     overflow: auto;
 
+    app-header,
+    app-footer {
+      position: sticky;
+      z-index: 1;
+    }
+
+    app-header {
+      top: 0;
+    }
+
+    app-footer {
+      bottom: 0;
+    }
+
     section {
       padding: 32px;
+      flex-grow: 1;
     }
   }
 }
