@@ -6,7 +6,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
-import { HeaderStore } from '../../../application/header/header-store';
+import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 import { MenuStore } from '../../../application/menu/menu-store';
 import { namedRoutes } from '../../../named-routes';
 import { PlaylistSelectedStore } from '../../../application/playlists/playlist-selected-store';
@@ -19,7 +19,7 @@ import { PlaylistSelectedStore } from '../../../application/playlists/playlist-s
 })
 export class Header {
   private readonly menuStore = inject(MenuStore);
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly navController = inject(Router);
   private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
 
@@ -44,7 +44,7 @@ export class Header {
     [namedRoutes.requests]: 'Solicitações',
   };
 
-  protected readonly buttonsActions = this.headerStore.getButtonsActions();
+  protected readonly buttonsActions = this.actionBarStore.getButtonsActions();
 
   protected readonly title = computed(() => {
     const route = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
