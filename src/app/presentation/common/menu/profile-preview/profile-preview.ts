@@ -4,7 +4,7 @@ import { AuthStore } from '../../../../application/auth/auth-store';
 import { TypeUser } from '../../../../domain/auth';
 import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 import { Container } from '../../../../util/container.service';
-import { ProfileModal } from '../../../profile-modal/profile-modal';
+import { Profile } from '../../../profile/profile';
 
 @Component({
   selector: 'app-profile-preview',
@@ -22,6 +22,6 @@ export class ProfilePreview {
   );
 
   protected openProfileModal(): void {
-    this.container.vcr?.createComponent(ProfileModal);
+    this.container.vcr?.createComponent(Profile);
   }
 }

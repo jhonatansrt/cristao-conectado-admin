@@ -12,12 +12,12 @@ interface ProfileMenuItem {
 }
 
 @Component({
-  selector: 'app-profile-modal',
+  selector: 'app-profile',
   imports: [ModalComponent, MatIconModule, CapitalizeNamePipe, CardComponent],
-  templateUrl: './profile-modal.html',
-  styleUrl: './profile-modal.scss',
+  templateUrl: './profile.html',
+  styleUrl: './profile.scss',
 })
-export class ProfileModal {
+export class Profile {
   private readonly authStore = inject(AuthStore);
 
   protected readonly userLogged = this.authStore.getUserLogged();
