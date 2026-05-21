@@ -1,1 +1,40 @@
+<div class="church flex flex-column">
+  <section class="flex flex-column">
+    <h2>Dados da igreja</h2>
 
+    <div class="images flex items-center">
+      <div class="avatar flex justify-center items-center">
+        <mat-icon>person</mat-icon>
+        <button class="flex justify-center items-center">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      </div>
+
+      <div class="banner flex justify-center items-center">
+        <span>Banner da Igreja</span>
+      </div>
+    </div>
+
+    <form class="flex flex-column">
+      <div class="flex">
+        <app-input label="Nome" value="Igreja Batista Transcoqueiro" />
+        <app-input label="Denominação" />
+      </div>
+      <app-input label="Endereço" value="Icuí-guajará, Ananindeua - PA" />
+    </form>
+  </section>
+
+  <section class="flex flex-column">
+    <h2>Redes sociais</h2>
+
+    <form class="flex flex-column">
+      <div class="flex">
+        <app-input label="Instagram" value="https://www.instagram.com/igreja" />
+        <app-input label="Facebook" value="https://www.facebook.com/igreja" />
+      </div>
+      <div class="flex">
+        <app-input label="YouTube" value="https://www.youtube.com/igreja" />
+      </div>
+    </form>
+  </section>
+</div>
