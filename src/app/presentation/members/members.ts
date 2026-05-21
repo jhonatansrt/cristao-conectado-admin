@@ -7,7 +7,6 @@ import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { Member } from '../../domain/members';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 
-
 @Component({
   selector: 'app-members',
   imports: [TableComponent, EmptyCaseComponent],
@@ -20,6 +19,7 @@ export class Members {
   private readonly capitalizeNamePipe = new CapitalizeNamePipe();
   private readonly formatDatePipe = new FormatDatePipe();
   protected readonly isLoading = this.tableStore.isLoading();
+  protected readonly hasMembers = this.tableStore.hasRows;
 
   constructor() {
     const columns: TableColumn[] = [
@@ -53,9 +53,5 @@ export class Members {
       email: member.email,
       birthDate: this.formatDatePipe.transform(member.birth_date),
     };
-  }
-
-  protected hasMembers(): boolean {
-    return this.tableStore.hasRows();
   }
 }
