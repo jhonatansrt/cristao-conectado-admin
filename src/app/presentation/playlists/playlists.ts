@@ -5,7 +5,7 @@ import { TableComponent } from '../common/table/table.component';
 import { PlaylistsService } from '../../application/playlists/playlists-service';
 import { finalize } from 'rxjs';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
-import { HeaderStore } from '../../application/header/header-store';
+import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AlertService } from '../common/alert/alert.service';
 import { AddPlaylistModal } from './add-playlist-modal/add-playlist-modal';
@@ -22,7 +22,7 @@ import { Playlist } from '../../domain/playlists/entities/playlist.entity';
 export class Playlists implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly playlistsService = inject(PlaylistsService);
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
   private readonly navController = inject(Router);
@@ -48,11 +48,11 @@ export class Playlists implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
+    this.actionBarStore.clearButtonsActions();
   }
 
   private setButtonsActions() {
-    this.headerStore.setButtonsActions([
+    this.actionBarStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar playlist',

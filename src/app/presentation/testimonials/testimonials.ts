@@ -3,7 +3,7 @@ import { finalize } from 'rxjs';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
-import { HeaderStore } from '../../application/header/header-store';
+import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AlertService } from '../common/alert/alert.service';
 import { TestimonialsService } from '../../application/testimonials/testimonials-service';
@@ -18,7 +18,7 @@ import { CreateTestimonial } from './create-testimonial/create-testimonial';
 export class Testimonials implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly testimonialsService = inject(TestimonialsService);
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
   protected readonly isLoading = this.tableStore.isLoading();
@@ -39,11 +39,11 @@ export class Testimonials implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
+    this.actionBarStore.clearButtonsActions();
   }
 
   private setButtonsActions() {
-    this.headerStore.setButtonsActions([
+    this.actionBarStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar testemunho',

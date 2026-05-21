@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { finalize } from 'rxjs';
 
-import { HeaderStore } from '../../application/header/header-store';
+import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
 import { NativeCalendar } from './native-calendar/native-calendar';
@@ -15,7 +15,7 @@ import { SchedulesStore } from '../../application/schedules/schedules-store';
   styleUrl: './schedule.scss',
 })
 export class Schedule implements OnInit, OnDestroy {
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
   private readonly schedulesStore = inject(SchedulesStore);
@@ -26,11 +26,11 @@ export class Schedule implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
+    this.actionBarStore.clearButtonsActions();
   }
 
   private setButtonsActions() {
-    this.headerStore.setButtonsActions([
+    this.actionBarStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar evento',

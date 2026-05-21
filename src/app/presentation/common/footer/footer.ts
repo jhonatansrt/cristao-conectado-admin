@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 
 import { ButtonComponent } from '../button/button.component';
-import { HeaderStore } from '../../../application/header/header-store';
+import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 
 @Component({
   selector: 'app-footer',
@@ -10,7 +10,7 @@ import { HeaderStore } from '../../../application/header/header-store';
   styleUrl: './footer.scss',
 })
 export class Footer {
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
 
-  protected readonly buttonsActions = this.headerStore.getButtonsActions();
+  protected readonly buttonsActions = this.actionBarStore.getButtonsActions();
 }

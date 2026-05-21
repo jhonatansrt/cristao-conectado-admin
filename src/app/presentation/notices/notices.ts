@@ -4,7 +4,7 @@ import { TableColumn, TableRow, TableStore } from '../../application/table/table
 import { TableComponent } from '../common/table/table.component';
 import { NoticesService } from '../../application/notices/notices-service';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
-import { HeaderStore } from '../../application/header/header-store';
+import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { CreateNotice } from './create-notice/create-notice';
 import { AlertService } from '../common/alert/alert.service';
@@ -18,7 +18,7 @@ import { AlertService } from '../common/alert/alert.service';
 export class Notices implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly noticesService = inject(NoticesService);
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
   protected readonly isLoading = this.tableStore.isLoading();
@@ -38,11 +38,11 @@ export class Notices implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
+    this.actionBarStore.clearButtonsActions();
   }
 
   private setButtonsActions() {
-    this.headerStore.setButtonsActions([
+    this.actionBarStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar aviso',

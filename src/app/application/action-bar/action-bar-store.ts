@@ -2,7 +2,7 @@ import { Injectable, Signal, signal } from '@angular/core';
 
 import { ButtonClass } from '../../presentation/common/button/button.data';
 
-export interface HeaderButtonAction {
+export interface ActionBarButtonAction {
   btnClass: ButtonClass;
   label: string;
   onClick?: () => void;
@@ -11,10 +11,10 @@ export interface HeaderButtonAction {
 @Injectable({
   providedIn: 'root',
 })
-export class HeaderStore {
-  private readonly buttonsActions = signal<HeaderButtonAction[]>([]);
+export class ActionBarStore {
+  private readonly buttonsActions = signal<ActionBarButtonAction[]>([]);
 
-  public setButtonsActions(buttonsActions: HeaderButtonAction[]): void {
+  public setButtonsActions(buttonsActions: ActionBarButtonAction[]): void {
     this.buttonsActions.set(buttonsActions);
   }
 
@@ -22,7 +22,7 @@ export class HeaderStore {
     this.buttonsActions.set([]);
   }
 
-  public getButtonsActions(): Signal<HeaderButtonAction[]> {
+  public getButtonsActions(): Signal<ActionBarButtonAction[]> {
     return this.buttonsActions;
   }
 }

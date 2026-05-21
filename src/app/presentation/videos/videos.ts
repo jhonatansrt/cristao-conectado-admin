@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
-import { HeaderStore } from '../../application/header/header-store';
+import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { VideosService } from '../../application/videos/videos-service';
 import { Container } from '../../util/container.service';
 import { AddVideoModal } from './add-video-modal/add-video-modal';
@@ -18,7 +18,7 @@ import { AlertService } from '../common/alert/alert.service';
 })
 export class Videos implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
-  private readonly headerStore = inject(HeaderStore);
+  private readonly actionBarStore = inject(ActionBarStore);
   private readonly videosService = inject(VideosService);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
@@ -37,7 +37,7 @@ export class Videos implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.headerStore.setButtonsActions([
+    this.actionBarStore.setButtonsActions([
       {
         btnClass: 'btn-primary',
         label: 'Adicionar vídeo',
@@ -49,7 +49,7 @@ export class Videos implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerStore.clearButtonsActions();
+    this.actionBarStore.clearButtonsActions();
   }
 
 
