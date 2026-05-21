@@ -139,6 +139,9 @@ export class AddEventModal implements OnInit {
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
         this.refreshSchedules();
+        if (edit) {
+          this.schedulesService.getScheduleDetails(edit.scheduleId).subscribe();
+        }
         this.modal.closeModal();
       },
       error: () => {},

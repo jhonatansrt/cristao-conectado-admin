@@ -1,5 +1,5 @@
 import { Injectable, Signal, signal } from '@angular/core';
-import { DaySchedule } from '../../domain/schedules';
+import { DaySchedule, ScheduleDetails } from '../../domain/schedules';
 
 @Injectable({
   providedIn: 'root',
@@ -7,6 +7,7 @@ import { DaySchedule } from '../../domain/schedules';
 export class SchedulesStore {
   private readonly monthSchedulesByDate = signal(new Map<string, number>());
   private readonly daySchedules = signal<DaySchedule[]>([]);
+  private readonly scheduleDetailsMap = signal<Record<string, ScheduleDetails>>({});
   private readonly isLoadingCalendar = signal(true);
   private readonly currentMonth = signal(new Date().getMonth() + 1);
   private readonly currentYear = signal(new Date().getFullYear());
@@ -20,6 +21,10 @@ export class SchedulesStore {
 
   public getDaySchedules(): Signal<DaySchedule[]> {
     return this.daySchedules;
+  }
+
+  public getScheduleDetailsMap(): Signal<Record<string, ScheduleDetails>> {
+    return this.scheduleDetailsMap;
   }
 
   public getIsLoadingCalendar(): Signal<boolean> {
@@ -44,6 +49,18 @@ export class SchedulesStore {
 
   public setDaySchedules(daySchedules: DaySchedule[]): void {
     this.daySchedules.set(daySchedules);
+  }
+
+  public setScheduleDetails(id: string, details: ScheduleDetails): void {
+    this.scheduleDetailsMap.update((prev) => ({ ...prev, [id]: details }));
+  }
+
+  public clearScheduleDetails(id: string): void {
+    this.scheduleDetailsMap.update((prev) => {
+      const updated = { ...prev };
+      delete updated[id];
+      return updated;
+    });
   }
 
   public setIsLoadingCalendar(isLoading: boolean): void {

@@ -94,6 +94,7 @@ export class SchedulesService {
 
   public getScheduleDetails(id: string): Observable<ScheduleDetails> {
     return this.schedulesRepository.getScheduleDetails(id).pipe(
+      tap((details) => this.schedulesStore.setScheduleDetails(id, details)),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);

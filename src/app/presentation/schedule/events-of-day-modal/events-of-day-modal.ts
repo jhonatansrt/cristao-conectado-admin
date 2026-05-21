@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ComponentRef } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -36,11 +36,25 @@ export interface DayEventItem {
   styleUrl: './events-of-day-modal.scss',
 })
 export class EventsOfDayModal {
+  @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
+
   private readonly schedulesService = inject(SchedulesService);
   private readonly schedulesStore = inject(SchedulesStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
-  // private readonly componentRef = inject(ComponentRef<EventsOfDayModal>);
+
+  private hasHadEvents = false;
+
+  constructor() {
+    effect(() => {
+      const count = this.events().length;
+      if (count > 0) {
+        this.hasHadEvents = true;
+      } else if (this.hasHadEvents) {
+        this.modal?.closeModal();
+      }
+    });
+  }
 
   public readonly events = computed<DayEventItem[]>(() =>
     this.schedulesStore.getDaySchedules()().map((schedule) => ({
@@ -53,44 +67,32 @@ export class EventsOfDayModal {
       scheduleDate: schedule.schedule_date,
     })),
   );
-  protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
+  protected readonly loadingIds = signal(new Set<string>());
+  protected readonly detailsMap = computed(() => this.schedulesStore.getScheduleDetailsMap()());
 
   private reloadSchedules(): void {
     const selectedDate = this.schedulesStore.getSelectedDate()();
-
-    if (!selectedDate) {
-      return;
-    }
+    if (!selectedDate) return;
 
     const date = new Date(selectedDate.iso);
-    const month = date.getUTCMonth() + 1;
-    const year = date.getUTCFullYear();
-
-    this.schedulesService.getMonthSchedules(month, year).subscribe();
-    this.schedulesService
-      .getDaySchedules(selectedDate.iso, selectedDate.weekDay)
-      .subscribe((updated) => {
-        if (updated.length === 0) {
-          // this.componentRef.destroy();
-        }
-      });
+    this.schedulesService.getMonthSchedules(date.getUTCMonth() + 1, date.getUTCFullYear()).subscribe();
+    this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
   }
 
   protected onAccordionOpened(id: string): void {
-    if (this.detailsMap()[id]) {
+    if (this.detailsMap()[id] || this.loadingIds().has(id)) {
       return;
     }
 
-    this.detailsMap.update((prev) => ({ ...prev, [id]: 'loading' }));
+    this.loadingIds.update((prev) => new Set(prev).add(id));
 
     this.schedulesService.getScheduleDetails(id).subscribe({
-      next: (details) => {
-        this.detailsMap.update((prev) => ({ ...prev, [id]: details }));
-      },
+      next: () => this.loadingIds.update((prev) => { const s = new Set(prev); s.delete(id); return s; }),
     });
   }
 
   protected getDetails(id: string): ScheduleDetails | 'loading' | null {
+    if (this.loadingIds().has(id)) return 'loading';
     return this.detailsMap()[id] ?? null;
   }
 
@@ -109,18 +111,14 @@ export class EventsOfDayModal {
 
     await firstValueFrom(this.schedulesService.deleteSchedule(event.id));
 
-    this.detailsMap.update((prev) => {
-      const updated = { ...prev };
-      delete updated[event.id];
-      return updated;
-    });
+    this.schedulesStore.clearScheduleDetails(event.id);
 
     this.reloadSchedules();
   }
 
   protected onOpenMap(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const mapRef = this.container.vcr?.createComponent(MapComponent);
     if (!mapRef) return;
@@ -142,7 +140,7 @@ export class EventsOfDayModal {
 
   protected onOpenConfirmedAttendees(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const dialogRef = this.container.vcr?.createComponent(ConfirmedAttendeesDialog);
     dialogRef?.setInput('attendances', details.attendances);
@@ -150,7 +148,7 @@ export class EventsOfDayModal {
 
   protected onEditEvent(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const address = {
       id: details.address_id,
@@ -178,6 +176,5 @@ export class EventsOfDayModal {
     const modal = this.container.vcr?.createComponent(AddEventModal);
     modal?.setInput('address', address);
     modal?.setInput('editData', editData);
-
   }
 }
