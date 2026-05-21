@@ -7,6 +7,7 @@ import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { TableComponent } from '../common/table/table.component';
 import { ToastService } from '../common/toast/toast.service';
+import { AlertService } from '../common/alert/alert.service';
 
 interface RequestRow extends TableRow {
   name: string;
@@ -24,6 +25,7 @@ export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly requestsService = inject(RequestsService);
   private readonly toastService = inject(ToastService);
+  private readonly alertService = inject(AlertService);
   private readonly capitalizeNamePipe = new CapitalizeNamePipe();
   private readonly formatDatePipe = new FormatDatePipe();
 
@@ -93,8 +95,10 @@ export class Requests {
     });
   }
 
-  private denyRequest(request: RequestRow): void {
-    const isConfirmed = window.confirm(`Tem certeza que deseja recusar a solicitação de ${request.name}?`);
+  private async denyRequest(request: RequestRow): Promise<void> {
+    const isConfirmed = await this.alertService.openAlert({
+      message: `Tem certeza que deseja recusar a solicitação de ${request.name}?`,
+    });
 
     if (!isConfirmed) {
       return;
