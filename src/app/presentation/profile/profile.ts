@@ -6,6 +6,7 @@ import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
 import { AuthStore } from '../../application/auth/auth-store';
 import { Container } from '../../util/container.service';
 import { PersonalDatas } from './personal-datas/personal-datas';
+import { UpdatePassword } from './update-password/update-password';
 
 interface ProfileMenuItem {
   title: string;
@@ -34,7 +35,7 @@ export class Profile {
     {
       title: 'Alterar senha',
       icons: [{ name: 'navigate_next', action: () => {} }],
-      click: () => {},
+      click: () => this.container.vcr?.createComponent(UpdatePassword),
     },
     {
       title: 'Configurações',
