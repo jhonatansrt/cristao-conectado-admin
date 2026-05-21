@@ -110,7 +110,11 @@ export class AddEventModal implements OnInit {
   }
 
   protected onChangeAddress(): void {
-    this.container.vcr?.createComponent(AddressList);
+    const addressListRef = this.container.vcr?.createComponent(AddressList);
+    const edit = this.editData();
+    if (edit) {
+      addressListRef?.setInput('editData', edit);
+    }
     this.modal.closeModal();
   }
 
