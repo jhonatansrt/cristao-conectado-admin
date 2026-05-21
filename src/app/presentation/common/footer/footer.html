@@ -1,0 +1,7 @@
+@if (buttonsActions().length) {
+  <footer class="flex items-center justify-evenly">
+    @for (action of buttonsActions(); track action.label) {
+      <app-button [btnClass]="action.btnClass" (click)="action.onClick?.()">{{ action.label }}</app-button>
+    }
+  </footer>
+}
