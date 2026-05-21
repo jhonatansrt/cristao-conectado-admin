@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { namedRoutes } from './named-routes';
 import { Login } from './presentation/auth/login/login';
 import { Church } from './presentation/church/church';
@@ -23,7 +22,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: namedRoutes.home,
+        redirectTo: namedRoutes.schedule,
         pathMatch: 'full',
       },
       {
