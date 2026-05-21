@@ -18,6 +18,8 @@ export class UpdatePassword {
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
+  public isLoading = false;
+
   public readonly updatePasswordForm = this.fb.group({
     password: [''],
     newPassword: [''],
@@ -33,8 +35,10 @@ export class UpdatePassword {
 
     if (!password || !newPassword || !newPasswordConfirmation) return;
 
+    this.isLoading = true;
     this.authService.updatePassword({ password, newPassword, newPasswordConfirmation }).subscribe({
       next: () => this.closeModal(),
+      error: () => (this.isLoading = false),
     });
   }
 }
