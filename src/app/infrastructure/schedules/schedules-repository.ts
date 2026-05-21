@@ -23,7 +23,8 @@ export class SchedulesRepository implements ISchedulesRepository {
 
     if (props.day !== undefined) {
       body['day'] = props.day;
-    } else {
+    }
+    if (props.scheduleDate) {
       body['schedule_date'] = props.scheduleDate;
     }
 
