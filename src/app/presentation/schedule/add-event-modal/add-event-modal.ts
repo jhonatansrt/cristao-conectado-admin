@@ -126,7 +126,9 @@ export class AddEventModal implements OnInit {
       description: description ?? '',
       hourInitial: this.parseTime(startTime ?? ''),
       hourFinal: this.parseTime(endTime ?? ''),
-      ...(this.isFixed ? { day: Number(dayOfWeek) } : { scheduleDate: this.parseDate(date ?? '') }),
+      ...(this.isFixed
+        ? { day: Number(dayOfWeek) }
+        : { scheduleDate: this.parseDate(date ?? ''), day: this.getDayOfWeek(date ?? '') }),
     };
 
     this.loading = true;
@@ -168,6 +170,11 @@ export class AddEventModal implements OnInit {
   private parseDate(value: string): string {
     const [day, month, year] = value.split('/');
     return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
+  }
+
+  private getDayOfWeek(value: string): number {
+    const [day, month, year] = value.split('/');
+    return new Date(Number(year), Number(month) - 1, Number(day)).getDay();
   }
 
   private formatTime(value: number): string {
