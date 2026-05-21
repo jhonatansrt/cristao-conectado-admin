@@ -1,7 +1,12 @@
 <app-dialog title="Alterar foto do perfil" (close)="onClose()">
-  <section class="options flex flex-column">
+  <section class="flex flex-column">
     @for (option of options; track option.title) {
-      <app-card [title]="option.title" [description]="null" [icons]="option.icons" [clickable]="true" />
+      <app-card
+        [title]="option.title"
+        [description]="null"
+        [icons]="option.icons"
+        [clickable]="true"
+      />
     }
   </section>
 </app-dialog>

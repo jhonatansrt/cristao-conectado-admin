@@ -30,7 +30,7 @@ section {
         }
       }
 
-      .camera-btn {
+      button {
         position: absolute;
         bottom: 0;
         right: 0;
@@ -46,7 +46,7 @@ section {
           font-size: 14px;
           width: 14px;
           height: 14px;
-          color: var(--color-on-primary);
+          color: var(--color-text-inverse);
         }
       }
     }

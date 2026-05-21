@@ -1,6 +1,5 @@
 <app-modal title="Perfil">
   <section class="body-modal flex flex-column">
-
     <div class="flex flex-column items-center">
       <div class="avatar-wrapper" (click)="openChangePhotoDialog()">
         <figure class="flex justify-center items-center">
@@ -10,7 +9,7 @@
             <mat-icon aria-hidden="true">person</mat-icon>
           }
         </figure>
-        <button class="camera-btn flex justify-center items-center" aria-label="Alterar foto">
+        <button class="flex justify-center items-center" aria-label="Alterar foto">
           <mat-icon>photo_camera</mat-icon>
         </button>
       </div>
@@ -19,9 +18,14 @@
 
     <nav class="flex flex-column">
       @for (item of menuItems; track item.title) {
-        <app-card [title]="item.title" [description]="null" [icons]="item.icons" [clickable]="true" (click)="item.click()" />
+        <app-card
+          [title]="item.title"
+          [description]="null"
+          [icons]="item.icons"
+          [clickable]="true"
+          (click)="item.click()"
+        />
       }
     </nav>
-
   </section>
 </app-modal>
