@@ -1,0 +1,30 @@
+<article class="backdrop">
+  <section class="panel flex flex-column">
+
+    <header class="flex flex-column items-center">
+      <div class="header-nav flex">
+        <button class="back-btn flex justify-center items-center" (click)="close()" aria-label="Voltar">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+
+      <figure class="avatar flex justify-center items-center">
+        <mat-icon aria-hidden="true">person</mat-icon>
+        <div class="camera-badge flex justify-center items-center">
+          <mat-icon aria-hidden="true">photo_camera</mat-icon>
+        </div>
+      </figure>
+
+      <h1>{{ userLogged()?.name | capitalizeName }}</h1>
+    </header>
+
+    <main class="flex flex-column">
+      @for (item of menuItems; track item.title) {
+        <div role="button" tabindex="0" (click)="item.click()" (keydown.enter)="item.click()">
+          <app-card [title]="item.title" [description]="null" [icons]="item.icons" [clickable]="true" />
+        </div>
+      }
+    </main>
+
+  </section>
+</article>
