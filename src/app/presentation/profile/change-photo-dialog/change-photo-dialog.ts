@@ -1,8 +1,9 @@
-import { Component, ElementRef, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject } from '@angular/core';
 import { CardComponent, CardIconAction } from '../../common/card/card.component';
 import { DialogComponent } from '../../common/dialog/dialog.component';
 import { AuthService } from '../../../application/auth/auth-service';
 import { UpdateAvatarDTO } from '../../../domain/auth';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-change-photo-dialog',
@@ -15,7 +16,7 @@ export class ChangePhotoDialog {
   private readonly el = inject(ElementRef);
   private readonly authService = inject(AuthService);
 
-  protected readonly loading = signal(false);
+  protected loading = false;
 
   protected readonly options: { title: string; icons: CardIconAction[] }[] = [
     { title: 'Galeria', icons: [{ name: 'photo_library', action: () => this.openFilePicker() }] },
@@ -35,16 +36,11 @@ export class ChangePhotoDialog {
   }
 
   private uploadAvatar(props: UpdateAvatarDTO): void {
-    this.loading.set(true);
-    this.authService.updateAvatar(props).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.onClose();
-      },
-      error: () => {
-        this.loading.set(false);
-      },
-    });
+    this.loading = true;
+    this.authService
+      .updateAvatar(props)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(() => this.onClose());
   }
 
   public onClose(): void {
