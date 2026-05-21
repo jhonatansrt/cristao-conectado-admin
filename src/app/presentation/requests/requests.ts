@@ -108,6 +108,7 @@ export class Requests {
       next: () => {
         this.toastService.openToast({
           message: `Solicitação de ${request.name} negada.`,
+          success: true,
         });
 
         this.removeRequest(request.id);
