@@ -20,7 +20,7 @@ export class AccordionComponent {
   protected readonly headerIcons = computed<CardIconAction[]>(() => [
     {
       name: this.isOpen() ? 'expand_less' : 'expand_more',
-      action: () => undefined,
+      action: () => this.toggle(),
       ariaLabel: this.isOpen() ? 'Fechar seção' : 'Abrir seção',
     },
   ]);
