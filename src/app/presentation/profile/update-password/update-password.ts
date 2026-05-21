@@ -1,5 +1,6 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../application/auth/auth-service';
 import { ButtonComponent } from '../../common/button/button.component';
@@ -36,9 +37,8 @@ export class UpdatePassword {
     if (!password || !newPassword || !newPasswordConfirmation) return;
 
     this.isLoading = true;
-    this.authService.updatePassword({ password, newPassword, newPasswordConfirmation }).subscribe({
-      next: () => this.closeModal(),
-      error: () => (this.isLoading = false),
-    });
+    this.authService.updatePassword({ password, newPassword, newPasswordConfirmation })
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(() => this.closeModal());
   }
 }
