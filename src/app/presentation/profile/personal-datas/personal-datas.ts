@@ -25,6 +25,8 @@ export class PersonalDatas {
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
+  public isLoading = false;
+
   private readonly userLogged = this.authStore.getUserLogged();
 
   public readonly personalDatasForm = this.fb.group({
@@ -45,8 +47,10 @@ export class PersonalDatas {
     const [day, month, year] = birthDate.split('/');
     const isoDate = new Date(`${year}-${month}-${day}T00:00:00.000Z`).toISOString();
 
+    this.isLoading = true;
     this.authService.updateUser({ name, birth_date: isoDate }).subscribe({
       next: () => this.closeModal(),
+      error: () => (this.isLoading = false),
     });
   }
 }
