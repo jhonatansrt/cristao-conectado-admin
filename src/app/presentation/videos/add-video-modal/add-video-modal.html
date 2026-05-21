@@ -1,11 +1,13 @@
-<app-modal [title]="isEditMode ? 'Editar vídeo' : 'Novo vídeo'">
+<app-modal [title]="videoData ? 'Editar vídeo' : 'Novo vídeo'">
   <section class="body-modal">
     <form class="flex flex-column" [formGroup]="addVideoForm" (ngSubmit)="onConfirm()">
-      <app-input label="Link do YouTube" placeholder="https://www.youtube.com/watch?v=WiykDM" formControlName="youtubeUrl" />
+      <app-input
+        label="Link do YouTube"
+        placeholder="https://www.youtube.com/watch?v=WiykDM"
+        formControlName="youtubeUrl"
+      />
 
       <app-input label="Título" formControlName="title" />
-
-      
 
       <app-input label="Ordem de exibição" type="number" formControlName="order" />
 
@@ -19,6 +21,8 @@
 
   <footer class="flex justify-end">
     <app-button btnClass="btn-secondary" (click)="closeModal()">Cancelar</app-button>
-    <app-button btnClass="btn-primary" [disabled]="addVideoForm.invalid" (click)="onConfirm()">Confirmar</app-button>
+    <app-button btnClass="btn-primary" [disabled]="addVideoForm.invalid" (click)="onConfirm()"
+      >Confirmar</app-button
+    >
   </footer>
 </app-modal>

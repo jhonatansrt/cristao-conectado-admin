@@ -18,7 +18,13 @@ export type VideoFormData = {
 
 @Component({
   selector: 'app-add-video-modal',
-  imports: [ModalComponent, InputComponent, CheckboxComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [
+    ModalComponent,
+    InputComponent,
+    CheckboxComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './add-video-modal.html',
   styleUrl: './add-video-modal.scss',
 })
@@ -30,7 +36,6 @@ export class AddVideoModal implements OnInit {
   @Input() public videoData?: VideoFormData;
   public videoCreated = output<void>();
   public loading = false;
-  public isEditMode = false;
 
   public readonly addVideoForm = this.fb.group({
     youtubeUrl: ['', Validators.required],
@@ -40,8 +45,11 @@ export class AddVideoModal implements OnInit {
   });
 
   ngOnInit(): void {
+    this.patchValue();
+  }
+
+  private patchValue() {
     if (this.videoData) {
-      this.isEditMode = true;
       this.addVideoForm.patchValue({
         youtubeUrl: `https://www.youtube.com/watch?v=${this.videoData.youtubeId}`,
         title: this.videoData.name,
@@ -67,7 +75,7 @@ export class AddVideoModal implements OnInit {
 
     this.loading = true;
 
-    const request$ = this.isEditMode ? this.updateVideo() : this.createVideo();
+    const request$ = this.videoData ? this.updateVideo() : this.createVideo();
 
     request$.pipe(finalize(() => (this.loading = false))).subscribe(() => {
       this.videoCreated.emit();
