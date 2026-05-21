@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
-import { IRequestsRepository, UserChurchRequest } from '../../domain/requests';
+import { IRequestsRepository, ReviewUserChurchRequestDTO, UserChurchRequest } from '../../domain/requests';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 
 @Injectable({
@@ -20,6 +20,15 @@ export class RequestsService {
     }
 
     return this.requestsRepository.getPendingRequestsByChurch({ churchId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
+  public reviewRequest(props: ReviewUserChurchRequestDTO): Observable<unknown> {
+    return this.requestsRepository.reviewUserChurchRequest(props).pipe(
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
