@@ -81,20 +81,34 @@ export class Requests {
   }
 
   private approveRequest(request: RequestRow): void {
-    this.toastService.openToast({
-      message: `${request.name} foi aprovado(a) com sucesso.`,
-      success: true,
-    });
+    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }).subscribe({
+      next: () => {
+        this.toastService.openToast({
+          message: `${request.name} foi aprovado(a) com sucesso.`,
+          success: true,
+        });
 
-    this.removeRequest(request.id);
+        this.removeRequest(request.id);
+      },
+    });
   }
 
   private denyRequest(request: RequestRow): void {
-    this.toastService.openToast({
-      message: `Solicitação de ${request.name} negada.`,
-    });
+    const isConfirmed = window.confirm(`Tem certeza que deseja recusar a solicitação de ${request.name}?`);
 
-    this.removeRequest(request.id);
+    if (!isConfirmed) {
+      return;
+    }
+
+    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }).subscribe({
+      next: () => {
+        this.toastService.openToast({
+          message: `Solicitação de ${request.name} negada.`,
+        });
+
+        this.removeRequest(request.id);
+      },
+    });
   }
 
   private removeRequest(requestId: number | string): void {
