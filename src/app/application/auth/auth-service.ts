@@ -10,6 +10,7 @@ import {
   CreateSessionApiResponse,
   CreateSessionDTO,
   IAuthRepository,
+  UpdateAvatarApiResponse,
   UpdateAvatarDTO,
   UpdatePasswordDTO,
   UpdateUserDTO,
@@ -78,17 +79,16 @@ export class AuthService {
     );
   }
 
-  public updateAvatar(props: UpdateAvatarDTO): Observable<void> {
+  public updateAvatar(props: UpdateAvatarDTO): Observable<UpdateAvatarApiResponse> {
     return this.authRepository.updateAvatar(props).pipe(
-      tap(async () => {
+      tap(async (resp) => {
         const userLogged = await this.storage.getStorage('userLogged');
 
         if (!userLogged) {
           return;
         }
 
-        const avatarURL = URL.createObjectURL(props.file);
-        const updatedUser: User = { ...userLogged, avatar: avatarURL };
+        const updatedUser: User = { ...userLogged, avatar: resp.avatar };
 
         await this.storage.setStorage('userLogged', updatedUser);
         this.authStore.setUserLogged(updatedUser);
