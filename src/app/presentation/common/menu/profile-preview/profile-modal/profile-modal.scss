@@ -1,32 +1,38 @@
-.user-info {
-  gap: 8px;
-  padding-bottom: 24px;
+section {
+  gap: 24px;
 
-  figure {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background-color: var(--color-background-secondary);
+  > div {
+    gap: 12px;
 
-    mat-icon {
-      width: 44px;
-      height: 44px;
-      font-size: 44px;
-      color: var(--color-text-inverse);
+    figure {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: var(--color-background-secondary);
+
+      mat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 44px;
+        color: var(--color-text-inverse);
+      }
+    }
+
+    p {
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
     }
   }
 
-  p {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-  }
-}
+  nav {
+    gap: 12px;
 
-.items-list {
-  gap: 12px;
-
-  > div {
-    cursor: pointer;
+    button {
+      all: unset;
+      display: block;
+      width: 100%;
+      cursor: pointer;
+    }
   }
 }
