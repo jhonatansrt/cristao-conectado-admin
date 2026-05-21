@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ComponentRef } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -53,7 +53,8 @@ export class EventsOfDayModal {
       scheduleDate: schedule.schedule_date,
     })),
   );
-  protected readonly detailsMap = signal<Record<string, ScheduleDetails | 'loading'>>({});
+  protected readonly loadingIds = signal(new Set<string>());
+  protected readonly detailsMap = computed(() => this.schedulesStore.getScheduleDetailsMap()());
 
   private reloadSchedules(): void {
     const selectedDate = this.schedulesStore.getSelectedDate()();
@@ -77,20 +78,19 @@ export class EventsOfDayModal {
   }
 
   protected onAccordionOpened(id: string): void {
-    if (this.detailsMap()[id]) {
+    if (this.detailsMap()[id] || this.loadingIds().has(id)) {
       return;
     }
 
-    this.detailsMap.update((prev) => ({ ...prev, [id]: 'loading' }));
+    this.loadingIds.update((prev) => new Set(prev).add(id));
 
     this.schedulesService.getScheduleDetails(id).subscribe({
-      next: (details) => {
-        this.detailsMap.update((prev) => ({ ...prev, [id]: details }));
-      },
+      next: () => this.loadingIds.update((prev) => { const s = new Set(prev); s.delete(id); return s; }),
     });
   }
 
   protected getDetails(id: string): ScheduleDetails | 'loading' | null {
+    if (this.loadingIds().has(id)) return 'loading';
     return this.detailsMap()[id] ?? null;
   }
 
@@ -109,18 +109,14 @@ export class EventsOfDayModal {
 
     await firstValueFrom(this.schedulesService.deleteSchedule(event.id));
 
-    this.detailsMap.update((prev) => {
-      const updated = { ...prev };
-      delete updated[event.id];
-      return updated;
-    });
+    this.schedulesStore.clearScheduleDetails(event.id);
 
     this.reloadSchedules();
   }
 
   protected onOpenMap(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const mapRef = this.container.vcr?.createComponent(MapComponent);
     if (!mapRef) return;
@@ -142,7 +138,7 @@ export class EventsOfDayModal {
 
   protected onOpenConfirmedAttendees(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const dialogRef = this.container.vcr?.createComponent(ConfirmedAttendeesDialog);
     dialogRef?.setInput('attendances', details.attendances);
@@ -150,7 +146,7 @@ export class EventsOfDayModal {
 
   protected onEditEvent(event: DayEventItem): void {
     const details = this.detailsMap()[event.id];
-    if (!details || details === 'loading') return;
+    if (!details) return;
 
     const address = {
       id: details.address_id,
@@ -178,13 +174,5 @@ export class EventsOfDayModal {
     const modal = this.container.vcr?.createComponent(AddEventModal);
     modal?.setInput('address', address);
     modal?.setInput('editData', editData);
-
-    modal?.instance.saved.subscribe(() => {
-      this.schedulesService.getScheduleDetails(event.id).subscribe({
-        next: (details) => {
-          this.detailsMap.update((prev) => ({ ...prev, [event.id]: details }));
-        },
-      });
-    });
   }
 }
