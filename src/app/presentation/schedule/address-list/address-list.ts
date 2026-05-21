@@ -1,6 +1,7 @@
-import { Component, computed, inject, input, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
+import { SchedulesStore } from '../../../application/schedules/schedules-store';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
@@ -12,7 +13,7 @@ import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 import { MapComponent } from '../../common/map/map.component';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
-import { AddEventModal, EditScheduleData } from '../add-event-modal/add-event-modal';
+import { AddEventModal } from '../add-event-modal/add-event-modal';
 
 interface AddressCard extends Address {
   actions: CardIconAction[];
@@ -34,8 +35,7 @@ export class AddressList implements OnInit {
   private readonly container = inject(Container);
   public readonly addressesStore = inject(AddressesStore);
   private readonly addressesService = inject(AddressesService);
-
-  public readonly editData = input<EditScheduleData | null>(null);
+  private readonly schedulesStore = inject(SchedulesStore);
 
   public searchAddress = '';
   public predictions: string[] = [];
@@ -81,9 +81,6 @@ export class AddressList implements OnInit {
     this.modal.closeModal();
     const eventModal = this.container.vcr?.createComponent(AddEventModal);
     eventModal?.setInput('address', address);
-    if (this.editData()) {
-      eventModal?.setInput('editData', this.editData());
-    }
   }
 
   public onAddressCreated(): void {
