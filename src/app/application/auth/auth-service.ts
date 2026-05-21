@@ -10,6 +10,7 @@ import {
   CreateSessionApiResponse,
   CreateSessionDTO,
   IAuthRepository,
+  UpdateAvatarDTO,
   UpdatePasswordDTO,
   UpdateUserDTO,
   User,
@@ -70,6 +71,29 @@ export class AuthService {
   public updatePassword(props: UpdatePasswordDTO): Observable<void> {
     return this.authRepository.updatePassword(props).pipe(
       tap(() => this.toastService.openToast({ success: true })),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
+  public updateAvatar(props: UpdateAvatarDTO): Observable<void> {
+    return this.authRepository.updateAvatar(props).pipe(
+      tap(async () => {
+        const userLogged = await this.storage.getStorage('userLogged');
+
+        if (!userLogged) {
+          return;
+        }
+
+        const avatarURL = URL.createObjectURL(props.file);
+        const updatedUser: User = { ...userLogged, avatar: avatarURL };
+
+        await this.storage.setStorage('userLogged', updatedUser);
+        this.authStore.setUserLogged(updatedUser);
+        this.toastService.openToast({ success: true });
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
