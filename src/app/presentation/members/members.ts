@@ -1,6 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
+import { MembersService } from '../../application/members/members-service';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
+import { Member } from '../../domain/members';
+
 
 @Component({
   selector: 'app-members',
@@ -10,6 +15,9 @@ import { TableComponent } from '../common/table/table.component';
 })
 export class Members {
   private readonly tableStore = inject(TableStore<TableRow>);
+  private readonly membersService = inject(MembersService);
+  private readonly capitalizeNamePipe = new CapitalizeNamePipe();
+  private readonly formatDatePipe = new FormatDatePipe();
 
   constructor() {
     const columns: TableColumn[] = [
@@ -18,27 +26,30 @@ export class Members {
       { key: 'birthDate', header: 'Data de nascimento' },
     ];
 
-    const rows: TableRow[] = [
-      {
-        id: 1,
-        name: 'Ana Souza',
-        email: 'ana.souza@email.com',
-        birthDate: '14/03/1992',
-      },
-      {
-        id: 2,
-        name: 'Carlos Lima',
-        email: 'carlos.lima@email.com',
-        birthDate: '27/08/1988',
-      },
-      {
-        id: 3,
-        name: 'Mariana Alves',
-        email: 'mariana.alves@email.com',
-        birthDate: '05/11/1995',
-      },
-    ];
+    this.tableStore.setColumns(columns);
+    this.loadMembers();
+  }
 
-    this.tableStore.setTable(columns, rows);
+  private loadMembers(): void {
+    this.tableStore.setLoading(true);
+
+    this.membersService.getMembersByChurch().subscribe({
+      next: (members) => {
+        this.tableStore.setRows(members.map((member) => this.buildRow(member)));
+        this.tableStore.setLoading(false);
+      },
+      error: () => {
+        this.tableStore.setLoading(false);
+      },
+    });
+  }
+
+  private buildRow(member: Member): TableRow {
+    return {
+      id: member.id,
+      name: this.capitalizeNamePipe.transform(member.name),
+      email: member.email,
+      birthDate: this.formatDatePipe.transform(member.birth_date),
+    };
   }
 }
