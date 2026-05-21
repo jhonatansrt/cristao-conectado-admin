@@ -29,15 +29,15 @@ export class MenuItems {
   );
 
   protected readonly items = [
-    { label: 'Home', icon: 'home_outlined', route: namedRoutes.home },
-    { label: 'Membros', icon: 'person_outline', route: namedRoutes.members },
+    // { label: 'Home', icon: 'home_outlined', route: namedRoutes.home },
     { label: 'Agenda', icon: 'calendar_month', route: namedRoutes.schedule },
     { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists },
     { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices },
     { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials },
+    { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray },
+    { label: 'Membros', icon: 'person_outline', route: namedRoutes.members },
     { label: 'Igreja', icon: 'church', route: namedRoutes.church },
     { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests },
-    { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray },
     { label: 'Sair', icon: 'logout', action: 'logout' },
   ];
 
