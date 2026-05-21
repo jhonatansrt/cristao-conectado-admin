@@ -10,7 +10,7 @@ import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { ButtonComponent } from '../../common/button/button.component';
 import { Container } from '../../../util/container.service';
-import { AddEventModal } from '../add-event-modal/add-event-modal';
+import { AddEventModal, EditScheduleData } from '../add-event-modal/add-event-modal';
 import { AlertService } from '../../common/alert/alert.service';
 import { MapComponent } from '../../common/map/map.component';
 import { ConfirmedAttendeesDialog } from './confirmed-attendees-dialog/confirmed-attendees-dialog';
@@ -163,7 +163,7 @@ export class EventsOfDayModal {
       longitude: details.longitude,
     };
 
-    const editData = {
+    const editData: EditScheduleData = {
       scheduleId: details.schedule_id,
       title: event.title,
       description: details.description,
@@ -173,8 +173,8 @@ export class EventsOfDayModal {
       scheduleDate: event.scheduleDate ?? undefined,
     };
 
+    this.schedulesStore.setEditData(editData);
     const modal = this.container.vcr?.createComponent(AddEventModal);
     modal?.setInput('address', address);
-    modal?.setInput('editData', editData);
   }
 }

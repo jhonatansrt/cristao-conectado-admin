@@ -1,5 +1,6 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { DaySchedule, ScheduleDetails } from '../../domain/schedules';
+import { EditScheduleData } from '../../presentation/schedule/add-event-modal/add-event-modal';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class SchedulesStore {
   private readonly currentMonth = signal(new Date().getMonth() + 1);
   private readonly currentYear = signal(new Date().getFullYear());
   private readonly selectedDate = signal<{ iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null>(null);
+  private readonly editData = signal<EditScheduleData | null>(null);
 
 
 
@@ -74,5 +76,13 @@ export class SchedulesStore {
 
   public setSelectedDate(selectedDate: { iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null): void {
     this.selectedDate.set(selectedDate);
+  }
+
+  public getEditData(): Signal<EditScheduleData | null> {
+    return this.editData;
+  }
+
+  public setEditData(data: EditScheduleData | null): void {
+    this.editData.set(data);
   }
 }

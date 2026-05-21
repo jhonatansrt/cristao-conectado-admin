@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { finalize } from 'rxjs';
@@ -48,7 +48,6 @@ export class AddEventModal implements OnInit {
   private readonly schedulesStore = inject(SchedulesStore);
 
   public readonly address = input<Address | null>(null);
-  public readonly editData = input<EditScheduleData | null>(null);
   protected readonly currentAddress = signal<Address | null>(null);
 
   public loading = false;
@@ -84,7 +83,7 @@ export class AddEventModal implements OnInit {
       this.currentAddress.set(addr);
     }
 
-    const edit = this.editData();
+    const edit = this.schedulesStore.getEditData()();
 
     if (edit) {
       this.form.patchValue({
@@ -110,10 +109,7 @@ export class AddEventModal implements OnInit {
   }
 
   protected onChangeAddress(): void {
-    const addressListRef = this.container.vcr?.createComponent(AddressList);
-    if (this.editData()) {
-      addressListRef?.setInput('editData', this.editData());
-    }
+    this.container.vcr?.createComponent(AddressList);
     this.modal.closeModal();
   }
 
@@ -130,7 +126,7 @@ export class AddEventModal implements OnInit {
     }
 
     const { title, description, startTime, endTime, dayOfWeek, date } = this.form.getRawValue();
-    const edit = this.editData();
+    const edit = this.schedulesStore.getEditData()();
 
     const scheduleParams = {
       addressId: addr.id,
@@ -151,6 +147,7 @@ export class AddEventModal implements OnInit {
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
         this.refreshSchedules();
+        this.schedulesStore.setEditData(null);
         this.modal.closeModal();
         if (edit) {
           this.schedulesService.getScheduleDetails(edit.scheduleId).subscribe();
@@ -161,6 +158,7 @@ export class AddEventModal implements OnInit {
   }
 
   protected onCancel(): void {
+    this.schedulesStore.setEditData(null);
     this.modal.closeModal();
   }
 
