@@ -1,0 +1,22 @@
+@use '../../../../theme/breakpoint.scss' as *;
+
+footer {
+  display: none;
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  footer {
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    padding: 16px 24px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background: var(--header-background);
+    border-top: 1px solid var(--gray);
+    gap: 8px;
+
+    app-button {
+      flex: 1;
+    }
+  }
+}
