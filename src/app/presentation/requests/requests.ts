@@ -25,9 +25,10 @@ export class Requests {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly requestsService = inject(RequestsService);
   private readonly alertService = inject(AlertService);
-  protected readonly isLoading = this.tableStore.isLoading();
   private readonly capitalizeNamePipe = new CapitalizeNamePipe();
   private readonly formatDatePipe = new FormatDatePipe();
+  protected readonly isLoading = this.tableStore.isLoading();
+  protected readonly hasRequests = this.tableStore.hasRows;
 
   constructor() {
     const columns: TableColumn[] = [
@@ -38,10 +39,6 @@ export class Requests {
 
     this.tableStore.setColumns(columns);
     this.loadPendingRequests();
-  }
-
-  protected hasRequests(): boolean {
-    return this.tableStore.hasRows();
   }
 
   private loadPendingRequests(): void {
@@ -87,9 +84,11 @@ export class Requests {
   }
 
   private approveRequest(request: RequestRow): void {
-    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }, request.name).subscribe(() => {
-      this.removeRequest(request.id);
-    });
+    this.requestsService
+      .reviewRequest({ id: String(request.id), status: 1 }, request.name)
+      .subscribe(() => {
+        this.removeRequest(request.id);
+      });
   }
 
   private async denyRequest(request: RequestRow): Promise<void> {
@@ -101,9 +100,11 @@ export class Requests {
       return;
     }
 
-    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }, request.name).subscribe(() => {
-      this.removeRequest(request.id);
-    });
+    this.requestsService
+      .reviewRequest({ id: String(request.id), status: 2 }, request.name)
+      .subscribe(() => {
+        this.removeRequest(request.id);
+      });
   }
 
   private removeRequest(requestId: number | string): void {
