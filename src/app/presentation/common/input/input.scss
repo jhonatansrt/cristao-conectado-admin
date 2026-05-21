@@ -27,6 +27,12 @@ fieldset {
     &::placeholder {
       color: var(--color-input-placeholder);
     }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: var(--background-light);
+      color: var(--color-text-disabled);
+    }
   }
 
   textarea {
