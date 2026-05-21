@@ -88,6 +88,33 @@ export class VideosService {
       );
   }
 
+  public updateVideo(props: { id: string; youtubeId: string; name: string; order: number; showHome: boolean }): Observable<void> {
+    const folderId = this.playlistSelectedStore.getPlaylistSelected()()[0]?.id;
+
+    if (!folderId) {
+      return of(void 0);
+    }
+
+    return this.videosRepository
+      .updateVideo({
+        id: props.id,
+        folderId,
+        youtubeId: props.youtubeId,
+        order: props.order,
+        name: props.name,
+        showHome: props.showHome,
+      })
+      .pipe(
+        map(() => {
+          this.toastService.openToast({ success: true, message: 'Atualizado com sucesso' });
+        }),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
+  }
+
   public deleteVideo(props: { id: string }): Observable<void> {
     return this.videosRepository.deleteVideo({ id: props.id }).pipe(
       catchError((e) => {

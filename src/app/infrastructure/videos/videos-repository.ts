@@ -30,6 +30,25 @@ export class VideosRepository implements IVideosRepository {
     });
   }
 
+  public updateVideo(props: {
+    id: string;
+    folderId: string;
+    youtubeId: string;
+    order: number;
+    name: string;
+    showHome: boolean;
+  }): Observable<void> {
+    const url = environment.apiBaseURL + `/videos/${props.id}`;
+
+    return this.httpClient.patch<void>(url, {
+      folder_id: props.folderId,
+      youtube_id: props.youtubeId,
+      order: String(props.order),
+      name: props.name,
+      show_home: props.showHome,
+    });
+  }
+
   public deleteVideo(props: { id: string }): Observable<void> {
     const url = environment.apiBaseURL + `/videos/${props.id}`;
 

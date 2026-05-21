@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, output } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -8,17 +8,26 @@ import { InputComponent } from '../../common/input/input';
 import { CheckboxComponent } from '../../common/checkbox/checkbox';
 import { ModalComponent } from '../../common/modal/modal.component';
 
+export type VideoFormData = {
+  id: string;
+  youtubeId: string;
+  name: string;
+  order: number;
+  showHome: boolean;
+};
+
 @Component({
   selector: 'app-add-video-modal',
   imports: [ModalComponent, InputComponent, CheckboxComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './add-video-modal.html',
   styleUrl: './add-video-modal.scss',
 })
-export class AddVideoModal {
+export class AddVideoModal implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly videosService = inject(VideosService);
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
+  @Input() public videoData?: VideoFormData;
   public videoCreated = output<void>();
   public loading = false;
 
@@ -28,6 +37,21 @@ export class AddVideoModal {
     order: ['', [Validators.required, Validators.min(1)]],
     featured: [false],
   });
+
+  public get isEditMode(): boolean {
+    return !!this.videoData?.id;
+  }
+
+  ngOnInit(): void {
+    if (this.videoData) {
+      this.addVideoForm.patchValue({
+        youtubeUrl: `https://www.youtube.com/watch?v=${this.videoData.youtubeId}`,
+        title: this.videoData.name,
+        order: String(this.videoData.order),
+        featured: this.videoData.showHome,
+      });
+    }
+  }
 
   public closeModal(): void {
     this.modal?.closeModal();
@@ -47,21 +71,29 @@ export class AddVideoModal {
     const youtubeId = this.extractYoutubeId(youtubeUrl ?? '');
 
     this.loading = true;
-    this.videosService
-      .createVideo({
-        youtubeId,
-        name: title ?? '',
-        order: Number(order),
-        showHome: Boolean(featured),
-      })
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe({
-        next: () => {
-          this.videoCreated.emit();
-          this.closeModal();
-        },
-        error: () => {},
-      });
+
+    const request$ = this.videoData?.id
+      ? this.videosService.updateVideo({
+          id: this.videoData.id,
+          youtubeId,
+          name: title ?? '',
+          order: Number(order),
+          showHome: Boolean(featured),
+        })
+      : this.videosService.createVideo({
+          youtubeId,
+          name: title ?? '',
+          order: Number(order),
+          showHome: Boolean(featured),
+        });
+
+    request$.pipe(finalize(() => (this.loading = false))).subscribe({
+      next: () => {
+        this.videoCreated.emit();
+        this.closeModal();
+      },
+      error: () => {},
+    });
   }
 
   private extractYoutubeId(value: string): string {

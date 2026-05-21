@@ -1,4 +1,4 @@
-<app-modal title="Novo vídeo">
+<app-modal [title]="isEditMode ? 'Editar vídeo' : 'Novo vídeo'">
   <section class="body-modal">
     <form class="flex flex-column" [formGroup]="addVideoForm" (ngSubmit)="onConfirm()">
       <app-input label="Link do YouTube" placeholder="https://www.youtube.com/watch?v=WiykDM" formControlName="youtubeUrl" />

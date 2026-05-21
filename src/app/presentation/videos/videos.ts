@@ -4,7 +4,7 @@ import { TableColumn, TableRow, TableStore } from '../../application/table/table
 import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { VideosService } from '../../application/videos/videos-service';
 import { Container } from '../../util/container.service';
-import { AddVideoModal } from './add-video-modal/add-video-modal';
+import { AddVideoModal, VideoFormData } from './add-video-modal/add-video-modal';
 import { PlayVideo } from './play-video/play-video';
 import { TableComponent } from '../common/table/table.component';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
@@ -58,6 +58,14 @@ export class Videos implements OnInit, OnDestroy {
     componentRef?.instance.videoCreated.subscribe(() => this.getVideos());
   };
 
+  private handleEditVideo(videoData: VideoFormData): void {
+    const componentRef = this.container.vcr?.createComponent(AddVideoModal);
+    if (componentRef) {
+      componentRef.instance.videoData = videoData;
+      componentRef.instance.videoCreated.subscribe(() => this.getVideos());
+    }
+  }
+
   private getVideos(): void {
     this.tableStore.setLoading(true);
 
@@ -70,6 +78,20 @@ export class Videos implements OnInit, OnDestroy {
             rows.map((row) => ({
               ...row,
               actions: row.actions?.map((action) => {
+                if (action.key.includes('edit')) {
+                  return {
+                    ...action,
+                    onClick: () =>
+                      this.handleEditVideo({
+                        id: String(row.id),
+                        youtubeId: String(row['videoId'] ?? ''),
+                        name: String(row['title'] ?? ''),
+                        order: Number(row['order'] ?? 1),
+                        showHome: row['featured'] === 'Sim',
+                      }),
+                  };
+                }
+
                 if (action.key.includes('delete')) {
                   return {
                     ...action,
