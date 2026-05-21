@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { finalize } from 'rxjs';
@@ -49,6 +49,7 @@ export class AddEventModal implements OnInit {
 
   public readonly address = input<Address | null>(null);
   public readonly editData = input<EditScheduleData | null>(null);
+  public readonly saved = output<void>();
   protected readonly currentAddress = signal<Address | null>(null);
 
   public loading = false;
@@ -139,6 +140,9 @@ export class AddEventModal implements OnInit {
     request$.pipe(finalize(() => (this.loading = false))).subscribe({
       next: () => {
         this.refreshSchedules();
+        if (edit) {
+          this.saved.emit();
+        }
         this.modal.closeModal();
       },
       error: () => {},

@@ -179,5 +179,12 @@ export class EventsOfDayModal {
     modal?.setInput('address', address);
     modal?.setInput('editData', editData);
 
+    modal?.instance.saved.subscribe(() => {
+      this.schedulesService.getScheduleDetails(event.id).subscribe({
+        next: (details) => {
+          this.detailsMap.update((prev) => ({ ...prev, [event.id]: details }));
+        },
+      });
+    });
   }
 }
