@@ -1,3 +1,4 @@
+<div class="mobile-backdrop" [class.is-open]="isOpen()" (click)="closeMenu()"></div>
 <aside class="flex flex-column" [class.is-open]="isOpen()" [class.is-closed]="!isOpen()">
   <app-profile-preview />
   <app-menu-items />

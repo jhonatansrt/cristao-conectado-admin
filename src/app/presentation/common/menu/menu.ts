@@ -15,6 +15,10 @@ export class Menu {
 
   protected readonly isOpen = this.menuStore.getIsOpen();
 
+  protected closeMenu(): void {
+    this.menuStore.close();
+  }
+
   @HostListener('document:click', ['$event'])
   protected onClickOutside(event: MouseEvent): void {
     if (!this.isOpen()) {
