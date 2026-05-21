@@ -83,15 +83,13 @@ export class Requests {
   }
 
   private approveRequest(request: RequestRow): void {
-    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }).subscribe({
-      next: () => {
-        this.toastService.openToast({
-          message: `${request.name} foi aprovado(a) com sucesso.`,
-          success: true,
-        });
+    this.requestsService.reviewRequest({ id: String(request.id), status: 1 }).subscribe(() => {
+      this.toastService.openToast({
+        message: `${request.name} foi aprovado(a) com sucesso.`,
+        success: true,
+      });
 
-        this.removeRequest(request.id);
-      },
+      this.removeRequest(request.id);
     });
   }
 
@@ -104,15 +102,13 @@ export class Requests {
       return;
     }
 
-    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }).subscribe({
-      next: () => {
-        this.toastService.openToast({
-          message: `Solicitação de ${request.name} negada.`,
-          success: true,
-        });
+    this.requestsService.reviewRequest({ id: String(request.id), status: 2 }).subscribe(() => {
+      this.toastService.openToast({
+        message: `Solicitação de ${request.name} negada.`,
+        success: true,
+      });
 
-        this.removeRequest(request.id);
-      },
+      this.removeRequest(request.id);
     });
   }
 
