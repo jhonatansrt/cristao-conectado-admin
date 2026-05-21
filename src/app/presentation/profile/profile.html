@@ -2,9 +2,18 @@
   <section class="body-modal flex flex-column">
 
     <div class="flex flex-column items-center">
-      <figure class="flex justify-center items-center">
-        <mat-icon aria-hidden="true">person</mat-icon>
-      </figure>
+      <div class="avatar-wrapper" (click)="openChangePhotoDialog()">
+        <figure class="flex justify-center items-center">
+          @if (userLogged()?.avatar) {
+            <img [src]="userLogged()?.avatar" [alt]="userLogged()?.name" />
+          } @else {
+            <mat-icon aria-hidden="true">person</mat-icon>
+          }
+        </figure>
+        <button class="camera-btn flex justify-center items-center" aria-label="Alterar foto">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      </div>
       <p>{{ userLogged()?.name | capitalizeName }}</p>
     </div>
 
