@@ -32,8 +32,10 @@ header {
   }
 }
 
-header.has-actions {
-  padding: calc(12px + env(safe-area-inset-top)) 32px 12px;
+@media screen and (min-width: $breakpoint-mobile) {
+  header.has-actions {
+    padding: calc(12px + env(safe-area-inset-top)) 32px 12px;
+  }
 }
 
 @media screen and (max-width: $breakpoint-mobile) {
