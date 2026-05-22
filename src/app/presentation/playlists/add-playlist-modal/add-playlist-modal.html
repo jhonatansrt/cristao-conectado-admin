@@ -1,4 +1,4 @@
-<app-modal title="Nova playlist">
+<app-modal [title]="playlistData ? 'Editar playlist' : 'Nova playlist'">
   <section class="body-modal">
     <form class="flex flex-column" [formGroup]="addPlaylistForm" (ngSubmit)="onConfirm()">
       <app-input

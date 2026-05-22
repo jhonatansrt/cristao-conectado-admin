@@ -8,7 +8,7 @@ import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AlertService } from '../common/alert/alert.service';
-import { AddPlaylistModal } from './add-playlist-modal/add-playlist-modal';
+import { AddPlaylistModal, PlaylistFormData } from './add-playlist-modal/add-playlist-modal';
 import { PlaylistSelectedStore } from '../../application/playlists/playlist-selected-store';
 import { namedRoutes } from '../../named-routes';
 import { Playlist } from '../../domain/playlists/entities/playlist.entity';
@@ -67,6 +67,15 @@ export class Playlists implements OnInit, OnDestroy {
     modalRef?.instance.playlistCreated.subscribe(() => this.getPlaylists());
   };
 
+  private handleEditPlaylist(playlistData: PlaylistFormData): void {
+    const modalRef = this.container.vcr?.createComponent(AddPlaylistModal);
+    if (modalRef) {
+      modalRef.setInput('maxOrder', this.maxOrder);
+      modalRef.instance.playlistData = playlistData;
+      modalRef.instance.playlistCreated.subscribe(() => this.getPlaylists());
+    }
+  }
+
   private getPlaylists() {
     this.tableStore.setLoading(true);
 
@@ -79,6 +88,18 @@ export class Playlists implements OnInit, OnDestroy {
             rows.map((row) => ({
               ...row,
               actions: row.actions?.map((action) => {
+                if (action.key === 'edit') {
+                  return {
+                    ...action,
+                    onClick: () =>
+                      this.handleEditPlaylist({
+                        id: String(row.id),
+                        name: String(row['title'] ?? ''),
+                        order: Number(row['order'] ?? 1),
+                      }),
+                  };
+                }
+
                 if (action.key === 'delete') {
                   return {
                     ...action,

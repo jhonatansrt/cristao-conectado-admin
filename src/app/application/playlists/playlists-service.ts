@@ -63,6 +63,15 @@ export class PlaylistsService {
     );
   }
 
+  public updatePlaylist(props: { id: string; name: string; order: number }): Observable<void> {
+    return this.playlistsRepository.updatePlaylist(props).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
   public deletePlaylist(props: { id: string }): Observable<void> {
     return this.playlistsRepository.deletePlaylist({ id: props.id }).pipe(
       catchError((e) => {
