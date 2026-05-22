@@ -32,6 +32,10 @@ header {
   }
 }
 
+header.has-actions {
+  padding: calc(12px + env(safe-area-inset-top)) 32px 12px;
+}
+
 @media screen and (max-width: $breakpoint-mobile) {
   header {
     padding: calc(20px + env(safe-area-inset-top)) 24px 20px;

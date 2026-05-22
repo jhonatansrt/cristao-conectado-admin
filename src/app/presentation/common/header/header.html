@@ -1,4 +1,4 @@
-<header class="flex items-center justify-between">
+<header class="flex items-center justify-between" [class.has-actions]="buttonsActions().length > 0">
   <div class="header-content flex items-center">
     <mat-icon (click)="toggleMenu($event)" aria-hidden="true">menu</mat-icon>
     <h1>{{ title() }}</h1>
