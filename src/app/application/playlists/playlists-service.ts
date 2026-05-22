@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { TableRow } from '../table/table-store';
 import { IPlaylistsRepository } from '../../domain/playlists';
@@ -56,6 +56,16 @@ export class PlaylistsService {
       order: props.order,
     }).pipe(
       map(() => void 0),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
+  public updatePlaylist(props: { id: string; name: string; order: number }): Observable<void> {
+    return this.playlistsRepository.updatePlaylist(props).pipe(
+      tap(() => this.toastService.openToast({ success: true, message: 'Atualizado com sucesso' })),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);

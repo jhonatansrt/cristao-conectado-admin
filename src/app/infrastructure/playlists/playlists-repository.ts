@@ -31,6 +31,12 @@ export class PlaylistsRepository implements IPlaylistsRepository {
     });
   }
 
+  public updatePlaylist(props: { id: string; name: string; order: number }): Observable<void> {
+    const url = environment.apiBaseURL + `/videosFolder/${props.id}`;
+
+    return this.httpClient.patch<void>(url, { name: props.name, order: props.order });
+  }
+
   public deletePlaylist(props: { id: string }): Observable<void> {
     const url = environment.apiBaseURL + `/videosFolder/${props.id}`;
 
