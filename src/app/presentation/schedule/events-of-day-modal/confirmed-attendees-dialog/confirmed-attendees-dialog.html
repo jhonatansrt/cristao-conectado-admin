@@ -6,8 +6,8 @@
           @if (attendee.avatarUrl) {
             <img [src]="attendee.avatarUrl" [alt]="'Foto de ' + attendee.name" />
           } @else {
-            <figure class="flex items-center justify-center" aria-hidden="true">
-              <mat-icon>person_outline</mat-icon>
+            <figure class="name-pip flex items-center justify-center" [attr.aria-label]="attendee.name">
+              <span>{{ attendee.initials }}</span>
             </figure>
           }
 
