@@ -1,4 +1,9 @@
-<app-dialog [title]="'Confirmado por ' + attendees.length" (close)="onClose()">
+<app-dialog
+  [title]="
+    attendees.length === 0 ? 'Confirmações de presença' : 'Confirmado por ' + attendees.length
+  "
+  (close)="onClose()"
+>
   <section>
     @if (attendees.length === 0) {
       <app-empty-case description="Nenhuma presença confirmada" icon="person_off" />
