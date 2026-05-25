@@ -80,7 +80,7 @@ export class EventsOfDayModal {
   }
 
   protected onAccordionOpened(id: string): void {
-    if (this.detailsMap()[id] || this.loadingIds().has(id)) {
+    if (this.loadingIds().has(id)) {
       return;
     }
 
