@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { DialogComponent } from '../../../common/dialog/dialog.component';
 import { ScheduleAttendance } from '../../../../domain/schedules';
+import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 
 interface ConfirmedAttendee {
   name: string;
@@ -12,7 +13,7 @@ interface ConfirmedAttendee {
 @Component({
   selector: 'app-confirmed-attendees-dialog',
   standalone: true,
-  imports: [DialogComponent, MatIconModule],
+  imports: [DialogComponent, MatIconModule, CapitalizeNamePipe],
   templateUrl: './confirmed-attendees-dialog.html',
   styleUrl: './confirmed-attendees-dialog.scss',
 })
