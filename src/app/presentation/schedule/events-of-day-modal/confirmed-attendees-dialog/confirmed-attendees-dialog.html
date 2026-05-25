@@ -1,19 +1,23 @@
 <app-dialog [title]="'Confirmado por ' + attendees.length" (close)="onClose()">
   <section>
-    <ul class="flex flex-column">
-      @for (attendee of attendees; track $index) {
-        <li class="flex items-center">
-          @if (attendee.avatarUrl) {
-            <img [src]="attendee.avatarUrl" [alt]="'Foto de ' + attendee.name" />
-          } @else {
-            <figure class="flex items-center justify-center" aria-hidden="true">
-              <mat-icon>person_outline</mat-icon>
-            </figure>
-          }
+    @if (attendees.length === 0) {
+      <app-empty-case description="Nenhuma presença confirmada" icon="person_off" />
+    } @else {
+      <ul class="flex flex-column">
+        @for (attendee of attendees; track $index) {
+          <li class="flex items-center">
+            @if (attendee.avatarUrl) {
+              <img [src]="attendee.avatarUrl" [alt]="'Foto de ' + attendee.name" />
+            } @else {
+              <figure class="flex items-center justify-center" aria-hidden="true">
+                <mat-icon>person_outline</mat-icon>
+              </figure>
+            }
 
-          <span>{{ attendee.name | capitalizeName }}</span>
-        </li>
-      }
-    </ul>
+            <span>{{ attendee.name | capitalizeName }}</span>
+          </li>
+        }
+      </ul>
+    }
   </section>
 </app-dialog>
