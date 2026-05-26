@@ -22,6 +22,8 @@ import { IRequestsRepository } from '../../domain/requests';
 import { RequestsRepository } from '../requests/requests-repository';
 import { IMembersRepository } from '../../domain/members';
 import { MembersRepository } from '../members/members-repository';
+import { IChurchRepository } from '../../domain/church';
+import { ChurchRepository } from '../church/church-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -83,6 +85,11 @@ const membersProvider = {
   useClass: MembersRepository,
 };
 
+const churchProvider = {
+  provide: IChurchRepository,
+  useClass: ChurchRepository
+}
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -96,6 +103,7 @@ const commonProviders = [
   prayProvider,
   requestsProvider,
   membersProvider,
+  churchProvider,
 ];
 
 export const providers = [...commonProviders];

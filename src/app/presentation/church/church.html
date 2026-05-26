@@ -15,10 +15,30 @@
       </div>
     </div>
 
-    <form class="flex flex-column">
+    <form class="flex flex-column" >
       <div class="flex">
-        <app-input label="Nome" value="Igreja Batista Transcoqueiro" />
-        <app-input label="Denominação" />
+        <app-input label="Nome"           
+          placeholder="Ex: Igreja Batista Transcoqueiro"
+          formControlName="name"
+          [errorMessage]="
+            form.controls.name.touched && form.controls.name.hasError('required')
+              ? 'Nome é obrigatório'
+              : ''
+          " />
+        <app-input label="Telefone"           
+          placeholder="Ex: 99999999999"
+          formControlName="phone"
+          [errorMessage]="
+            form.controls.phone.touched && form.controls.phone.hasError('required')
+              ? 'Telefone é obrigatório'
+              : ''
+          " />
+        <app-select
+          label="Denominação"
+          formControlName="type_id"
+          [options]="chuchType"
+          [optionSelected]="chuchType.value"
+        />
       </div>
       <app-input label="Endereço" value="Icuí-guajará, Ananindeua - PA" />
     </form>
@@ -29,11 +49,18 @@
 
     <form class="flex flex-column">
       <div class="flex">
-        <app-input label="Instagram" value="https://www.instagram.com/igreja" />
-        <app-input label="Facebook" value="https://www.facebook.com/igreja" />
+        <app-input label="Instagram" 
+          placeholder="https://www.instagram.com/igreja"
+          formControlName="instagram" />
+
+        <app-input label="Facebook" 
+          placeholder="https://www.facebook.com/igreja" 
+          formControlName="instagram" />
       </div>
       <div class="flex">
-        <app-input label="YouTube" value="https://www.youtube.com/igreja" />
+        <app-input label="YouTube"
+          placeholder="https://www.youtube.com/igreja"
+          formControlName="instagram" />
       </div>
     </form>
   </section>
