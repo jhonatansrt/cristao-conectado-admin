@@ -7,4 +7,22 @@ export type Church = {
   instagram?: string;
   youtube?: string;
   type_id: string;
+
+  type: {
+    id: string,
+    name: string,
+  }
+
+  address: {
+    id: string;
+    place: string;
+    cep: string;
+    number: string;
+    street: string;
+    district: string;
+    city: string;
+    state: string;
+    latitude: string;
+    longitude: string;
+  }
 };

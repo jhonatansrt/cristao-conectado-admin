@@ -4,7 +4,6 @@ import { AuthStore } from '../auth/auth-store';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { Church, ChurchType, CreateChurchDTO, IChurchRepository } from '../../domain/church';
 import { ChurchStore } from './church-store';
-import { AddressesStore } from '../addresses/addresses-store';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +11,6 @@ import { AddressesStore } from '../addresses/addresses-store';
 export class ChurchService {
   private churchRepository = inject(IChurchRepository);
   private authStore = inject(AuthStore);
-  private addressStore = inject(AddressesStore);
   private toastService = inject(ToastService);
   private churchStore = inject(ChurchStore);
 
@@ -104,4 +102,22 @@ export class ChurchService {
       }),
     );
   }
+
+  public findById(): Observable<Church> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      this.churchStore.setAddress(null)
+      return of();
+    }
+
+    return this.churchRepository.findById({ churchId }).pipe(
+      tap((church) => this.churchStore.setAddress(church.address)),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
 }

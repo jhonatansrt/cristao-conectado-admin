@@ -54,4 +54,10 @@ public listChurchType(): Observable<ChurchType[]> {
     const params = new HttpParams({ fromObject: { } });
     return this.httpClient.get<Church[]>(url, { params });
   }
+
+  public findById(props: GetChurchDTO){
+    const url = environment.apiBaseURL + '/church/findById';
+    const params = new HttpParams({ fromObject: { church_id: props.churchId } });
+    return this.httpClient.get<Church>(url, { params });
+  }
 }

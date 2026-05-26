@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { SchedulesStore } from '../../../application/schedules/schedules-store';
@@ -14,6 +14,7 @@ import { MapComponent } from '../../common/map/map.component';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
+import { ChurchStore } from '../../../application/church/church-store';
 
 interface AddressCard extends Address {
   actions: CardIconAction[];
@@ -29,6 +30,7 @@ interface AddressCard extends Address {
 export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
   @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
+  @Input() public isChurch: boolean = false;
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
@@ -36,6 +38,7 @@ export class AddressList implements OnInit {
   public readonly addressesStore = inject(AddressesStore);
   private readonly addressesService = inject(AddressesService);
   private readonly schedulesStore = inject(SchedulesStore);
+  private readonly churchStore = inject(ChurchStore);
 
   public searchAddress = '';
   public predictions: string[] = [];
@@ -79,8 +82,13 @@ export class AddressList implements OnInit {
 
   public onSelectAddress(address: Address): void {
     this.modal.closeModal();
-    const eventModal = this.container.vcr?.createComponent(AddEventModal);
-    eventModal?.setInput('address', address);
+
+    if(!this.isChurch){
+      const eventModal = this.container.vcr?.createComponent(AddEventModal);
+      eventModal?.setInput('address', address);
+    } else {
+      this.churchStore.setAddress(address);
+    }
   }
 
   public onAddressCreated(): void {

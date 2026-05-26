@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <form class="flex flex-column" >
+    <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
         <app-input label="Nome"           
           placeholder="Ex: Igreja Batista Transcoqueiro"
@@ -37,17 +37,22 @@
           label="Denominação"
           formControlName="type_id"
           [options]="chuchType"
-          [optionSelected]="chuchType.value"
+          [optionSelected]="form.controls.type_id.value"
         />
       </div>
-      <app-input label="Endereço" value="Icuí-guajará, Ananindeua - PA" />
+      <label>Endereço</label>
+      <app-card
+        [title]="currentAddress()?.place ?? ''"
+        [description]="addressDescription()"
+        [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
+        (click)="openAddress()"
+      />
     </form>
   </section>
 
   <section class="flex flex-column">
     <h2>Redes sociais</h2>
-
-    <form class="flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
         <app-input label="Instagram" 
           placeholder="https://www.instagram.com/igreja"
@@ -55,12 +60,12 @@
 
         <app-input label="Facebook" 
           placeholder="https://www.facebook.com/igreja" 
-          formControlName="instagram" />
+          formControlName="facebook" />
       </div>
       <div class="flex">
         <app-input label="YouTube"
           placeholder="https://www.youtube.com/igreja"
-          formControlName="instagram" />
+          formControlName="youtube" />
       </div>
     </form>
   </section>

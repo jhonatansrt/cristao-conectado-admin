@@ -10,4 +10,5 @@ export abstract class IChurchRepository {
   abstract updateChurch(id: string, props: CreateChurchDTO): Observable<Church>;
   abstract deleteChurch(id: string): Observable<void>;
   abstract listChurchType(): Observable<ChurchType[]>;
+  abstract findById(props: GetChurchDTO): Observable<Church>;
 }
