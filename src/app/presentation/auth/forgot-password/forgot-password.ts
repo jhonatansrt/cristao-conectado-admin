@@ -1,6 +1,6 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize, tap } from 'rxjs';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../application/auth/auth-service';
 import { ButtonComponent } from '../../common/button/button.component';
@@ -55,11 +55,8 @@ export class ForgotPassword {
 
     this.authService
       .forgotPassword({ email: email ?? '' })
-      .pipe(
-        tap(() => (this.currentStep = 2)),
-        finalize(() => (this.isLoading = false)),
-      )
-      .subscribe();
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(() => (this.currentStep = 2));
   }
 
   public onResetPassword(): void {
