@@ -8,6 +8,8 @@ import { UpdateAvatarDTO } from './dto/update-avatar.dto';
 import { UpdateAvatarApiResponse } from './dto/update-avatar-response.dto';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { ForgotPasswordDTO } from './dto/forgot-password.dto';
+import { ResetPasswordDTO } from './dto/reset-password.dto';
 
 export abstract class IAuthRepository {
   abstract createSession(
@@ -25,4 +27,8 @@ export abstract class IAuthRepository {
   abstract updatePassword(props: UpdatePasswordDTO): Observable<void>;
 
   abstract updateAvatar(props: UpdateAvatarDTO): Observable<UpdateAvatarApiResponse>;
+
+  abstract forgotPassword(props: ForgotPasswordDTO): Observable<void>;
+
+  abstract resetPassword(props: ResetPasswordDTO): Observable<void>;
 }

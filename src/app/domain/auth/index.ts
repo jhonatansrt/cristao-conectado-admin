@@ -9,6 +9,8 @@ export * from './dto/update-user.dto';
 export * from './dto/update-password.dto';
 export * from './dto/update-avatar.dto';
 export * from './dto/update-avatar-response.dto';
+export * from './dto/forgot-password.dto';
+export * from './dto/reset-password.dto';
 
 // entities
 export * from './entities/user.entity';
