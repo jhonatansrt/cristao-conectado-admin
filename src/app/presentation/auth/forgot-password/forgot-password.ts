@@ -74,10 +74,7 @@ export class ForgotPassword {
 
     this.authService
       .resetPassword({ token: code ?? '', password: password ?? '' })
-      .pipe(
-        tap(() => this.closeModal()),
-        finalize(() => (this.isLoading = false)),
-      )
-      .subscribe();
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(() => this.closeModal());
   }
 }
