@@ -5,7 +5,9 @@ import {
   CreateAccountDTO,
   CreateSessionApiResponse,
   CreateSessionDTO,
+  ForgotPasswordDTO,
   IAuthRepository,
+  ResetPasswordDTO,
   UpdateAvatarApiResponse,
   UpdateAvatarDTO,
   UpdatePasswordDTO,
@@ -50,5 +52,17 @@ export class AuthRepository implements IAuthRepository {
     const formData = new FormData();
     formData.append('avatar', props.file);
     return this.httpClient.patch<UpdateAvatarApiResponse>(url, formData);
+  }
+
+  public forgotPassword(props: ForgotPasswordDTO): Observable<void> {
+    const url = environment.apiBaseURL + '/password/forgot';
+    return this.httpClient.post<void>(url, { email: props.email });
+  }
+
+  public resetPassword(props: ResetPasswordDTO): Observable<void> {
+    const url = environment.apiBaseURL + '/password/reset';
+    return this.httpClient.post<void>(url, { password: props.password }, {
+      params: { token: props.token },
+    });
   }
 }
