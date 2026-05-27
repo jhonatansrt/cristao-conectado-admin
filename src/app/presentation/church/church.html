@@ -3,9 +3,21 @@
     <h2>Dados da igreja</h2>
 
     <div class="images flex items-center">
-      <div class="avatar flex justify-center items-center">
-        <mat-icon>person</mat-icon>
-        <button class="flex justify-center items-center">
+      <div class="avatar flex justify-center items-center" (click)="openFilePickerAvatar()">
+        <figure class="flex justify-center items-center">
+          @if (uploadingPhoto) {
+            <mat-spinner diameter="40" />
+          } @else if (churchAvatar) {
+            <img [src]="churchAvatar" alt="Foto_da_Igreja" />
+          } @else {
+            <mat-icon aria-hidden="true">person</mat-icon>
+          }
+        </figure>
+        <button
+          class="flex justify-center items-center"
+          aria-label="Alterar foto"
+          [disabled]="uploadingPhoto"
+        >
           <mat-icon>photo_camera</mat-icon>
         </button>
       </div>
@@ -68,5 +80,9 @@
           formControlName="youtube" />
       </div>
     </form>
+    <div class="buttons-actions flex items-center justify-end">
+        <app-button (click)="sendChurch()" btnClass="btn-primary" [disabled]="form.invalid" [loading]="isLoading">{{ actionButton }}</app-button
+      >
+    </div>
   </section>
 </div>

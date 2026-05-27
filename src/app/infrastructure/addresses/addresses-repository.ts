@@ -11,9 +11,9 @@ import { environment } from '../../../environments/environment';
 export class AddressesRepository implements IAddressesRepository {
   constructor(private httpClient: HttpClient) {}
 
-  public getAddresses(props: GetAddressesDTO): Observable<Address[]> {
+  public getAddresses(): Observable<Address[]> {
     const url = environment.apiBaseURL + '/adresses';
-    const params = new HttpParams({ fromObject: { church_id: props.churchId } });
+    const params = new HttpParams({ fromObject: { } });
     return this.httpClient.get<Address[]>(url, { params });
   }
 

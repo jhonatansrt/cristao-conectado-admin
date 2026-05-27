@@ -4,6 +4,8 @@ import { AuthStore } from '../auth/auth-store';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { Church, ChurchType, CreateChurchDTO, IChurchRepository } from '../../domain/church';
 import { ChurchStore } from './church-store';
+import { UpadteImageDTO } from '../../domain/church/dto/update-image';
+import { UpdateImageApiResponse } from '../../domain/church/dto/update-image-response';
 
 @Injectable({
   providedIn: 'root',
@@ -52,18 +54,26 @@ export class ChurchService {
         youtube: props.youtube,
         type_id: props.type_id
     }).pipe(
-      switchMap(() => this.getChurch()),
+      switchMap((response) => {
+        this.authStore.updateChurchId(response.id)
+        return this.getChurch()
+      }),
       tap((church) => this.churchStore.setChurch(church)),
-      map(() => void 0),
+      map(() => {
+        this.toastService.openToast({ success: true, message: 'Igreja Criada com sucesso' });
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
       }),
     );
   }
-
   public updateChurch(props: CreateChurchDTO): Observable<void> {
-    return this.churchRepository.updateChurch('ChurchId', {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+    if (!churchId) {
+      return of();
+    }
+    return this.churchRepository.updateChurch(churchId, {
         phone: props.phone,
         name: props.name,
         address_id: props.address_id,
@@ -74,7 +84,9 @@ export class ChurchService {
     }).pipe(
       switchMap(() => this.getChurch()),
       tap((church) => this.churchStore.setChurch(church)),
-      map(() => void 0),
+      map(() => {
+        this.toastService.openToast({ success: true, message: 'Igreja atualizada com sucesso' });
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -119,5 +131,41 @@ export class ChurchService {
       }),
     );
   }
+  public updateChurchIcon(props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
 
+    if (!churchId) {
+      return of();
+    }
+
+    return this.churchRepository.updateChurchIcon(churchId, props).pipe(
+      tap(async (resp) => {
+        this.toastService.openToast({ success: true, message: 'Avatar atualizado com sucesso'  });
+        return resp;
+      }),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
+  public updateChurchBanner(props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of();
+    }
+
+    return this.churchRepository.updateChurchBanner(churchId, props).pipe(
+      tap(async (resp) => {
+        this.toastService.openToast({ success: true, message: 'Banner atualizado com sucesso'});
+        return resp;
+      }),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
 }

@@ -9,6 +9,8 @@ export class ChurchStore {
   private readonly church = signal<Church[]>([]);
   private readonly isLoading = signal(false);
   private readonly addressSelected = signal<Address | null>(null);
+  private churchAvatar = signal<string | null>(null);
+  private churchBanner = signal<string | null>(null);
 
   public setChurch(church: Church[]): void {
     this.church.set(church);

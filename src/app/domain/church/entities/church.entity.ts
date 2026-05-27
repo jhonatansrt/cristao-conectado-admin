@@ -7,6 +7,8 @@ export type Church = {
   instagram?: string;
   youtube?: string;
   type_id: string;
+  church_avatar?: string;
+  church_banner?: string;
 
   type: {
     id: string,

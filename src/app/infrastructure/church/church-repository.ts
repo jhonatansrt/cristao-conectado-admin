@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Church, ChurchType, CreateChurchDTO, GetChurchDTO, IChurchRepository } from '../../domain/church';
+import { UpadteImageDTO } from '../../domain/church/dto/update-image';
+import { UpdateImageApiResponse } from '../../domain/church/dto/update-image-response';
 
 @Injectable({
   providedIn: 'root',
@@ -59,5 +61,19 @@ public listChurchType(): Observable<ChurchType[]> {
     const url = environment.apiBaseURL + '/church/findById';
     const params = new HttpParams({ fromObject: { church_id: props.churchId } });
     return this.httpClient.get<Church>(url, { params });
+  }
+
+  public updateChurchIcon(id: string, props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
+    const url = environment.apiBaseURL + `/church/ChurchAvatar/${id}`;
+    const formData = new FormData();
+    formData.append('church_avatar', props.file);
+    return this.httpClient.patch<UpdateImageApiResponse>(url, formData);
+  }
+
+  public updateChurchBanner(id: string, props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
+    const url = environment.apiBaseURL + `/church/ChurchBanner/${id}`;
+    const formData = new FormData();
+    formData.append('church_banner', props.file);
+    return this.httpClient.patch<UpdateImageApiResponse>(url, formData);
   }
 }
