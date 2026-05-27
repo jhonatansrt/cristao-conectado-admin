@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { namedRoutes } from '../../../named-routes';
 import { Container } from '../../../util/container.service';
 import { TermsOfUse } from '../../terms-of-use/terms-of-use';
+import { PrivacyPolicy } from '../../privacy-policy/privacy-policy';
 
 @Component({
   selector: 'app-create-account',
@@ -33,6 +34,7 @@ export class CreateAccount {
 
   public isLoading = false;
   public termsAccepted = false;
+  public termsAttempted = false;
 
   public createAccountForm = this.fb.group({
     name: ['', Validators.required],
@@ -50,9 +52,19 @@ export class CreateAccount {
     this.container.vcr?.createComponent(TermsOfUse);
   }
 
+  public openPrivacyModal(): void {
+    this.container.vcr?.createComponent(PrivacyPolicy);
+  }
+
+  public onTermsChange(value: boolean): void {
+    this.termsAccepted = value;
+    if (value) this.termsAttempted = false;
+  }
+
   public onCreateAccount(): void {
+    this.createAccountForm.markAllAsTouched();
+    if (!this.termsAccepted) this.termsAttempted = true;
     if (this.createAccountForm.invalid || !this.isPasswordMatch() || !this.termsAccepted) {
-      this.createAccountForm.markAllAsTouched();
       return;
     }
 
