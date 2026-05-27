@@ -9,8 +9,8 @@ import { AuthService } from '../../application/auth/auth-service';
 import { Container } from '../../util/container.service';
 import { PersonalDatas } from './personal-datas/personal-datas';
 import { UpdatePassword } from './update-password/update-password';
-import { TermsOfUse } from './terms-of-use/terms-of-use';
-import { PrivacyPolicy } from './privacy-policy/privacy-policy';
+import { TermsOfUse } from '../terms-of-use/terms-of-use';
+import { PrivacyPolicy } from '../privacy-policy/privacy-policy';
 import { finalize } from 'rxjs';
 
 interface ProfileMenuItem {

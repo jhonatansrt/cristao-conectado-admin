@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalComponent } from '../../common/modal/modal.component';
-import { ButtonComponent } from '../../common/button/button.component';
+import { ModalComponent } from '../common/modal/modal.component';
+import { ButtonComponent } from '../common/button/button.component';
 
 @Component({
   selector: 'app-privacy-policy',
