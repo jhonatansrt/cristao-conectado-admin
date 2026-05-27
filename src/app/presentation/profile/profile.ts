@@ -9,6 +9,8 @@ import { AuthService } from '../../application/auth/auth-service';
 import { Container } from '../../util/container.service';
 import { PersonalDatas } from './personal-datas/personal-datas';
 import { UpdatePassword } from './update-password/update-password';
+import { TermsOfUse } from './terms-of-use/terms-of-use';
+import { PrivacyPolicy } from './privacy-policy/privacy-policy';
 import { finalize } from 'rxjs';
 
 interface ProfileMenuItem {
@@ -64,6 +66,16 @@ export class Profile {
       title: 'Alterar senha',
       icons: [{ name: 'navigate_next', action: () => {} }],
       click: () => this.container.vcr?.createComponent(UpdatePassword),
+    },
+    {
+      title: 'Termos de uso',
+      icons: [{ name: 'navigate_next', action: () => {} }],
+      click: () => this.container.vcr?.createComponent(TermsOfUse),
+    },
+    {
+      title: 'Política de privacidade',
+      icons: [{ name: 'navigate_next', action: () => {} }],
+      click: () => this.container.vcr?.createComponent(PrivacyPolicy),
     },
   ];
 }
