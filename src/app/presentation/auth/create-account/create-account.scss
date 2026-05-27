@@ -2,28 +2,30 @@ app-modal form {
   gap: 24px;
 
   > div {
-    gap: 8px;
-  }
+    div {
+      gap: 16px;
 
-  span {
-    color: var(--color-text-primary);
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-medium);
-  }
+      span {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-medium);
+      }
 
-  button[type='button'] {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--color-primary);
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    text-decoration: underline;
-  }
+      button[type='button'] {
+        background: none;
+        border: none;
+        padding: 0;
+        color: var(--color-primary);
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
 
-  small.terms-error {
-    color: var(--color-danger);
-    font-size: var(--font-size-12);
+    small {
+      color: var(--color-danger);
+      font-size: var(--font-size-12);
+    }
   }
 }

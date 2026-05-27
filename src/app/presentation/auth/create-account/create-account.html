@@ -10,7 +10,8 @@
         label="Nome completo"
         formControlName="name"
         [errorMessage]="
-          createAccountForm.controls.name.touched && createAccountForm.controls.name.hasError('required')
+          createAccountForm.controls.name.touched &&
+          createAccountForm.controls.name.hasError('required')
             ? 'Nome completo é obrigatório'
             : ''
         "
@@ -20,9 +21,11 @@
         type="email"
         formControlName="email"
         [errorMessage]="
-          createAccountForm.controls.email.touched && createAccountForm.controls.email.hasError('required')
+          createAccountForm.controls.email.touched &&
+          createAccountForm.controls.email.hasError('required')
             ? 'E-mail é obrigatório'
-            : createAccountForm.controls.email.touched && createAccountForm.controls.email.hasError('email')
+            : createAccountForm.controls.email.touched &&
+                createAccountForm.controls.email.hasError('email')
               ? 'Digite um e-mail válido'
               : ''
         "
@@ -68,10 +71,7 @@
       />
       <div class="flex flex-column">
         <div class="flex items-center">
-          <app-checkbox
-            [isChecked]="termsAccepted"
-            (isCheckedChange)="onTermsChange($event)"
-          />
+          <app-checkbox [isChecked]="termsAccepted" (isCheckedChange)="onTermsChange($event)" />
           <span>
             Li e aceito os
             <button type="button" (click)="openTermsModal()">Termos de Uso</button>
@@ -80,7 +80,9 @@
           </span>
         </div>
         @if (termsAttempted && !termsAccepted) {
-          <small class="terms-error">Você precisa aceitar os Termos de Uso e a Política de Privacidade para continuar</small>
+          <small
+            >Você precisa aceitar os Termos de Uso e a Política de Privacidade para continuar</small
+          >
         }
       </div>
     </form>
