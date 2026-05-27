@@ -1,6 +1,8 @@
 <fieldset>
   <label class="flex items-center">
     <input type="checkbox" [checked]="isChecked()" (change)="onToggle($event)" />
-    <span>{{ label() }}</span>
+    @if (label()) {
+      <span>{{ label() }}</span>
+    }
   </label>
 </fieldset>

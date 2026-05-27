@@ -13,7 +13,13 @@ import { TermsOfUse } from '../../terms-of-use/terms-of-use';
 
 @Component({
   selector: 'app-create-account',
-  imports: [InputComponent, ModalComponent, ButtonComponent, ReactiveFormsModule, CheckboxComponent],
+  imports: [
+    InputComponent,
+    ModalComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+    CheckboxComponent,
+  ],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
@@ -31,10 +37,7 @@ export class CreateAccount {
   public createAccountForm = this.fb.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    birthDate: [
-      '',
-      [Validators.required, Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/)],
-    ],
+    birthDate: ['', [Validators.required, Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/)]],
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required],
   });
@@ -65,12 +68,9 @@ export class CreateAccount {
         password: password ?? '',
       })
       .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: async () => {
-          this.closeModal();
-          await this.router.navigate([namedRoutes.home]);
-        },
-        error: () => {},
+      .subscribe(async () => {
+        this.closeModal();
+        await this.router.navigate([namedRoutes.home]);
       });
   }
 
