@@ -66,14 +66,14 @@
               : ''
         "
       />
-      <div class="terms-row">
+      <div class="flex items-center">
         <app-checkbox
           [isChecked]="termsAccepted"
           (isCheckedChange)="termsAccepted = $event"
         />
-        <span class="terms-label">
+        <span>
           Li e aceito os
-          <button type="button" class="terms-link" (click)="openTermsModal()">Termos de Uso</button>
+          <button type="button" (click)="openTermsModal()">Termos de Uso</button>
         </span>
       </div>
     </form>
