@@ -62,8 +62,14 @@ export class Church implements OnInit {
   }
 
   protected get isButtonDisabled(): boolean {
-    if (!this.hasChurch) return this.form.invalid;
-    if (!this.initialFormValue) return true;
+    if (!this.hasChurch) {
+      return this.form.invalid;
+    }
+
+    if (!this.initialFormValue) {
+      return true;
+    }
+
     return (
       this.form.invalid ||
       JSON.stringify(this.form.getRawValue()) === JSON.stringify(this.initialFormValue)
@@ -86,21 +92,19 @@ export class Church implements OnInit {
   }
 
   private loadChurch(): void {
-    this.churchService.findById().subscribe({
-      next: (church) => {
-        this.form.patchValue({
-          phone: phoneMask(church.phone ?? ''),
-          name: church.name,
-          address_id: church.address.id,
-          type_id: church.type.id,
-          facebook: church.facebook,
-          instagram: church.instagram,
-          youtube: church.youtube,
-        });
-        this.churchAvatar = church.church_avatar || null;
-        this.churchBanner = church.church_banner || null;
-        this.initialFormValue = this.form.getRawValue();
-      },
+    this.churchService.findById().subscribe((church) => {
+      this.form.patchValue({
+        phone: phoneMask(church.phone ?? ''),
+        name: church.name,
+        address_id: church.address.id,
+        type_id: church.type.id,
+        facebook: church.facebook,
+        instagram: church.instagram,
+        youtube: church.youtube,
+      });
+      this.churchAvatar = church.church_avatar || null;
+      this.churchBanner = church.church_banner || null;
+      this.initialFormValue = this.form.getRawValue();
     });
   }
 
@@ -108,12 +112,9 @@ export class Church implements OnInit {
     this.churchService
       .listChurchType()
       .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
-      .subscribe({
-        next: (types) => {
-          this.churchTypes = types;
-          this.form.patchValue({ type_id: types[0]?.value });
-        },
-        error: () => {},
+      .subscribe((types) => {
+        this.churchTypes = types;
+        this.form.patchValue({ type_id: types[0]?.value });
       });
   }
 
@@ -135,6 +136,7 @@ export class Church implements OnInit {
 
     const { phone, name, address_id, type_id, facebook, instagram, youtube } =
       this.form.getRawValue();
+
     const payload = {
       phone: (phone ?? '').replace(/\D/g, ''),
       name: name ?? '',
@@ -148,6 +150,7 @@ export class Church implements OnInit {
     this.isLoading = true;
 
     const isCreating = !this.hasChurch;
+
     const action$ = isCreating
       ? this.churchService.createChurch(payload)
       : this.churchService.updateChurch(payload);
