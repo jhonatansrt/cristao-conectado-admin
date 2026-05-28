@@ -4,7 +4,7 @@
 
     <app-predictions [predictions]="predictions" (confirmed)="onAddressCreated()" />
 
-    @if (searchAddress.trim().length === 0) {
+    @if (searchAddress.trim().length === 0 && addresses().length) {
       <div class="flex flex-column">
         <h3>Selecionar existente</h3>
 
