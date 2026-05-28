@@ -1,9 +1,11 @@
 import { User } from '../auth';
+import { Church } from '../church';
 
 export type Types = {
   token: string;
   refreshToken: string;
   userLogged: User;
+  churchLogged: Church;
 };
 
 export type Key = keyof Types;

@@ -1,16 +1,17 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { Church } from '../../domain/church';
 import { Address } from '../../domain/addresses';
+import { IStorageRepository } from '../../domain/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChurchStore {
+  private storage = inject(IStorageRepository);
   private readonly church = signal<Church[]>([]);
   private readonly isLoading = signal(false);
   private readonly addressSelected = signal<Address | null>(null);
-  private churchAvatar = signal<string | null>(null);
-  private churchBanner = signal<string | null>(null);
+  private readonly churchCached = signal<Church | null>(null);
 
   public setChurch(church: Church[]): void {
     this.church.set(church);
@@ -24,6 +25,26 @@ export class ChurchStore {
     this.addressSelected.set(addressSelected);
   }
 
+  public setChurchCached(church: Church): void {
+    this.churchCached.set(church);
+    this.storage.setStorage('churchLogged', church);
+  }
+
+  public patchChurchImage(field: 'church_avatar' | 'church_banner', url: string): void {
+    const current = this.churchCached();
+    if (!current) return;
+    const updated = { ...current, [field]: url };
+    this.churchCached.set(updated);
+    this.storage.setStorage('churchLogged', updated);
+  }
+
+  public async loadChurchFromStorage(): Promise<void> {
+    const church = await this.storage.getStorage('churchLogged');
+    if (church) {
+      this.churchCached.set(church);
+    }
+  }
+
   public getChurch(): Signal<Church[]> {
     return this.church;
   }
@@ -34,5 +55,9 @@ export class ChurchStore {
 
   public getAddres(): Signal<Address | null> {
     return this.addressSelected;
+  }
+
+  public getChurchCached(): Signal<Church | null> {
+    return this.churchCached;
   }
 }
