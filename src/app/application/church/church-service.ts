@@ -43,14 +43,13 @@ export class ChurchService {
   }
 
   public createChurch(props: CreateChurchDTO): Observable<void> {
-    return this.churchRepository
-      .createChurch(this.toChurchPayload(props))
-      .pipe(
-        switchMap((response) => {
-          this.authStore.updateChurchId(response.id);
-          const pending = this.addressesStore.getPendingAddress()();
-          if (!pending) return of(void 0);
-          return this.addressesRepository.createAddress({
+    return this.churchRepository.createChurch(this.toChurchPayload(props)).pipe(
+      switchMap((response) => {
+        this.authStore.updateChurchId(response.id);
+        const pending = this.addressesStore.getPendingAddress()();
+        if (!pending) return of(void 0);
+        return this.addressesRepository
+          .createAddress({
             cep: pending.geocoded.cep,
             number: pending.geocoded.number,
             street: pending.geocoded.street,
@@ -62,46 +61,45 @@ export class ChurchService {
             place: pending.place,
             churchId: response.id,
             isMain: true,
-          }).pipe(
+          })
+          .pipe(
             tap(() => this.addressesStore.setPendingAddress(null)),
             map(() => void 0),
           );
-        }),
-        switchMap(() => this.findById()),
-        tap((church) => {
-          this.churchStore.setChurchCached(church);
-          this.churchStore.setChurch([church]);
-        }),
-        map(() => {
-          this.toastService.openToast({ success: true, message: 'Igreja Criada com sucesso' });
-        }),
-        catchError((e) => {
-          this.toastService.openToast({ message: e?.error?.message });
-          return throwError(() => e);
-        }),
-      );
+      }),
+      switchMap(() => this.findById()),
+      tap((church) => {
+        this.churchStore.setChurchCached(church);
+        this.churchStore.setChurch([church]);
+      }),
+      map(() => {
+        this.toastService.openToast({ success: true, message: 'Igreja Criada com sucesso' });
+      }),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   public updateChurch(props: CreateChurchDTO): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
     if (!churchId) return of();
 
-    return this.churchRepository
-      .updateChurch(churchId, this.toChurchPayload(props))
-      .pipe(
-        switchMap(() => this.findById()),
-        tap((church) => {
-          this.churchStore.setChurchCached(church);
-          this.churchStore.setChurch([church]);
-        }),
-        map(() => {
-          this.toastService.openToast({ success: true, message: 'Igreja atualizada com sucesso' });
-        }),
-        catchError((e) => {
-          this.toastService.openToast({ message: e?.error?.message });
-          return throwError(() => e);
-        }),
-      );
+    return this.churchRepository.updateChurch(churchId, this.toChurchPayload(props)).pipe(
+      switchMap(() => this.findById()),
+      tap((church) => {
+        this.churchStore.setChurchCached(church);
+        this.churchStore.setChurch([church]);
+      }),
+      map(() => {
+        this.toastService.openToast({ success: true, message: 'Igreja atualizada com sucesso' });
+      }),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 
   public deleteChurch(id: string): Observable<void> {
@@ -171,7 +169,15 @@ export class ChurchService {
     );
   }
 
-  private toChurchPayload({ phone, name, address_id, facebook, instagram, youtube, type_id }: CreateChurchDTO) {
+  private toChurchPayload({
+    phone,
+    name,
+    address_id,
+    facebook,
+    instagram,
+    youtube,
+    type_id,
+  }: CreateChurchDTO) {
     return { phone, name, address_id, facebook, instagram, youtube, type_id };
   }
 }

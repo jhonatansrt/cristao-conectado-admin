@@ -11,9 +11,9 @@ export type Church = {
   church_banner?: string;
 
   type: {
-    id: string,
-    name: string,
-  }
+    id: string;
+    name: string;
+  };
 
   address: {
     id: string;
@@ -26,5 +26,5 @@ export type Church = {
     state: string;
     latitude: string;
     longitude: string;
-  }
+  };
 };

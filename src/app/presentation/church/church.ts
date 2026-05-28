@@ -113,6 +113,7 @@ export class ChurchPage implements OnInit {
       instagram: church.instagram,
       youtube: church.youtube,
     });
+
     this.churchStore.setAddress(church.address ?? null);
     this.churchAvatar = church.church_avatar || null;
     this.churchBanner = church.church_banner || null;
