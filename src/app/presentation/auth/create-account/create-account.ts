@@ -78,6 +78,7 @@ export class CreateAccount {
         email: email ?? '',
         birth_date: this.formatBirthDate(birthDate ?? ''),
         password: password ?? '',
+        is_web: true,
       })
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(async () => {
