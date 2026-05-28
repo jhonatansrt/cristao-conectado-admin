@@ -20,6 +20,27 @@
     .images {
       gap: 16px;
 
+      .avatar,
+      .banner {
+        button {
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          border: 2px solid var(--color-surface);
+          background-color: var(--color-primary);
+          cursor: pointer;
+          padding: 0;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            color: var(--color-text-inverse);
+          }
+        }
+      }
+
       .avatar {
         position: relative;
         cursor: pointer;
@@ -48,23 +69,8 @@
         }
 
         button {
-          position: absolute;
           bottom: -4px;
           right: 0;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          border: 2px solid var(--color-surface);
-          background-color: var(--color-primary);
-          cursor: pointer;
-          padding: 0;
-
-          mat-icon {
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
-            color: var(--color-text-inverse);
-          }
         }
       }
 
@@ -86,23 +92,8 @@
         }
 
         button {
-          position: absolute;
           bottom: 8px;
           right: 8px;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          border: 2px solid var(--color-surface);
-          background-color: var(--color-primary);
-          cursor: pointer;
-          padding: 0;
-
-          mat-icon {
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
-            color: var(--color-text-inverse);
-          }
         }
 
         .banner-placeholder {
