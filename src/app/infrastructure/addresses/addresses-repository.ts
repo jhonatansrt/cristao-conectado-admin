@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Address, CreateAddressDTO, IAddressesRepository } from '../../domain/addresses';
@@ -12,8 +12,15 @@ export class AddressesRepository implements IAddressesRepository {
   constructor(private httpClient: HttpClient) {}
 
   public getAddresses(dto: GetAddressesDTO): Observable<Address[]> {
-    const url = `${environment.apiBaseURL}/adresses/${dto.churchId}`;
-    return this.httpClient.get<Address[]>(url);
+    const url = `${environment.apiBaseURL}/adresses`;
+
+    const params = new HttpParams({
+      fromObject: {
+        church_id: dto.churchId,
+      },
+    });
+
+    return this.httpClient.get<Address[]>(url, { params });
   }
 
   public createAddress(props: CreateAddressDTO): Observable<Address> {
