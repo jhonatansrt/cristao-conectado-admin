@@ -119,9 +119,9 @@ export class Church implements OnInit {
       name: name ?? '',
       address_id: address_id ?? '',
       type_id: type_id ?? '',
-      facebook,
-      instagram,
-      youtube,
+      facebook: facebook || null,
+      instagram: instagram || null,
+      youtube: youtube || null,
     };
 
     this.isLoading = true;
