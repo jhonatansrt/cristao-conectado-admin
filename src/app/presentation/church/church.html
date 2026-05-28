@@ -29,22 +29,26 @@
 
     <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
-        <app-input label="Nome"           
+        <app-input
+          label="Nome"
           placeholder="Ex: Igreja Batista Transcoqueiro"
           formControlName="name"
           [errorMessage]="
             form.controls.name.touched && form.controls.name.hasError('required')
               ? 'Nome é obrigatório'
               : ''
-          " />
-        <app-input label="Telefone"           
+          "
+        />
+        <app-input
+          label="Telefone"
           placeholder="Ex: 99999999999"
           formControlName="phone"
           [errorMessage]="
             form.controls.phone.touched && form.controls.phone.hasError('required')
               ? 'Telefone é obrigatório'
               : ''
-          " />
+          "
+        />
         <app-select
           label="Denominação"
           formControlName="type_id"
@@ -52,13 +56,18 @@
           [optionSelected]="form.controls.type_id.value"
         />
       </div>
-      <label>Endereço</label>
-      <app-card
-        [title]="currentAddress()?.place ?? ''"
-        [description]="addressDescription()"
-        [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
-        (click)="openAddress()"
-      />
+
+      <div class="address flex flex-column">
+        <label>Endereço</label>
+
+        <app-card
+          [title]="''"
+          [description]="''"
+          [clickable]="true"
+          [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
+          (click)="openAddress()"
+        />
+      </div>
     </form>
   </section>
 
@@ -66,22 +75,33 @@
     <h2>Redes sociais</h2>
     <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
-        <app-input label="Instagram" 
+        <app-input
+          label="Instagram"
           placeholder="https://www.instagram.com/igreja"
-          formControlName="instagram" />
+          formControlName="instagram"
+        />
 
-        <app-input label="Facebook" 
-          placeholder="https://www.facebook.com/igreja" 
-          formControlName="facebook" />
+        <app-input
+          label="Facebook"
+          placeholder="https://www.facebook.com/igreja"
+          formControlName="facebook"
+        />
       </div>
       <div class="flex">
-        <app-input label="YouTube"
+        <app-input
+          label="YouTube"
           placeholder="https://www.youtube.com/igreja"
-          formControlName="youtube" />
+          formControlName="youtube"
+        />
       </div>
     </form>
     <div class="buttons-actions flex items-center justify-end">
-        <app-button (click)="sendChurch()" btnClass="btn-primary" [disabled]="form.invalid" [loading]="isLoading">{{ actionButton }}</app-button
+      <app-button
+        (click)="sendChurch()"
+        btnClass="btn-primary"
+        [disabled]="form.invalid"
+        [loading]="isLoading"
+        >{{ actionButton }}</app-button
       >
     </div>
   </section>

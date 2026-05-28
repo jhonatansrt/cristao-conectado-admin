@@ -16,34 +16,38 @@ import { ToastService } from '../common/toast/toast.service';
 
 @Component({
   selector: 'app-church',
-  imports: [MatIconModule, 
-    InputComponent, 
-    SelectComponent, 
-    ReactiveFormsModule, 
-    CardComponent, 
+  imports: [
+    MatIconModule,
+    InputComponent,
+    SelectComponent,
+    ReactiveFormsModule,
+    CardComponent,
     ButtonComponent,
-    MatProgressSpinnerModule],
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './church.html',
   styleUrl: './church.scss',
 })
-export class Church implements OnInit{
+export class Church implements OnInit {
   private readonly container = inject(Container);
   private readonly fb = inject(FormBuilder);
   public readonly churchStore = inject(ChurchStore);
   private readonly churchService = inject(ChurchService);
-  private readonly authStore = inject(AuthStore); 
+  private readonly authStore = inject(AuthStore);
   private toastService = inject(ToastService);
 
   public currentAddress = this.churchStore.getAddres();
   public isLoading = false;
-  public actionButton: string = this.authStore.getUserLogged()()?.church_id ? "Editar Igreja" : "Criar Igreja";
-  
+  public actionButton: string = this.authStore.getUserLogged()()?.church_id
+    ? 'Editar Igreja'
+    : 'Criar Igreja';
+
   public churchAvatar: string | null = null;
   public churchBanner: string | null = null;
 
   protected chuchType: any = [];
   protected uploadingPhoto = false;
-    
+
   public readonly form = this.fb.group({
     phone: ['', Validators.required],
     name: ['', Validators.required],
@@ -54,58 +58,54 @@ export class Church implements OnInit{
     youtube: [''],
   });
 
-  constructor(){
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.lisChurchType();
     this.loadChurch();
   }
 
-  private loadChurch(){
-    this.churchService
-    .findById()
-      .subscribe({
-        next: (church) => {
-            this.form.patchValue({
-              phone: church.phone,
-              name: church.name,
-              address_id: church.address.id,
-              type_id: church.type.id,
-              facebook: church.facebook,
-              instagram: church.instagram,
-              youtube: church.youtube
-            })
-            this.churchAvatar = church.church_avatar || null;
-            this.churchBanner = church.church_banner || null;
-        }
-      }
-    )
+  private loadChurch() {
+    this.churchService.findById().subscribe({
+      next: (church) => {
+        this.form.patchValue({
+          phone: church.phone,
+          name: church.name,
+          address_id: church.address.id,
+          type_id: church.type.id,
+          facebook: church.facebook,
+          instagram: church.instagram,
+          youtube: church.youtube,
+        });
+        this.churchAvatar = church.church_avatar || null;
+        this.churchBanner = church.church_banner || null;
+      },
+    });
   }
 
-  private lisChurchType(){
+  private lisChurchType() {
     this.churchService
       .listChurchType()
-        .pipe(
-        map(types =>
-          types.map(type => ({
+      .pipe(
+        map((types) =>
+          types.map((type) => ({
             value: type.id,
             label: type.name,
-          }))
-        )
+          })),
+        ),
       )
       .subscribe({
         next: (listChurch) => {
           this.chuchType = listChurch;
           this.form.patchValue({
-            type_id: listChurch[0].value
+            type_id: listChurch[0].value,
           });
         },
         error: () => {},
       });
   }
 
-  public openAddress(){
+  public openAddress() {
     const modal = this.container.vcr?.createComponent(AddressList).instance;
     modal!.isChurch = true;
   }
@@ -114,12 +114,13 @@ export class Church implements OnInit{
     const addr = this.currentAddress();
 
     if (!addr) {
-      return 'Selecione um Endereço:';
+      return 'Selecione um Endereço';
     }
 
     this.form.patchValue({
-      address_id: addr.id
+      address_id: addr.id,
     });
+
     return `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}`;
   }
 
@@ -133,50 +134,49 @@ export class Church implements OnInit{
       this.form.markAllAsTouched();
       return;
     }
-    const { phone, name, address_id, type_id, facebook, instagram, youtube } = this.form.getRawValue();
+    const { phone, name, address_id, type_id, facebook, instagram, youtube } =
+      this.form.getRawValue();
 
     this.isLoading = true;
 
-    if(this.authStore.getUserLogged()()?.church_id){
+    if (this.authStore.getUserLogged()()?.church_id) {
       this.churchService
-        .updateChurch({ 
-          phone: phone ?? '', 
+        .updateChurch({
+          phone: phone ?? '',
           name: name ?? '',
           address_id: address_id ?? '',
           type_id: type_id ?? '',
           instagram: instagram,
           facebook: facebook,
-          youtube: youtube
+          youtube: youtube,
         })
         .pipe(finalize(() => (this.isLoading = false)))
         .subscribe({
-          next: async () => {
-          },
+          next: async () => {},
           error: () => {},
         });
     } else {
       this.churchService
-        .createChurch({ 
-          phone: phone ?? '', 
+        .createChurch({
+          phone: phone ?? '',
           name: name ?? '',
           address_id: address_id ?? '',
           type_id: type_id ?? '',
           instagram: instagram,
           facebook: facebook,
-          youtube: youtube
+          youtube: youtube,
         })
         .pipe(finalize(() => (this.isLoading = false)))
         .subscribe({
-          next: async () => {
-          },
+          next: async () => {},
           error: () => {},
         });
     }
   }
-  
+
   protected openFilePickerAvatar(): void {
-    if (this.actionButton === "Criar Igreja"){
-      this.toastService.openToast({ success: false, message: 'Crie uma igreja primeiro'});
+    if (this.actionButton === 'Criar Igreja') {
+      this.toastService.openToast({ success: false, message: 'Crie uma igreja primeiro' });
       return;
     }
 
@@ -193,8 +193,8 @@ export class Church implements OnInit{
           .subscribe({
             next: (resp) => {
               this.churchAvatar = resp.image;
-            }}
-          );
+            },
+          });
       }
     };
     input.click();

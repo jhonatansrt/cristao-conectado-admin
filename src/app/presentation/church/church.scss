@@ -39,7 +39,7 @@
           border-radius: 50%;
           object-fit: cover;
         }
-        
+
         > mat-icon {
           font-size: 40px;
           width: 40px;
@@ -90,6 +90,16 @@
           flex: 1;
           min-width: 0;
         }
+
+        label {
+          color: var(--color-text-primary);
+          font-size: var(--font-size-16);
+          font-weight: var(--font-weight-semibold);
+        }
+      }
+
+      .address {
+        gap: 8px;
       }
     }
   }
