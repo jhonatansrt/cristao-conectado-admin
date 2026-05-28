@@ -83,10 +83,13 @@ export class AddressList implements OnInit {
   public onSelectAddress(address: Address): void {
     this.modal.closeModal();
 
-    if(!this.isChurch){
+    if (!this.isChurch) {
       const eventModal = this.container.vcr?.createComponent(AddEventModal);
       eventModal?.setInput('address', address);
     } else {
+      if (address.id !== 'pending') {
+        this.addressesService.setAddressAsMain(address).subscribe();
+      }
       this.churchStore.setAddress(address);
     }
   }

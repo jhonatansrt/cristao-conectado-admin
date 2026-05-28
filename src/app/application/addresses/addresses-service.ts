@@ -97,6 +97,29 @@ export class AddressesService {
     );
   }
 
+  public setAddressAsMain(address: Address): Observable<void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
+    return this.addressesRepository.updateAddress(address.id, {
+      cep: address.cep,
+      number: address.number,
+      street: address.street,
+      district: address.district,
+      city: address.city,
+      state: address.state,
+      latitude: parseFloat(address.latitude),
+      longitude: parseFloat(address.longitude),
+      place: address.place,
+      churchId,
+      isMain: true,
+    }).pipe(
+      map(() => void 0),
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
+
   public deleteAddress(id: string): Observable<void> {
     return this.addressesRepository.deleteAddress(id).pipe(
       switchMap(() => this.getAddresses()),
