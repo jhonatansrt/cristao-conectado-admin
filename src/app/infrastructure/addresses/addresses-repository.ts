@@ -54,6 +54,7 @@ export class AddressesRepository implements IAddressesRepository {
       longitude: props.longitude,
       place: props.place,
       church_id: props.churchId,
+      ...(props.isMain !== undefined ? { is_main: props.isMain } : {}),
     };
     return this.httpClient.put<Address>(url, body);
   }
