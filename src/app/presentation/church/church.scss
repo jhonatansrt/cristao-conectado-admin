@@ -70,10 +70,10 @@
         flex: 1;
         height: 80px;
         border-radius: 8px;
-        background-color: #1a1a2e;
-        color: var(--color-text-inverse);
         overflow: hidden;
         cursor: pointer;
+        max-width: 400px;
+        border: 2px dotted var(--color-input-border);
 
         img {
           width: 100%;
@@ -94,29 +94,6 @@
             height: 24px;
           }
         }
-
-        button {
-          position: absolute;
-          bottom: 6px;
-          right: 8px;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          border: 2px solid var(--color-surface);
-          background-color: var(--color-primary);
-          color: var(--color-on-primary);
-          cursor: pointer;
-          padding: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          mat-icon {
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
-          }
-        }
       }
     }
 
@@ -126,7 +103,8 @@
       > div {
         gap: 24px;
 
-        app-input {
+        app-input,
+        app-select {
           flex: 1;
           min-width: 0;
         }
