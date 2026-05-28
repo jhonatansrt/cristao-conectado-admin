@@ -5,6 +5,7 @@ import { Address, IAddressesRepository } from '../../domain/addresses';
 import { GeocodedAddress } from '../../domain/google-maps';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { AddressesStore } from './addresses-store';
+import { ChurchStore } from '../church/church-store';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class AddressesService {
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
   private addressesStore = inject(AddressesStore);
+  private churchStore = inject(ChurchStore);
 
   public getAddresses(): Observable<Address[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -88,7 +90,16 @@ export class AddressesService {
       churchId,
     }).pipe(
       switchMap(() => this.getAddresses()),
-      tap((addresses) => this.addressesStore.setAddresses(addresses)),
+      tap((addresses) => {
+        this.addressesStore.setAddresses(addresses);
+        const churchAddress = this.churchStore.getAddres()();
+        if (churchAddress?.id === address.id) {
+          const updatedAddress = addresses.find((a) => a.id === address.id);
+          if (updatedAddress) {
+            this.churchStore.patchChurchAddress(updatedAddress);
+          }
+        }
+      }),
       map(() => void 0),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
