@@ -18,17 +18,8 @@ export class ChurchService {
 
   public getChurch(): Observable<Church[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
-
-    if (!churchId) {
-      return of([]);
-    }
-
-    return this.churchRepository.getChurch({ churchId }).pipe(
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    if (!churchId) return of([]);
+    return this.churchRepository.getChurch({ churchId }).pipe(this.handleError());
   }
 
   public loadChurch(): void {
@@ -38,63 +29,37 @@ export class ChurchService {
         this.churchStore.setChurch(church);
         this.churchStore.setIsLoading(false);
       },
-      error: () => {
-        this.churchStore.setIsLoading(false);
-      },
+      error: () => this.churchStore.setIsLoading(false),
     });
   }
 
   public createChurch(props: CreateChurchDTO): Observable<void> {
     return this.churchRepository
-      .createChurch({
-        phone: props.phone,
-        name: props.name,
-        address_id: props.address_id,
-        facebook: props.facebook,
-        instagram: props.instagram,
-        youtube: props.youtube,
-        type_id: props.type_id,
-      })
+      .createChurch(this.toChurchPayload(props))
       .pipe(
-        switchMap((response) => {
-          this.authStore.updateChurchId(response.id);
-          return this.getChurch();
-        }),
+        tap((response) => this.authStore.updateChurchId(response.id)),
+        switchMap(() => this.getChurch()),
         tap((church) => this.churchStore.setChurch(church)),
         map(() => {
           this.toastService.openToast({ success: true, message: 'Igreja Criada com sucesso' });
         }),
-        catchError((e) => {
-          this.toastService.openToast({ message: e?.error?.message });
-          return throwError(() => e);
-        }),
+        this.handleError(),
       );
   }
+
   public updateChurch(props: CreateChurchDTO): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
-    if (!churchId) {
-      return of();
-    }
+    if (!churchId) return of();
+
     return this.churchRepository
-      .updateChurch(churchId, {
-        phone: props.phone,
-        name: props.name,
-        address_id: props.address_id,
-        facebook: props.facebook,
-        instagram: props.instagram,
-        youtube: props.youtube,
-        type_id: props.type_id,
-      })
+      .updateChurch(churchId, this.toChurchPayload(props))
       .pipe(
         switchMap(() => this.getChurch()),
         tap((church) => this.churchStore.setChurch(church)),
         map(() => {
           this.toastService.openToast({ success: true, message: 'Igreja atualizada com sucesso' });
         }),
-        catchError((e) => {
-          this.toastService.openToast({ message: e?.error?.message });
-          return throwError(() => e);
-        }),
+        this.handleError(),
       );
   }
 
@@ -103,65 +68,46 @@ export class ChurchService {
       switchMap(() => this.getChurch()),
       tap((church) => this.churchStore.setChurch(church)),
       map(() => void 0),
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
+      this.handleError(),
     );
   }
 
   public listChurchType(): Observable<ChurchType[]> {
-    return this.churchRepository.listChurchType().pipe(
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    return this.churchRepository.listChurchType().pipe(this.handleError());
   }
 
   public findById(): Observable<Church> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
-
     if (!churchId) {
       this.churchStore.setAddress(null);
       return of();
     }
-
     return this.churchRepository.findById({ churchId }).pipe(
       tap((church) => this.churchStore.setAddress(church.address)),
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
+      this.handleError(),
     );
   }
+
   public updateChurchIcon(props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
-
-    if (!churchId) {
-      return of();
-    }
-
-    return this.churchRepository.updateChurchIcon(churchId, props).pipe(
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    if (!churchId) return of();
+    return this.churchRepository.updateChurchIcon(churchId, props).pipe(this.handleError());
   }
 
   public updateChurchBanner(props: UpadteImageDTO): Observable<UpdateImageApiResponse> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
+    if (!churchId) return of();
+    return this.churchRepository.updateChurchBanner(churchId, props).pipe(this.handleError());
+  }
 
-    if (!churchId) {
-      return of();
-    }
+  private toChurchPayload({ phone, name, address_id, facebook, instagram, youtube, type_id }: CreateChurchDTO) {
+    return { phone, name, address_id, facebook, instagram, youtube, type_id };
+  }
 
-    return this.churchRepository.updateChurchBanner(churchId, props).pipe(
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+  private handleError<T>() {
+    return catchError<T, Observable<never>>((e) => {
+      this.toastService.openToast({ message: e?.error?.message });
+      return throwError(() => e);
+    });
   }
 }
