@@ -4,7 +4,7 @@ import { CreateAddressDTO } from './dto/create-address.dto';
 import { GetAddressesDTO } from './dto/get-addresses.dto';
 
 export abstract class IAddressesRepository {
-  abstract getAddresses(props: GetAddressesDTO): Observable<Address[]>;
+  abstract getAddresses(): Observable<Address[]>;
   abstract createAddress(props: CreateAddressDTO): Observable<Address>;
   abstract updateAddress(id: string, props: CreateAddressDTO): Observable<Address>;
   abstract deleteAddress(id: string): Observable<void>;

@@ -3,9 +3,21 @@
     <h2>Dados da igreja</h2>
 
     <div class="images flex items-center">
-      <div class="avatar flex justify-center items-center">
-        <mat-icon>person</mat-icon>
-        <button class="flex justify-center items-center">
+      <div class="avatar flex justify-center items-center" (click)="openFilePickerAvatar()">
+        <figure class="flex justify-center items-center">
+          @if (uploadingPhoto) {
+            <mat-spinner diameter="40" />
+          } @else if (churchAvatar) {
+            <img [src]="churchAvatar" alt="Foto_da_Igreja" />
+          } @else {
+            <mat-icon aria-hidden="true">person</mat-icon>
+          }
+        </figure>
+        <button
+          class="flex justify-center items-center"
+          aria-label="Alterar foto"
+          [disabled]="uploadingPhoto"
+        >
           <mat-icon>photo_camera</mat-icon>
         </button>
       </div>
@@ -15,26 +27,62 @@
       </div>
     </div>
 
-    <form class="flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
-        <app-input label="Nome" value="Igreja Batista Transcoqueiro" />
-        <app-input label="Denominação" />
+        <app-input label="Nome"           
+          placeholder="Ex: Igreja Batista Transcoqueiro"
+          formControlName="name"
+          [errorMessage]="
+            form.controls.name.touched && form.controls.name.hasError('required')
+              ? 'Nome é obrigatório'
+              : ''
+          " />
+        <app-input label="Telefone"           
+          placeholder="Ex: 99999999999"
+          formControlName="phone"
+          [errorMessage]="
+            form.controls.phone.touched && form.controls.phone.hasError('required')
+              ? 'Telefone é obrigatório'
+              : ''
+          " />
+        <app-select
+          label="Denominação"
+          formControlName="type_id"
+          [options]="chuchType"
+          [optionSelected]="form.controls.type_id.value"
+        />
       </div>
-      <app-input label="Endereço" value="Icuí-guajará, Ananindeua - PA" />
+      <label>Endereço</label>
+      <app-card
+        [title]="currentAddress()?.place ?? ''"
+        [description]="addressDescription()"
+        [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
+        (click)="openAddress()"
+      />
     </form>
   </section>
 
   <section class="flex flex-column">
     <h2>Redes sociais</h2>
-
-    <form class="flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
       <div class="flex">
-        <app-input label="Instagram" value="https://www.instagram.com/igreja" />
-        <app-input label="Facebook" value="https://www.facebook.com/igreja" />
+        <app-input label="Instagram" 
+          placeholder="https://www.instagram.com/igreja"
+          formControlName="instagram" />
+
+        <app-input label="Facebook" 
+          placeholder="https://www.facebook.com/igreja" 
+          formControlName="facebook" />
       </div>
       <div class="flex">
-        <app-input label="YouTube" value="https://www.youtube.com/igreja" />
+        <app-input label="YouTube"
+          placeholder="https://www.youtube.com/igreja"
+          formControlName="youtube" />
       </div>
     </form>
+    <div class="buttons-actions flex items-center justify-end">
+        <app-button (click)="sendChurch()" btnClass="btn-primary" [disabled]="form.invalid" [loading]="isLoading">{{ actionButton }}</app-button
+      >
+    </div>
   </section>
 </div>

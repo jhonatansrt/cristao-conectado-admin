@@ -21,4 +21,19 @@ export class AuthStore {
   public clear() {
     this.userLogged.set(undefined);
   }
+
+  public async updateChurchId(churchId: string) {
+    const currentUser = this.userLogged();
+
+    if (!currentUser) return;
+
+    const updatedUser = {
+      ...currentUser,
+      church_id: churchId,
+    };
+
+    this.userLogged.set(updatedUser);
+
+    await this.storage.setStorage('userLogged', updatedUser);
+  }
 }

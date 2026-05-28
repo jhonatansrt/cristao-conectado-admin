@@ -16,13 +16,7 @@ export class AddressesService {
   private addressesStore = inject(AddressesStore);
 
   public getAddresses(): Observable<Address[]> {
-    const churchId = this.authStore.getUserLogged()()?.church_id;
-
-    if (!churchId) {
-      return of([]);
-    }
-
-    return this.addressesRepository.getAddresses({ churchId }).pipe(
+    return this.addressesRepository.getAddresses().pipe(
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
