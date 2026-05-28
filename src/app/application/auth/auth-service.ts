@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { catchError, map, Observable, switchMap, tap, throwError } from 'rxjs';
 
 import { AuthStore } from './auth-store';
+import { AddressesStore } from '../addresses/addresses-store';
+import { ChurchStore } from '../church/church-store';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { IStorageRepository } from '../../domain/storage';
 import {
@@ -26,6 +28,8 @@ export class AuthService {
   private storage = inject(IStorageRepository);
   private authRepository = inject(IAuthRepository);
   private authStore = inject(AuthStore);
+  private addressesStore = inject(AddressesStore);
+  private churchStore = inject(ChurchStore);
   private toastService = inject(ToastService);
   private router = inject(Router);
 
@@ -68,6 +72,8 @@ export class AuthService {
   public async logout(): Promise<void> {
     await this.storage.clearAll();
     this.authStore.clear();
+    this.addressesStore.clear();
+    this.churchStore.clear();
     await this.router.navigate(['/login']);
   }
 

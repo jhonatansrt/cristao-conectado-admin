@@ -60,4 +60,11 @@ export class ChurchStore {
   public getChurchCached(): Signal<Church | null> {
     return this.churchCached;
   }
+
+  public clear(): void {
+    this.church.set([]);
+    this.isLoading.set(false);
+    this.addressSelected.set(null);
+    this.churchCached.set(null);
+  }
 }
