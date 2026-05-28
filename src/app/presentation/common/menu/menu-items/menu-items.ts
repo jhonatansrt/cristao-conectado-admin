@@ -7,6 +7,7 @@ import { filter, map, startWith } from 'rxjs';
 import { namedRoutes } from '../../../../named-routes';
 import { AlertService } from '../../alert/alert.service';
 import { AuthService } from '../../../../application/auth/auth-service';
+import { AuthStore } from '../../../../application/auth/auth-store';
 import { MenuStore } from '../../../../application/menu/menu-store';
 
 @Component({
@@ -19,6 +20,7 @@ export class MenuItems {
   private readonly navController = inject(Router);
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthService);
+  private readonly authStore = inject(AuthStore);
   private readonly menuStore = inject(MenuStore);
 
   private readonly currentUrl = toSignal(
@@ -30,18 +32,26 @@ export class MenuItems {
     { initialValue: this.navController.url },
   );
 
-  protected readonly items = [
+  private readonly allItems = [
     // { label: 'Home', icon: 'home_outlined', route: namedRoutes.home },
-    { label: 'Agenda', icon: 'calendar_month', route: namedRoutes.schedule },
-    { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists },
-    { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices },
-    { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials },
-    { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray },
-    { label: 'Membros', icon: 'person_outline', route: namedRoutes.members },
-    { label: 'Igreja', icon: 'church', route: namedRoutes.church },
-    { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests },
-    { label: 'Sair', icon: 'logout', action: 'logout' },
+    { label: 'Agenda', icon: 'calendar_month', route: namedRoutes.schedule, requiresChurch: true },
+    { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists, requiresChurch: true },
+    { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices, requiresChurch: true },
+    { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials, requiresChurch: true },
+    { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray, requiresChurch: true },
+    { label: 'Membros', icon: 'person_outline', route: namedRoutes.members, requiresChurch: true },
+    { label: 'Igreja', icon: 'church', route: namedRoutes.church, requiresChurch: false },
+    { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests, requiresChurch: true },
+    { label: 'Sair', icon: 'logout', action: 'logout', requiresChurch: false },
   ];
+
+  protected readonly items = computed(() => {
+    const user = this.authStore.getUserLogged()();
+    if (!user?.church_id) {
+      return this.allItems.filter((item) => !item.requiresChurch);
+    }
+    return this.allItems;
+  });
 
   protected readonly selectedRoute = computed(() => {
     const currentRoute = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
@@ -53,7 +63,7 @@ export class MenuItems {
     return currentRoute;
   });
 
-  protected async navigate(item: (typeof this.items)[number]): Promise<void> {
+  protected async navigate(item: (typeof this.allItems)[number]): Promise<void> {
     if (item.action === 'logout') {
       const confirmed = await this.alertService.openAlert({
         message: 'Tem certeza que deseja sair?',
