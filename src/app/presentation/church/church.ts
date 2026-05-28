@@ -12,6 +12,7 @@ import { CardComponent } from '../common/card/card.component';
 import { ButtonComponent } from '../common/button/button.component';
 import { AuthStore } from '../../application/auth/auth-store';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { phoneMask } from '../../masks/phone.mask';
 
 @Component({
   selector: 'app-church',
@@ -36,11 +37,14 @@ export class Church implements OnInit {
 
   protected readonly currentAddress = this.churchStore.getAddres();
   protected churchAvatar: string | null = null;
+  protected churchBanner: string | null = null;
   protected uploadingPhoto = false;
+  protected uploadingBanner = false;
   protected isLoading = false;
   protected churchTypes: { value: string; label: string }[] = [];
 
   private pendingAvatarFile: File | null = null;
+  private pendingBannerFile: File | null = null;
 
   protected get hasChurch(): boolean {
     return !!this.authStore.getUserLogged()()?.church_id;
@@ -65,7 +69,7 @@ export class Church implements OnInit {
     this.churchService.findById().subscribe({
       next: (church) => {
         this.form.patchValue({
-          phone: church.phone,
+          phone: phoneMask(church.phone ?? ''),
           name: church.name,
           address_id: church.address.id,
           type_id: church.type.id,
@@ -74,6 +78,7 @@ export class Church implements OnInit {
           youtube: church.youtube,
         });
         this.churchAvatar = church.church_avatar || null;
+        this.churchBanner = church.church_banner || null;
       },
     });
   }
@@ -110,7 +115,7 @@ export class Church implements OnInit {
     const { phone, name, address_id, type_id, facebook, instagram, youtube } =
       this.form.getRawValue();
     const payload = {
-      phone: phone ?? '',
+      phone: (phone ?? '').replace(/\D/g, ''),
       name: name ?? '',
       address_id: address_id ?? '',
       type_id: type_id ?? '',
@@ -130,6 +135,10 @@ export class Church implements OnInit {
         if (!this.hasChurch && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);
           this.pendingAvatarFile = null;
+        }
+        if (!this.hasChurch && this.pendingBannerFile) {
+          this.uploadBanner(this.pendingBannerFile);
+          this.pendingBannerFile = null;
         }
       },
     });
@@ -162,6 +171,37 @@ export class Church implements OnInit {
       .subscribe({
         next: (resp) => {
           this.churchAvatar = resp.image;
+        },
+      });
+  }
+
+  protected openFilePickerBanner(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: Event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if (!this.hasChurch) {
+        this.churchBanner = URL.createObjectURL(file);
+        this.pendingBannerFile = file;
+        return;
+      }
+
+      this.uploadBanner(file);
+    };
+    input.click();
+  }
+
+  private uploadBanner(file: File): void {
+    this.uploadingBanner = true;
+    this.churchService
+      .updateChurchBanner({ file })
+      .pipe(finalize(() => (this.uploadingBanner = false)))
+      .subscribe({
+        next: (resp) => {
+          this.churchBanner = resp.image;
         },
       });
   }
