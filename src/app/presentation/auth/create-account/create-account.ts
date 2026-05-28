@@ -82,7 +82,7 @@ export class CreateAccount {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(async () => {
         this.closeModal();
-        await this.router.navigate([namedRoutes.home]);
+        await this.router.navigate([namedRoutes.church]);
       });
   }
 
