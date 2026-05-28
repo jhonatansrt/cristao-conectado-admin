@@ -1,3 +1,5 @@
+@use '../../../theme/breakpoint.scss' as *;
+
 .church {
   gap: 24px;
 
@@ -125,6 +127,32 @@
   section:last-child {
     form > div:last-child {
       max-width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  .church {
+    section {
+      .images {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .banner {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+
+      form > div {
+        flex-direction: column;
+      }
+    }
+
+    section:last-child {
+      form > div:last-child {
+        max-width: 100%;
+      }
     }
   }
 }
