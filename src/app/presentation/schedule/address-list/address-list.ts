@@ -89,6 +89,7 @@ export class AddressList implements OnInit {
       }
 
       this.churchStore.setAddress(address);
+      this.churchStore.patchChurchAddress(address);
     } else {
       const eventModal = this.container.vcr?.createComponent(AddEventModal);
       eventModal?.setInput('address', address);
