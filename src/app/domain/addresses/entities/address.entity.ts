@@ -9,4 +9,5 @@ export type Address = {
   state: string;
   latitude: string;
   longitude: string;
+  is_main: boolean;
 };

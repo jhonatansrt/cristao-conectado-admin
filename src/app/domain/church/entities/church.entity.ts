@@ -26,5 +26,6 @@ export type Church = {
     state: string;
     latitude: string;
     longitude: string;
+    is_main: boolean
   };
 };

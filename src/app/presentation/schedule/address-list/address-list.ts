@@ -119,6 +119,7 @@ export class AddressList implements OnInit {
           state: pending.geocoded.state,
           latitude: String(pending.geocoded.lat),
           longitude: String(pending.geocoded.lng),
+          is_main: true,
         };
         this.onSelectAddress(mockAddress);
       }
