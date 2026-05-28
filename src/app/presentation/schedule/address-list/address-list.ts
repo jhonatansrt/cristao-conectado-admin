@@ -54,11 +54,15 @@ export class AddressList implements OnInit {
             ariaLabel: 'Editar endereço',
             action: () => this.handleEditAddress(address),
           },
-          {
-            name: 'delete_outline',
-            ariaLabel: 'Excluir endereço',
-            action: () => this.handleDeleteAddress(address),
-          },
+          ...(!address.is_main
+            ? [
+                {
+                  name: 'delete_outline',
+                  ariaLabel: 'Excluir endereço',
+                  action: () => this.handleDeleteAddress(address),
+                },
+              ]
+            : []),
         ],
       })),
   );
