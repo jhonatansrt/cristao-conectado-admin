@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from '../common/input/input';
 import { ChurchStore } from '../../application/church/church-store';
 import { ChurchService } from '../../application/church/church-service';
+import { Church } from '../../domain/church';
 import { SelectComponent } from '../common/select/select';
 import { finalize, map } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -92,20 +93,29 @@ export class Church implements OnInit {
   }
 
   private loadChurch(): void {
+    const cached = this.churchStore.getChurchCached()();
+    if (cached) {
+      this.patchFormFromChurch(cached);
+    }
+
     this.churchService.findById().subscribe((church) => {
-      this.form.patchValue({
-        phone: phoneMask(church.phone ?? ''),
-        name: church.name,
-        address_id: church.address.id,
-        type_id: church.type.id,
-        facebook: church.facebook,
-        instagram: church.instagram,
-        youtube: church.youtube,
-      });
-      this.churchAvatar = church.church_avatar || null;
-      this.churchBanner = church.church_banner || null;
-      this.initialFormValue = this.form.getRawValue();
+      this.patchFormFromChurch(church);
     });
+  }
+
+  private patchFormFromChurch(church: Church): void {
+    this.form.patchValue({
+      phone: phoneMask(church.phone ?? ''),
+      name: church.name,
+      address_id: church.address?.id ?? '',
+      type_id: church.type?.id ?? '',
+      facebook: church.facebook,
+      instagram: church.instagram,
+      youtube: church.youtube,
+    });
+    this.churchAvatar = church.church_avatar || null;
+    this.churchBanner = church.church_banner || null;
+    this.initialFormValue = this.form.getRawValue();
   }
 
   private loadChurchTypes(): void {

@@ -67,8 +67,11 @@ export class ChurchService {
             map(() => void 0),
           );
         }),
-        switchMap(() => this.getChurch()),
-        tap((church) => this.churchStore.setChurch(church)),
+        switchMap(() => this.findById()),
+        tap((church) => {
+          this.churchStore.setChurchCached(church);
+          this.churchStore.setChurch([church]);
+        }),
         map(() => {
           this.toastService.openToast({ success: true, message: 'Igreja Criada com sucesso' });
         }),
@@ -86,8 +89,11 @@ export class ChurchService {
     return this.churchRepository
       .updateChurch(churchId, this.toChurchPayload(props))
       .pipe(
-        switchMap(() => this.getChurch()),
-        tap((church) => this.churchStore.setChurch(church)),
+        switchMap(() => this.findById()),
+        tap((church) => {
+          this.churchStore.setChurchCached(church);
+          this.churchStore.setChurch([church]);
+        }),
         map(() => {
           this.toastService.openToast({ success: true, message: 'Igreja atualizada com sucesso' });
         }),
@@ -126,7 +132,10 @@ export class ChurchService {
       return of();
     }
     return this.churchRepository.findById({ churchId }).pipe(
-      tap((church) => this.churchStore.setAddress(church.address)),
+      tap((church) => {
+        this.churchStore.setChurchCached(church);
+        this.churchStore.setAddress(church.address);
+      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -138,6 +147,7 @@ export class ChurchService {
     const churchId = this.authStore.getUserLogged()()?.church_id;
     if (!churchId) return of();
     return this.churchRepository.updateChurchIcon(churchId, props).pipe(
+      tap((resp) => this.churchStore.patchChurchImage('church_avatar', resp.image)),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -149,6 +159,7 @@ export class ChurchService {
     const churchId = this.authStore.getUserLogged()()?.church_id;
     if (!churchId) return of();
     return this.churchRepository.updateChurchBanner(churchId, props).pipe(
+      tap((resp) => this.churchStore.patchChurchImage('church_banner', resp.image)),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
