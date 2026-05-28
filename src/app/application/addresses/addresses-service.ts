@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { EMPTY, catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { Address, IAddressesRepository } from '../../domain/addresses';
 import { GeocodedAddress } from '../../domain/google-maps';
@@ -16,7 +16,10 @@ export class AddressesService {
   private addressesStore = inject(AddressesStore);
 
   public getAddresses(): Observable<Address[]> {
-    return this.addressesRepository.getAddresses().pipe(
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+    if (!churchId) return EMPTY;
+
+    return this.addressesRepository.getAddresses({ churchId }).pipe(
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -25,6 +28,8 @@ export class AddressesService {
   }
 
   public loadAddresses(): void {
+    if (!this.authStore.getUserLogged()()?.church_id) return;
+
     this.addressesStore.setIsLoading(true);
     this.getAddresses().subscribe({
       next: (addresses) => {
