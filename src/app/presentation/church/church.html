@@ -116,7 +116,7 @@
       <app-button
         (click)="sendChurch()"
         btnClass="btn-primary"
-        [disabled]="form.invalid"
+        [disabled]="isButtonDisabled"
         [loading]="isLoading"
         >{{ hasChurch ? 'Editar Igreja' : 'Criar Igreja' }}</app-button
       >

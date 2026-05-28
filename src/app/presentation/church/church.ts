@@ -55,9 +55,19 @@ export class Church implements OnInit {
 
   private pendingAvatarFile: File | null = null;
   private pendingBannerFile: File | null = null;
+  private initialFormValue: ReturnType<typeof this.form.getRawValue> | null = null;
 
   protected get hasChurch(): boolean {
     return !!this.authStore.getUserLogged()()?.church_id;
+  }
+
+  protected get isButtonDisabled(): boolean {
+    if (!this.hasChurch) return this.form.invalid;
+    if (!this.initialFormValue) return true;
+    return (
+      this.form.invalid ||
+      JSON.stringify(this.form.getRawValue()) === JSON.stringify(this.initialFormValue)
+    );
   }
 
   public readonly form = this.fb.group({
@@ -89,6 +99,7 @@ export class Church implements OnInit {
         });
         this.churchAvatar = church.church_avatar || null;
         this.churchBanner = church.church_banner || null;
+        this.initialFormValue = this.form.getRawValue();
       },
     });
   }
@@ -143,6 +154,9 @@ export class Church implements OnInit {
 
     action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
       next: () => {
+        if (!isCreating) {
+          this.initialFormValue = this.form.getRawValue();
+        }
         if (isCreating && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);
           this.pendingAvatarFile = null;
