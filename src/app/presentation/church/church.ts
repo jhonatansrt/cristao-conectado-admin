@@ -13,6 +13,8 @@ import { ButtonComponent } from '../common/button/button.component';
 import { AuthStore } from '../../application/auth/auth-store';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { phoneMask } from '../../masks/phone.mask';
+import { Router } from '@angular/router';
+import { namedRoutes } from '../../named-routes';
 
 @Component({
   selector: 'app-church',
@@ -33,6 +35,7 @@ export class Church implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly churchService = inject(ChurchService);
   private readonly authStore = inject(AuthStore);
+  private readonly router = inject(Router);
   protected readonly churchStore = inject(ChurchStore);
 
   protected readonly currentAddress = this.churchStore.getAddres();
@@ -147,6 +150,9 @@ export class Church implements OnInit {
         if (isCreating && this.pendingBannerFile) {
           this.uploadBanner(this.pendingBannerFile);
           this.pendingBannerFile = null;
+        }
+        if (isCreating) {
+          this.router.navigate([namedRoutes.schedule]);
         }
       },
     });
