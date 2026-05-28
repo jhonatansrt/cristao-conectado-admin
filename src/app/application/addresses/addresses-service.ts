@@ -96,6 +96,7 @@ export class AddressesService {
         const selectedAddress = this.churchStore.getAddres()();
         if (selectedAddress?.id === address.id) {
           this.churchStore.setAddress(updatedAddress);
+          this.churchStore.patchChurchAddress(updatedAddress);
         }
       }),
       map(() => void 0),

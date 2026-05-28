@@ -38,6 +38,14 @@ export class ChurchStore {
     this.storage.setStorage('churchLogged', updated);
   }
 
+  public patchChurchAddress(address: Address): void {
+    const current = this.churchCached();
+    if (!current) return;
+    const updated = { ...current, address };
+    this.churchCached.set(updated);
+    this.storage.setStorage('churchLogged', updated);
+  }
+
   public async loadChurchFromStorage(): Promise<void> {
     const church = await this.storage.getStorage('churchLogged');
     if (church) {
