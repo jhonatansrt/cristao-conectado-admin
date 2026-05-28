@@ -133,17 +133,18 @@ export class Church implements OnInit {
 
     this.isLoading = true;
 
-    const action$ = !this.hasChurch
+    const isCreating = !this.hasChurch;
+    const action$ = isCreating
       ? this.churchService.createChurch(payload)
       : this.churchService.updateChurch(payload);
 
     action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
       next: () => {
-        if (!this.hasChurch && this.pendingAvatarFile) {
+        if (isCreating && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);
           this.pendingAvatarFile = null;
         }
-        if (!this.hasChurch && this.pendingBannerFile) {
+        if (isCreating && this.pendingBannerFile) {
           this.uploadBanner(this.pendingBannerFile);
           this.pendingBannerFile = null;
         }
