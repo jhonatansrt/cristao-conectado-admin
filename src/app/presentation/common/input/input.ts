@@ -3,10 +3,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { DateOfBirthMaskDirective } from '../../../masks/date-of-birth-mask.directive';
 import { TimeMaskDirective } from '../../../masks/time-mask.directive';
+import { PhoneMaskDirective } from '../../../masks/phone-mask.directive';
 
 @Component({
   selector: 'app-input',
-  imports: [DateOfBirthMaskDirective, TimeMaskDirective],
+  imports: [DateOfBirthMaskDirective, TimeMaskDirective, PhoneMaskDirective],
   templateUrl: './input.html',
   styleUrl: './input.scss',
   providers: [
@@ -25,6 +26,7 @@ export class InputComponent implements ControlValueAccessor {
   public readonly errorMessage = input<string>('');
   public readonly dateOfBirth = input<boolean>(false);
   public readonly timeMask = input<boolean>(false);
+  public readonly phoneMask = input<boolean>(false);
   public readonly multiline = input<boolean>(false);
 
   public readonly valueChange = output<string>();
