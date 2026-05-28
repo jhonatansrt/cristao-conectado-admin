@@ -44,3 +44,14 @@ export const playlistSelectedGuard: CanActivateFn = () => {
 
   return true;
 };
+
+export const churchRequiredGuard: CanActivateFn = () => {
+  const authStore = inject(AuthStore);
+  const router = inject(Router);
+
+  if (!authStore.getUserLogged()()?.church_id) {
+    return router.createUrlTree([`/${namedRoutes.church}`]);
+  }
+
+  return true;
+};

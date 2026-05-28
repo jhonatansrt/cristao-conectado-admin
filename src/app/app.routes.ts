@@ -12,7 +12,7 @@ import { Requests } from './presentation/requests/requests';
 import { Testimonials } from './presentation/testimonials/testimonials';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
-import { loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
+import { churchRequiredGuard, loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
@@ -28,26 +28,32 @@ export const routes: Routes = [
       {
         path: namedRoutes.home,
         component: Home,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.members,
         component: Members,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.schedule,
         component: Schedule,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.playlists,
         component: Playlists,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.notices,
         component: Notices,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.testimonials,
         component: Testimonials,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.church,
@@ -56,15 +62,17 @@ export const routes: Routes = [
       {
         path: namedRoutes.pray,
         component: Pray,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.requests,
         component: Requests,
+        canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.videos,
         component: Videos,
-        canActivate: [playlistSelectedGuard],
+        canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
     ],
   },
