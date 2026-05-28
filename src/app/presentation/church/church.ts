@@ -119,16 +119,15 @@ export class Church implements OnInit {
       youtube,
     };
 
-    const isCreating = !this.hasChurch;
     this.isLoading = true;
 
-    const action$ = isCreating
+    const action$ = !this.hasChurch
       ? this.churchService.createChurch(payload)
       : this.churchService.updateChurch(payload);
 
     action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
       next: () => {
-        if (isCreating && this.pendingAvatarFile) {
+        if (!this.hasChurch && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);
           this.pendingAvatarFile = null;
         }
