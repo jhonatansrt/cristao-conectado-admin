@@ -31,7 +31,7 @@ import { namedRoutes } from '../../named-routes';
   templateUrl: './church.html',
   styleUrl: './church.scss',
 })
-export class Church implements OnInit {
+export class ChurchPage implements OnInit {
   private readonly container = inject(Container);
   private readonly fb = inject(FormBuilder);
   private readonly churchService = inject(ChurchService);

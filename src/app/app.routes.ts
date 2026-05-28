@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { namedRoutes } from './named-routes';
 import { Login } from './presentation/auth/login/login';
-import { Church } from './presentation/church/church';
+import { ChurchPage } from './presentation/church/church';
 import { Home } from './presentation/home/home';
 import { Members } from './presentation/members/members';
 import { Notices } from './presentation/notices/notices';
@@ -12,7 +12,12 @@ import { Requests } from './presentation/requests/requests';
 import { Testimonials } from './presentation/testimonials/testimonials';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
-import { churchRequiredGuard, loginGuard, playlistSelectedGuard, userGuard } from './guards/user.guard';
+import {
+  churchRequiredGuard,
+  loginGuard,
+  playlistSelectedGuard,
+  userGuard,
+} from './guards/user.guard';
 
 export const routes: Routes = [
   {
@@ -57,7 +62,7 @@ export const routes: Routes = [
       },
       {
         path: namedRoutes.church,
-        component: Church,
+        component: ChurchPage,
       },
       {
         path: namedRoutes.pray,
