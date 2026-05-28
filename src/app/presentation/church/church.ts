@@ -126,7 +126,9 @@ export class ChurchPage implements OnInit {
       .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
       .subscribe((types) => {
         this.churchTypes = types;
-        this.form.patchValue({ type_id: types[0]?.value });
+        if (!this.form.controls.type_id.value) {
+          this.form.patchValue({ type_id: types[0]?.value });
+        }
       });
   }
 
@@ -170,6 +172,10 @@ export class ChurchPage implements OnInit {
       next: () => {
         if (!isCreating) {
           this.initialFormValue = this.form.getRawValue();
+          const selectedType = this.churchTypes.find((t) => t.value === type_id);
+          if (selectedType) {
+            this.churchStore.patchChurchType({ id: selectedType.value, name: selectedType.label });
+          }
         }
         if (isCreating && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);

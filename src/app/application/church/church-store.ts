@@ -46,6 +46,14 @@ export class ChurchStore {
     this.storage.setStorage('churchLogged', updated);
   }
 
+  public patchChurchType(type: { id: string; name: string }): void {
+    const current = this.churchCached();
+    if (!current) return;
+    const updated = { ...current, type_id: type.id, type };
+    this.churchCached.set(updated);
+    this.storage.setStorage('churchLogged', updated);
+  }
+
   public async loadChurchFromStorage(): Promise<void> {
     const church = await this.storage.getStorage('churchLogged');
     if (church) {
