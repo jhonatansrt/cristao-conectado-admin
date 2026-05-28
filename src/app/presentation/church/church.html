@@ -27,6 +27,13 @@
           <mat-spinner diameter="40" />
         } @else if (churchBanner) {
           <img [src]="churchBanner" alt="Banner_da_Igreja" />
+          <button
+            class="flex justify-center items-center"
+            aria-label="Alterar banner"
+            [disabled]="uploadingBanner"
+          >
+            <mat-icon>photo_camera</mat-icon>
+          </button>
         } @else {
           <div class="banner-placeholder flex flex-column items-center justify-center">
             <mat-icon>image</mat-icon>
