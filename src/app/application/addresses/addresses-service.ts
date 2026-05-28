@@ -38,7 +38,13 @@ export class AddressesService {
   }
 
   public createAddress(geocoded: GeocodedAddress, place: string): Observable<void> {
-    const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      this.addressesStore.setPendingAddress({ geocoded, place });
+      return of(void 0);
+    }
+
     return this.addressesRepository.createAddress({
       cep: geocoded.cep,
       number: geocoded.number,
@@ -50,6 +56,7 @@ export class AddressesService {
       longitude: geocoded.lng,
       place,
       churchId,
+      isMain: true,
     }).pipe(
       switchMap(() => this.getAddresses()),
       tap((addresses) => this.addressesStore.setAddresses(addresses)),

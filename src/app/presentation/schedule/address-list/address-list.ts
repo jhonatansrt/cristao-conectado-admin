@@ -95,6 +95,25 @@ export class AddressList implements OnInit {
     this.predictions = [];
     this.searchAddress = '';
     this.searchInput?.reset();
+
+    if (this.isChurch) {
+      const pending = this.addressesStore.getPendingAddress()();
+      if (pending) {
+        const mockAddress: Address = {
+          id: 'pending',
+          place: pending.place,
+          cep: pending.geocoded.cep,
+          number: pending.geocoded.number,
+          street: pending.geocoded.street,
+          district: pending.geocoded.district,
+          city: pending.geocoded.city,
+          state: pending.geocoded.state,
+          latitude: String(pending.geocoded.lat),
+          longitude: String(pending.geocoded.lng),
+        };
+        this.onSelectAddress(mockAddress);
+      }
+    }
   }
 
   private getModelGeocodedAddress(address: Address): GeocodedAddress {

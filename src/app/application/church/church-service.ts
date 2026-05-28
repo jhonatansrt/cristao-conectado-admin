@@ -6,15 +6,19 @@ import { Church, ChurchType, CreateChurchDTO, IChurchRepository } from '../../do
 import { ChurchStore } from './church-store';
 import { UpadteImageDTO } from '../../domain/church/dto/update-image';
 import { UpdateImageApiResponse } from '../../domain/church/dto/update-image-response';
+import { AddressesStore } from '../addresses/addresses-store';
+import { IAddressesRepository } from '../../domain/addresses';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChurchService {
   private churchRepository = inject(IChurchRepository);
+  private addressesRepository = inject(IAddressesRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
   private churchStore = inject(ChurchStore);
+  private addressesStore = inject(AddressesStore);
 
   public getChurch(): Observable<Church[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -42,7 +46,27 @@ export class ChurchService {
     return this.churchRepository
       .createChurch(this.toChurchPayload(props))
       .pipe(
-        tap((response) => this.authStore.updateChurchId(response.id)),
+        switchMap((response) => {
+          this.authStore.updateChurchId(response.id);
+          const pending = this.addressesStore.getPendingAddress()();
+          if (!pending) return of(void 0);
+          return this.addressesRepository.createAddress({
+            cep: pending.geocoded.cep,
+            number: pending.geocoded.number,
+            street: pending.geocoded.street,
+            district: pending.geocoded.district,
+            city: pending.geocoded.city,
+            state: pending.geocoded.state,
+            latitude: pending.geocoded.lat,
+            longitude: pending.geocoded.lng,
+            place: pending.place,
+            churchId: response.id,
+            isMain: true,
+          }).pipe(
+            tap(() => this.addressesStore.setPendingAddress(null)),
+            map(() => void 0),
+          );
+        }),
         switchMap(() => this.getChurch()),
         tap((church) => this.churchStore.setChurch(church)),
         map(() => {
