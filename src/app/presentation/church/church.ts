@@ -1,10 +1,11 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from '../common/input/input';
 import { ChurchStore } from '../../application/church/church-store';
 import { ChurchService } from '../../application/church/church-service';
 import { SelectComponent } from '../common/select/select';
-import { finalize, map } from 'rxjs';
+import { finalize, map, merge, startWith } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Container } from '../../util/container.service';
 import { AddressList } from '../schedule/address-list/address-list';
@@ -36,6 +37,7 @@ export class Church implements OnInit {
   private readonly churchService = inject(ChurchService);
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly churchStore = inject(ChurchStore);
 
   protected readonly currentAddress = this.churchStore.getAddres();
@@ -51,6 +53,7 @@ export class Church implements OnInit {
   protected uploadingPhoto = false;
   protected uploadingBanner = false;
   protected isLoading = false;
+  protected isButtonDisabled = true;
   protected churchTypes: { value: string; label: string }[] = [];
 
   private pendingAvatarFile: File | null = null;
@@ -59,15 +62,6 @@ export class Church implements OnInit {
 
   protected get hasChurch(): boolean {
     return !!this.authStore.getUserLogged()()?.church_id;
-  }
-
-  protected get isButtonDisabled(): boolean {
-    if (!this.hasChurch) return this.form.invalid;
-    if (!this.initialFormValue) return true;
-    return (
-      this.form.invalid ||
-      JSON.stringify(this.form.getRawValue()) === JSON.stringify(this.initialFormValue)
-    );
   }
 
   public readonly form = this.fb.group({
@@ -81,8 +75,23 @@ export class Church implements OnInit {
   });
 
   ngOnInit(): void {
+    merge(this.form.statusChanges, this.form.valueChanges)
+      .pipe(startWith(null), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.refreshButtonState());
+
     this.loadChurchTypes();
     this.loadChurch();
+  }
+
+  private refreshButtonState(): void {
+    if (!this.hasChurch) {
+      this.isButtonDisabled = this.form.invalid;
+      return;
+    }
+    this.isButtonDisabled =
+      !this.initialFormValue ||
+      this.form.invalid ||
+      JSON.stringify(this.form.getRawValue()) === JSON.stringify(this.initialFormValue);
   }
 
   private loadChurch(): void {
@@ -100,6 +109,7 @@ export class Church implements OnInit {
         this.churchAvatar = church.church_avatar || null;
         this.churchBanner = church.church_banner || null;
         this.initialFormValue = this.form.getRawValue();
+        this.refreshButtonState();
       },
     });
   }
@@ -156,6 +166,7 @@ export class Church implements OnInit {
       next: () => {
         if (!isCreating) {
           this.initialFormValue = this.form.getRawValue();
+          this.refreshButtonState();
         }
         if (isCreating && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);
