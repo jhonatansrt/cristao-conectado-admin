@@ -35,4 +35,10 @@ export class AddressesStore {
   public getPendingAddress(): Signal<PendingAddress | null> {
     return this.pendingAddress;
   }
+
+  public clear(): void {
+    this.addresses.set([]);
+    this.isLoading.set(false);
+    this.pendingAddress.set(null);
+  }
 }
