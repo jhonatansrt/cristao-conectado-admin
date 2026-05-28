@@ -24,6 +24,7 @@
         position: relative;
         cursor: pointer;
         display: inline-flex;
+        width: fit-content;
 
         figure {
           width: 72px;
@@ -69,7 +70,7 @@
 
       .banner {
         position: relative;
-        height: 80px;
+        height: 140px;
         border-radius: 8px;
         overflow: hidden;
         cursor: pointer;
