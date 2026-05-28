@@ -3,4 +3,5 @@ export type CreateAccountDTO = {
   email: string;
   password: string;
   birth_date: string;
+  is_web: boolean;
 };
