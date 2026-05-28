@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from '../common/input/input';
 import { ChurchStore } from '../../application/church/church-store';
@@ -37,6 +37,13 @@ export class Church implements OnInit {
 
   protected readonly currentAddress = this.churchStore.getAddres();
   protected churchAvatar: string | null = null;
+
+  constructor() {
+    effect(() => {
+      const addr = this.currentAddress();
+      this.form.patchValue({ address_id: addr?.id ?? '' });
+    });
+  }
   protected churchBanner: string | null = null;
   protected uploadingPhoto = false;
   protected uploadingBanner = false;
