@@ -1,7 +1,7 @@
 export type CreateChurchDTO = {
   phone: string;
   name: string;
-  address_id: string;
+  address_id?: string;
   facebook?: string | null;
   instagram?: string | null;
   youtube?: string | null;

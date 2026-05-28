@@ -137,19 +137,18 @@ export class Church implements OnInit {
     const { phone, name, address_id, type_id, facebook, instagram, youtube } =
       this.form.getRawValue();
 
+    this.isLoading = true;
+    const isCreating = !this.hasChurch;
+
     const payload = {
       phone: (phone ?? '').replace(/\D/g, ''),
       name: name ?? '',
-      address_id: address_id ?? '',
       type_id: type_id ?? '',
       facebook: facebook || null,
       instagram: instagram || null,
       youtube: youtube || null,
+      ...(isCreating ? {} : { address_id: address_id ?? '' }),
     };
-
-    this.isLoading = true;
-
-    const isCreating = !this.hasChurch;
 
     const action$ = isCreating
       ? this.churchService.createChurch(payload)

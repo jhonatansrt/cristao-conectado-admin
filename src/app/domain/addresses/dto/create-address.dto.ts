@@ -8,5 +8,6 @@ export type CreateAddressDTO = {
   latitude: number;
   longitude: number;
   place: string;
-  churchId: string;
+  churchId?: string;
+  isMain?: boolean;
 };

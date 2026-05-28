@@ -30,6 +30,7 @@ export class AddressesRepository implements IAddressesRepository {
       longitude: props.longitude,
       place: props.place,
       church_id: props.churchId,
+      is_main: props.isMain ?? false,
     };
     return this.httpClient.post<Address>(url, body);
   }

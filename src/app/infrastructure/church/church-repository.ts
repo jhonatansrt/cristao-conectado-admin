@@ -23,7 +23,6 @@ export class ChurchRepository implements IChurchRepository {
     const body = {
         phone: props.phone,
         name: props.name,
-        address_id: props.address_id,
         facebook: props.facebook,
         instagram: props.instagram,
         youtube: props.youtube,
