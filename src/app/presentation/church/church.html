@@ -61,8 +61,8 @@
         <label>Endereço</label>
 
         <app-card
-          [title]="''"
-          [description]="''"
+          [title]="currentAddress()?.place ?? ''"
+          [description]="addressDescription()"
           [clickable]="true"
           [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
           (click)="openAddress()"

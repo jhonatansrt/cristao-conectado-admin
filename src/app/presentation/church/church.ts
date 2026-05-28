@@ -110,20 +110,6 @@ export class Church implements OnInit {
     modal!.isChurch = true;
   }
 
-  protected addressDescription(): string {
-    const addr = this.currentAddress();
-
-    if (!addr) {
-      return 'Selecione um Endereço';
-    }
-
-    this.form.patchValue({
-      address_id: addr.id,
-    });
-
-    return `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}`;
-  }
-
   protected onChangeAddress(): void {
     const modal = this.container.vcr?.createComponent(AddressList).instance;
     modal!.isChurch = true;
@@ -198,6 +184,16 @@ export class Church implements OnInit {
       }
     };
     input.click();
+  }
+
+  protected addressDescription(): string {
+    const addr = this.currentAddress();
+
+    if (!addr) {
+      return '';
+    }
+
+    return `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}`;
   }
 
   // protected openFilePickerBanner(): void {
