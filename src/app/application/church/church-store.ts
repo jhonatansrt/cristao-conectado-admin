@@ -100,7 +100,7 @@ export class ChurchStore {
     return this.isLoading;
   }
 
-  public getAddres(): Signal<Address | null> {
+  public getAddress(): Signal<Address | null> {
     return this.addressSelected;
   }
 

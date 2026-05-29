@@ -23,7 +23,7 @@ export class ChurchData implements OnInit {
   private readonly churchStore = inject(ChurchStore);
   private readonly container = inject(Container);
 
-  protected readonly currentAddress = this.churchStore.getAddres();
+  protected readonly currentAddress = this.churchStore.getAddress();
   protected readonly churchTypes = this.churchStore.getChurchTypes();
   protected readonly addressDescription = computed(() => {
     const addr = this.currentAddress();
