@@ -19,12 +19,15 @@ export class ImagesComponent {
 
   private readonly churchCached = this.churchStore.getChurchCached();
 
+  protected pendingAvatarPreview: string | null = null;
+  protected pendingBannerPreview: string | null = null;
+
   protected get churchAvatar(): string | null {
-    return this.churchCached()?.church_avatar || null;
+    return this.churchCached()?.church_avatar || this.pendingAvatarPreview || null;
   }
 
   protected get churchBanner(): string | null {
-    return this.churchCached()?.church_banner || null;
+    return this.churchCached()?.church_banner || this.pendingBannerPreview || null;
   }
 
   protected uploadingPhoto = false;
@@ -57,7 +60,7 @@ export class ImagesComponent {
       if (!file) return;
 
       if (!this.hasChurch) {
-        this.churchStore.patchChurchImage('church_avatar', URL.createObjectURL(file));
+        this.pendingAvatarPreview = URL.createObjectURL(file);
         this.pendingAvatarFile = file;
         return;
       }
@@ -84,7 +87,7 @@ export class ImagesComponent {
       if (!file) return;
 
       if (!this.hasChurch) {
-        this.churchStore.patchChurchImage('church_banner', URL.createObjectURL(file));
+        this.pendingBannerPreview = URL.createObjectURL(file);
         this.pendingBannerFile = file;
         return;
       }
