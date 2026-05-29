@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
 import { inject } from '@angular/core';
@@ -9,7 +9,6 @@ import { ChurchStore } from '../../../application/church/church-store';
 import { ChurchService } from '../../../application/church/church-service';
 import { Container } from '../../../util/container.service';
 import { AddressList } from '../../schedule/address-list/address-list';
-import { ImagesComponent } from '../images/images';
 
 @Component({
   selector: 'app-church-data',
@@ -19,7 +18,6 @@ import { ImagesComponent } from '../images/images';
 })
 export class ChurchData implements OnInit {
   @Input({ required: true }) form!: FormGroup;
-  @ViewChild(ImagesComponent) private imagesComponent!: ImagesComponent;
 
   private readonly churchService = inject(ChurchService);
   private readonly churchStore = inject(ChurchStore);
@@ -39,10 +37,6 @@ export class ChurchData implements OnInit {
           this.form.patchValue({ type_id: types[0]?.value });
         }
       });
-  }
-
-  uploadPendingFiles(): void {
-    this.imagesComponent.uploadPendingFiles();
   }
 
   protected openAddress(): void {
