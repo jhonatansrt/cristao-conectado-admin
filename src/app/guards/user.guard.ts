@@ -4,6 +4,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../application/auth/auth-service';
 import { AuthStore } from '../application/auth/auth-store';
 import { ChurchStore } from '../application/church/church-store';
+import { TypeUser } from '../domain/auth/enums/type-user.enum';
 import { namedRoutes } from '../named-routes';
 
 export const userGuard: CanActivateFn = async () => {
@@ -14,11 +15,18 @@ export const userGuard: CanActivateFn = async () => {
 
   await authService.getUserLogged();
 
-  if (!authStore.getUserLogged()()) {
+  const user = authStore.getUserLogged()();
+
+  if (!user) {
     return router.createUrlTree([`/${namedRoutes.login}`]);
   }
 
-  if (authStore.getUserLogged()()?.church_id) {
+  const allowedRoles = [TypeUser.MASTER, TypeUser.ADMIN];
+  if (!allowedRoles.includes(user.type)) {
+    return router.createUrlTree([`/${namedRoutes.login}`]);
+  }
+
+  if (user.church_id) {
     await churchStore.loadChurchFromStorage();
   }
 
