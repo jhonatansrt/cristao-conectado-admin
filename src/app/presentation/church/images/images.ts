@@ -35,7 +35,7 @@ export class ImagesComponent {
 
   private readonly hasChurch = computed(() => !!this.authStore.getUserLogged()()?.church_id);
 
-  protected openFilePickerAvatar(): void {
+  protected openFilePicker(type: 'avatar' | 'banner'): void {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -44,12 +44,21 @@ export class ImagesComponent {
       if (!file) return;
 
       if (!this.hasChurch()) {
-        this.pendingAvatarPreview.set(URL.createObjectURL(file));
-        this.churchStore.setPendingAvatarFile(file);
+        if (type === 'avatar') {
+          this.pendingAvatarPreview.set(URL.createObjectURL(file));
+          this.churchStore.setPendingAvatarFile(file);
+        } else {
+          this.pendingBannerPreview.set(URL.createObjectURL(file));
+          this.churchStore.setPendingBannerFile(file);
+        }
         return;
       }
 
-      this.uploadAvatar(file);
+      if (type === 'avatar') {
+        this.uploadAvatar(file);
+      } else {
+        this.uploadBanner(file);
+      }
     };
     input.click();
   }
@@ -60,25 +69,6 @@ export class ImagesComponent {
       .updateChurchIcon({ file })
       .pipe(finalize(() => (this.uploadingPhoto = false)))
       .subscribe();
-  }
-
-  protected openFilePickerBanner(): void {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (event: Event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      if (!this.hasChurch()) {
-        this.pendingBannerPreview.set(URL.createObjectURL(file));
-        this.churchStore.setPendingBannerFile(file);
-        return;
-      }
-
-      this.uploadBanner(file);
-    };
-    input.click();
   }
 
   private uploadBanner(file: File): void {
