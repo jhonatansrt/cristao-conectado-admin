@@ -55,19 +55,27 @@ export class ImagesComponent {
       }
 
       if (type === 'avatar') {
-        this.uploadingPhoto = true;
-        this.churchService
-          .updateChurchIcon({ file })
-          .pipe(finalize(() => (this.uploadingPhoto = false)))
-          .subscribe();
+        this.uploadAvatar(file);
       } else {
-        this.uploadingBanner = true;
-        this.churchService
-          .updateChurchBanner({ file })
-          .pipe(finalize(() => (this.uploadingBanner = false)))
-          .subscribe();
+        this.uploadBanner(file);
       }
     };
     input.click();
+  }
+
+  private uploadAvatar(file: File): void {
+    this.uploadingPhoto = true;
+    this.churchService
+      .updateChurchIcon({ file })
+      .pipe(finalize(() => (this.uploadingPhoto = false)))
+      .subscribe();
+  }
+
+  private uploadBanner(file: File): void {
+    this.uploadingBanner = true;
+    this.churchService
+      .updateChurchBanner({ file })
+      .pipe(finalize(() => (this.uploadingBanner = false)))
+      .subscribe();
   }
 }
