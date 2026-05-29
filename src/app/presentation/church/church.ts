@@ -11,6 +11,7 @@ import { Container } from '../../util/container.service';
 import { AddressList } from '../schedule/address-list/address-list';
 import { CardComponent } from '../common/card/card.component';
 import { ButtonComponent } from '../common/button/button.component';
+import { SocialMedia } from './social-media/social-media';
 import { AuthStore } from '../../application/auth/auth-store';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { phoneMask } from '../../masks/phone.mask';
@@ -27,6 +28,7 @@ import { namedRoutes } from '../../named-routes';
     CardComponent,
     ButtonComponent,
     MatProgressSpinnerModule,
+    SocialMedia,
   ],
   templateUrl: './church.html',
   styleUrl: './church.scss',
