@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
 import { inject } from '@angular/core';
@@ -24,14 +24,22 @@ export class ChurchData implements OnInit {
   private readonly container = inject(Container);
 
   protected readonly currentAddress = this.churchStore.getAddres();
-
   protected readonly churchTypes = this.churchStore.getChurchTypes();
+  protected readonly addressDescription = computed(() => {
+    const addr = this.currentAddress();
+    return addr ? `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}` : '';
+  });
 
   ngOnInit(): void {
-    if (this.churchTypes().length > 0) {
+    this.listChurchType();
+  }
+
+  private listChurchType() {
+    if (this.churchTypes().length) {
       if (!this.form.controls['type_id'].value) {
         this.form.patchValue({ type_id: this.churchTypes()[0]?.value });
       }
+
       return;
     }
 
@@ -40,6 +48,7 @@ export class ChurchData implements OnInit {
       .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
       .subscribe((types) => {
         this.churchStore.setChurchTypes(types);
+
         if (!this.form.controls['type_id'].value) {
           this.form.patchValue({ type_id: types[0]?.value });
         }
@@ -49,10 +58,5 @@ export class ChurchData implements OnInit {
   protected openAddress(): void {
     const modal = this.container.vcr?.createComponent(AddressList).instance;
     modal!.isChurch = true;
-  }
-
-  protected addressDescription(): string {
-    const addr = this.currentAddress();
-    return addr ? `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}` : '';
   }
 }
