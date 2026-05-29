@@ -25,14 +25,14 @@ export class ChurchData implements OnInit {
 
   protected readonly currentAddress = this.churchStore.getAddres();
 
-  churchTypes: { value: string; label: string }[] = [];
+  protected readonly churchTypes = this.churchStore.getChurchTypes();
 
   ngOnInit(): void {
     this.churchService
       .listChurchType()
       .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
       .subscribe((types) => {
-        this.churchTypes = types;
+        this.churchStore.setChurchTypes(types);
         if (!this.form.controls['type_id'].value) {
           this.form.patchValue({ type_id: types[0]?.value });
         }

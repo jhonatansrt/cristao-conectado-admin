@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { ChurchStore } from '../../application/church/church-store';
@@ -20,8 +20,6 @@ import { ImagesComponent } from './images/images';
   styleUrl: './church.scss',
 })
 export class ChurchPage implements OnInit {
-  @ViewChild(ChurchData) private readonly churchData!: ChurchData;
-
   private readonly fb = inject(FormBuilder);
   private readonly churchService = inject(ChurchService);
   private readonly authStore = inject(AuthStore);
@@ -98,7 +96,7 @@ export class ChurchPage implements OnInit {
   private patchChurchUpdate() {
     const payload = this.getPayload();
 
-    const selectedType = this.churchData.churchTypes.find((t) => t.value === payload.type_id);
+    const selectedType = this.churchStore.getChurchTypes()().find((t) => t.value === payload.type_id);
 
     this.churchStore.patchChurchUpdate({
       name: payload.name ?? '',
