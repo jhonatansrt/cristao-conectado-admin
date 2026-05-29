@@ -1,0 +1,40 @@
+<div class="images flex flex-column">
+  <div class="avatar" (click)="openFilePickerAvatar()">
+    <figure class="flex justify-center items-center">
+      @if (uploadingPhoto) {
+        <mat-spinner diameter="40" />
+      } @else if (churchAvatar) {
+        <img [src]="churchAvatar" alt="Foto_da_Igreja" />
+      } @else {
+        <mat-icon aria-hidden="true">person</mat-icon>
+      }
+    </figure>
+    <button
+      class="flex justify-center items-center"
+      aria-label="Alterar foto"
+      [disabled]="uploadingPhoto"
+    >
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+  </div>
+
+  <div class="banner flex justify-center items-center" (click)="openFilePickerBanner()">
+    @if (uploadingBanner) {
+      <mat-spinner diameter="40" />
+    } @else if (churchBanner) {
+      <img [src]="churchBanner" alt="Banner_da_Igreja" />
+      <button
+        class="flex justify-center items-center"
+        aria-label="Alterar banner"
+        [disabled]="uploadingBanner"
+      >
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+    } @else {
+      <div class="banner-placeholder flex flex-column items-center justify-center">
+        <mat-icon>image</mat-icon>
+        <span>Banner da Igreja</span>
+      </div>
+    }
+  </div>
+</div>
