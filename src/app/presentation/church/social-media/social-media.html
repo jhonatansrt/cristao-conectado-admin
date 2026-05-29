@@ -22,13 +22,4 @@
       />
     </div>
   </form>
-  <div class="buttons-actions flex items-center justify-end">
-    <app-button
-      (click)="save.emit()"
-      btnClass="btn-primary"
-      [disabled]="isButtonDisabled"
-      [loading]="isLoading"
-      >{{ hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
-    >
-  </div>
 </section>
