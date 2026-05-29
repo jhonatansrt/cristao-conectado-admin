@@ -40,27 +40,37 @@ export class ImagesComponent {
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = (event: Event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (!file) return;
+      this.fileOnchange(event, type);
+    };
+    input.click();
+  }
 
-      if (!this.hasChurch()) {
-        if (type === 'avatar') {
-          this.pendingAvatarPreview.set(URL.createObjectURL(file));
-          this.churchStore.setPendingAvatarFile(file);
-        } else {
-          this.pendingBannerPreview.set(URL.createObjectURL(file));
-          this.churchStore.setPendingBannerFile(file);
-        }
+  private fileOnchange(event: Event, type: 'avatar' | 'banner') {
+    const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!this.hasChurch()) {
+      if (type === 'avatar') {
+        this.pendingAvatarPreview.set(URL.createObjectURL(file));
+        this.churchStore.setPendingAvatarFile(file);
         return;
       }
 
-      if (type === 'avatar') {
-        this.uploadAvatar(file);
-      } else {
-        this.uploadBanner(file);
-      }
-    };
-    input.click();
+      this.pendingBannerPreview.set(URL.createObjectURL(file));
+      this.churchStore.setPendingBannerFile(file);
+
+      return;
+    }
+
+    if (type === 'avatar') {
+      this.uploadAvatar(file);
+      return;
+    }
+
+    this.uploadBanner(file);
   }
 
   private uploadAvatar(file: File): void {
