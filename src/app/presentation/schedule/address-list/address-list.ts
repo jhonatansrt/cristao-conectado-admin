@@ -1,7 +1,6 @@
 import { Component, computed, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
-import { SchedulesStore } from '../../../application/schedules/schedules-store';
 import { Address } from '../../../domain/addresses';
 import { GeocodedAddress } from '../../../domain/google-maps';
 import { GoogleMapsService } from '../../../application/google-maps/google-maps-service';
@@ -15,6 +14,7 @@ import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
 import { AddEventModal } from '../add-event-modal/add-event-modal';
 import { ChurchStore } from '../../../application/church/church-store';
+import { ToastService } from '../../common/toast/toast.service';
 
 interface AddressCard extends Address {
   actions: CardIconAction[];
@@ -37,8 +37,8 @@ export class AddressList implements OnInit {
   private readonly container = inject(Container);
   public readonly addressesStore = inject(AddressesStore);
   private readonly addressesService = inject(AddressesService);
-  private readonly schedulesStore = inject(SchedulesStore);
   private readonly churchStore = inject(ChurchStore);
+  private readonly toastService = inject(ToastService);
 
   public searchAddress = '';
   public predictions: string[] = [];
@@ -88,16 +88,14 @@ export class AddressList implements OnInit {
     this.modal.closeModal();
 
     if (this.isChurch) {
-      if (address.id !== 'pending') {
-        this.addressesService.setAddressAsMain(address).subscribe();
-      }
-
+      this.setAddressAsMain(address);
       this.churchStore.setAddress(address);
       this.churchStore.patchChurchAddress(address);
-    } else {
-      const eventModal = this.container.vcr?.createComponent(AddEventModal);
-      eventModal?.setInput('address', address);
+      return;
     }
+
+    const eventModal = this.container.vcr?.createComponent(AddEventModal);
+    eventModal?.setInput('address', address);
   }
 
   public onAddressCreated(): void {
@@ -123,6 +121,17 @@ export class AddressList implements OnInit {
         };
         this.onSelectAddress(mockAddress);
       }
+    }
+  }
+
+  private setAddressAsMain(address: Address) {
+    if (address.id !== 'pending') {
+      this.addressesService.setAddressAsMain(address).subscribe(() => {
+        this.toastService.openToast({
+          success: true,
+          message: 'Endereço da igreja atualizado com sucesso',
+        });
+      });
     }
   }
 
