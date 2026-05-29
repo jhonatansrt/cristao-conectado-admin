@@ -1,6 +1,6 @@
 <section class="flex flex-column">
   <article class="flex">
-    <div class="avatar" (click)="openFilePickerAvatar()">
+    <div class="avatar" (click)="openFilePicker('avatar')">
       <figure class="flex justify-center items-center">
         @if (uploadingPhoto) {
           <mat-spinner diameter="40" />
@@ -19,7 +19,7 @@
       </button>
     </div>
 
-    <div class="banner flex justify-center items-center" (click)="openFilePickerBanner()">
+    <div class="banner flex justify-center items-center" (click)="openFilePicker('banner')">
       @if (uploadingBanner) {
         <mat-spinner diameter="40" />
       } @else if (churchBanner()) {
