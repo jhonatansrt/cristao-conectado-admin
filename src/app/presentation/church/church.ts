@@ -11,10 +11,11 @@ import { ChurchData } from './church-data/church-data';
 import { phoneMask } from '../../masks/phone.mask';
 import { Router } from '@angular/router';
 import { namedRoutes } from '../../named-routes';
+import { ImagesComponent } from './images/images';
 
 @Component({
   selector: 'app-church',
-  imports: [ReactiveFormsModule, ButtonComponent, SocialMedia, ChurchData],
+  imports: [ReactiveFormsModule, ButtonComponent, SocialMedia, ChurchData, ImagesComponent],
   templateUrl: './church.html',
   styleUrl: './church.scss',
 })

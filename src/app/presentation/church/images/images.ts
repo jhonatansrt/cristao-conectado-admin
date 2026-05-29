@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
-import { ChurchStore } from '../../../../application/church/church-store';
-import { ChurchService } from '../../../../application/church/church-service';
-import { AuthStore } from '../../../../application/auth/auth-store';
+import { ChurchStore } from '../../../application/church/church-store';
+import { ChurchService } from '../../../application/church/church-service';
+import { AuthStore } from '../../../application/auth/auth-store';
 
 @Component({
   selector: 'app-images',

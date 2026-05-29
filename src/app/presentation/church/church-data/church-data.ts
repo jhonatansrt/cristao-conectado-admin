@@ -9,17 +9,11 @@ import { ChurchStore } from '../../../application/church/church-store';
 import { ChurchService } from '../../../application/church/church-service';
 import { Container } from '../../../util/container.service';
 import { AddressList } from '../../schedule/address-list/address-list';
-import { ImagesComponent } from './images/images';
+import { ImagesComponent } from '../images/images';
 
 @Component({
   selector: 'app-church-data',
-  imports: [
-    ReactiveFormsModule,
-    InputComponent,
-    SelectComponent,
-    CardComponent,
-    ImagesComponent,
-  ],
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, CardComponent],
   templateUrl: './church-data.html',
   styleUrl: './church-data.scss',
 })
