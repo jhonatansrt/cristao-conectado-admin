@@ -16,13 +16,12 @@ import { churchRequiredGuard } from './guards/church-required.guard';
 import { loginGuard } from './guards/login.guard';
 import { playlistSelectedGuard } from './guards/playlist-selected.guard';
 import { userGuard } from './guards/user.guard';
-import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: Template,
-    canActivate: [adminGuard, userGuard],
+    canActivate: [userGuard],
     children: [
       {
         path: '',
