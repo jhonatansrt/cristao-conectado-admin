@@ -125,14 +125,18 @@ export class ChurchService {
 
   public findById(): Observable<Church> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
+
     if (!churchId) {
       this.churchStore.setAddress(null);
       return of();
     }
+
     const cached = this.churchStore.getChurchCached()();
+
     if (cached) {
       return of(cached);
     }
+
     return this.churchRepository.findById({ churchId }).pipe(
       tap((church) => {
         this.churchStore.setChurchCached(church);

@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs';
+import { finalize } from 'rxjs';
 import { ChurchStore } from '../../application/church/church-store';
 import { ChurchService } from '../../application/church/church-service';
 import { Church } from '../../domain/church';
@@ -46,8 +46,13 @@ export class ChurchPage implements OnInit {
   }
 
   protected get isButtonDisabled(): boolean {
-    if (!this.hasChurch) return this.form.invalid;
-    if (!this.initialFormValue) return true;
+    if (!this.hasChurch) {
+      return this.form.invalid;
+    }
+
+    if (!this.initialFormValue) {
+      return true;
+    }
 
     const { address_id: _cur, ...current } = this.form.getRawValue();
     const { address_id: _ini, ...initial } = this.initialFormValue;
@@ -70,9 +75,6 @@ export class ChurchPage implements OnInit {
   }
 
   private loadChurch(): void {
-    const cached = this.churchStore.getChurchCached()();
-    if (cached) this.patchFormFromChurch(cached);
-
     this.churchService.findById().subscribe((church) => {
       this.patchFormFromChurch(church);
     });
@@ -90,19 +92,29 @@ export class ChurchPage implements OnInit {
     });
 
     this.churchStore.setAddress(church.address ?? null);
+
     this.initialFormValue = this.form.getRawValue();
   }
 
-  protected sendChurch(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+  private patchChurchUpdate() {
+    const payload = this.getPayload();
 
+    const selectedType = this.churchData.churchTypes.find((t) => t.value === payload.type_id);
+
+    this.churchStore.patchChurchUpdate({
+      name: payload.name ?? '',
+      phone: (payload.phone ?? '').replace(/\D/g, ''),
+      facebook: payload.facebook || null,
+      instagram: payload.instagram || null,
+      youtube: payload.youtube || null,
+      ...(selectedType ? { type: { id: selectedType.value, name: selectedType.label } } : {}),
+    });
+  }
+
+  private getPayload() {
     const { phone, name, address_id, type_id, facebook, instagram, youtube } =
       this.form.getRawValue();
 
-    this.isLoading = true;
     const isCreating = !this.hasChurch;
 
     const payload = {
@@ -115,27 +127,34 @@ export class ChurchPage implements OnInit {
       ...(isCreating ? {} : { address_id: address_id ?? '' }),
     };
 
+    return payload;
+  }
+
+  protected sendChurch(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.getPayload();
+
+    this.isLoading = true;
+
+    const isCreating = !this.hasChurch;
+
     const action$ = isCreating
       ? this.churchService.createChurch(payload)
       : this.churchService.updateChurch(payload);
 
     action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
       next: () => {
-        if (!isCreating) {
-          this.initialFormValue = this.form.getRawValue();
-          const selectedType = this.churchData.churchTypes.find((t) => t.value === type_id);
-          this.churchStore.patchChurchUpdate({
-            name: name ?? '',
-            phone: (phone ?? '').replace(/\D/g, ''),
-            facebook: facebook || null,
-            instagram: instagram || null,
-            youtube: youtube || null,
-            ...(selectedType ? { type: { id: selectedType.value, name: selectedType.label } } : {}),
-          });
-        }
+        this.patchChurchUpdate();
+
         if (isCreating) {
+          this.initialFormValue = this.form.getRawValue();
           this.imagesComponent.uploadPendingFiles();
           this.router.navigate([namedRoutes.schedule]);
+          return;
         }
       },
     });
