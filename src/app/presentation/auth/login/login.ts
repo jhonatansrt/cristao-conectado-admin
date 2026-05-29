@@ -49,7 +49,7 @@ export class Login {
     this.isLoading = true;
 
     this.authService
-      .createSession({ email: email ?? '', password: password ?? '' })
+      .createSession({ email: email ?? '', password: password ?? '', is_web: true })
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: async () => {
