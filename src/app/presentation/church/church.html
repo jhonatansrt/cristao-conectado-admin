@@ -1,13 +1,15 @@
 <article class="flex flex-column">
-  <app-church-data #churchData />
+  <app-church-data [form]="form" />
+
+  <app-social-media [form]="form" />
 
   <div class="buttons-actions flex items-center justify-end">
     <app-button
-      (click)="churchData.sendChurch()"
+      (click)="sendChurch()"
       btnClass="btn-primary"
-      [disabled]="churchData.isButtonDisabled"
-      [loading]="churchData.isLoading"
-      >{{ churchData.hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
+      [disabled]="isButtonDisabled"
+      [loading]="isLoading"
+      >{{ hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
     >
   </div>
 </article>

@@ -49,7 +49,7 @@
         placeholder="Ex: Igreja Batista Transcoqueiro"
         formControlName="name"
         [errorMessage]="
-          form.controls.name.touched && form.controls.name.hasError('required')
+          form.controls['name'].touched && form.controls['name'].hasError('required')
             ? 'Nome é obrigatório'
             : ''
         "
@@ -60,7 +60,7 @@
         formControlName="phone"
         [phoneMask]="true"
         [errorMessage]="
-          form.controls.phone.touched && form.controls.phone.hasError('required')
+          form.controls['phone'].touched && form.controls['phone'].hasError('required')
             ? 'Telefone é obrigatório'
             : ''
         "
@@ -69,7 +69,7 @@
         label="Denominação"
         formControlName="type_id"
         [options]="churchTypes"
-        [optionSelected]="form.controls.type_id.value"
+        [optionSelected]="form.controls['type_id'].value"
       />
     </div>
 
@@ -86,5 +86,3 @@
     </div>
   </form>
 </section>
-
-<app-social-media [form]="form" />
