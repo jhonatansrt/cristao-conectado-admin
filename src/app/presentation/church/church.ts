@@ -71,9 +71,12 @@ export class ChurchPage implements OnInit {
       return true;
     }
 
+    const { address_id: _curAddr, ...currentValues } = this.form.getRawValue();
+    const { address_id: _iniAddr, ...initialValues } = this.initialFormValue;
+
     return (
       this.form.invalid ||
-      JSON.stringify(this.form.getRawValue()) === JSON.stringify(this.initialFormValue)
+      JSON.stringify(currentValues) === JSON.stringify(initialValues)
     );
   }
 
@@ -173,9 +176,14 @@ export class ChurchPage implements OnInit {
         if (!isCreating) {
           this.initialFormValue = this.form.getRawValue();
           const selectedType = this.churchTypes.find((t) => t.value === type_id);
-          if (selectedType) {
-            this.churchStore.patchChurchType({ id: selectedType.value, name: selectedType.label });
-          }
+          this.churchStore.patchChurchUpdate({
+            name: name ?? '',
+            phone: (phone ?? '').replace(/\D/g, ''),
+            facebook: facebook || null,
+            instagram: instagram || null,
+            youtube: youtube || null,
+            ...(selectedType ? { type: { id: selectedType.value, name: selectedType.label } } : {}),
+          });
         }
         if (isCreating && this.pendingAvatarFile) {
           this.uploadAvatar(this.pendingAvatarFile);

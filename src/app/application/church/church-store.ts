@@ -54,6 +54,29 @@ export class ChurchStore {
     this.storage.setStorage('churchLogged', updated);
   }
 
+  public patchChurchUpdate(data: {
+    name: string;
+    phone: string;
+    facebook?: string | null;
+    instagram?: string | null;
+    youtube?: string | null;
+    type?: { id: string; name: string };
+  }): void {
+    const current = this.churchCached();
+    if (!current) return;
+    const updated = {
+      ...current,
+      name: data.name,
+      phone: data.phone,
+      facebook: data.facebook,
+      instagram: data.instagram,
+      youtube: data.youtube,
+      ...(data.type ? { type_id: data.type.id, type: data.type } : {}),
+    };
+    this.churchCached.set(updated);
+    this.storage.setStorage('churchLogged', updated);
+  }
+
   public async loadChurchFromStorage(): Promise<void> {
     const church = await this.storage.getStorage('churchLogged');
     if (church) {
