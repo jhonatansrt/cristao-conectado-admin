@@ -2,7 +2,7 @@
   <h2>Dados da igreja</h2>
 
   <div class="images flex flex-column">
-    <div class="avatar" (click)="openFilePickerAvatarClick.emit()">
+    <div class="avatar" (click)="openFilePickerAvatar()">
       <figure class="flex justify-center items-center">
         @if (uploadingPhoto) {
           <mat-spinner diameter="40" />
@@ -21,7 +21,7 @@
       </button>
     </div>
 
-    <div class="banner flex justify-center items-center" (click)="openFilePickerBannerClick.emit()">
+    <div class="banner flex justify-center items-center" (click)="openFilePickerBanner()">
       @if (uploadingBanner) {
         <mat-spinner diameter="40" />
       } @else if (churchBanner) {
@@ -49,7 +49,7 @@
         placeholder="Ex: Igreja Batista Transcoqueiro"
         formControlName="name"
         [errorMessage]="
-          form.controls['name'].touched && form.controls['name'].hasError('required')
+          form.controls.name.touched && form.controls.name.hasError('required')
             ? 'Nome é obrigatório'
             : ''
         "
@@ -60,7 +60,7 @@
         formControlName="phone"
         [phoneMask]="true"
         [errorMessage]="
-          form.controls['phone'].touched && form.controls['phone'].hasError('required')
+          form.controls.phone.touched && form.controls.phone.hasError('required')
             ? 'Telefone é obrigatório'
             : ''
         "
@@ -69,7 +69,7 @@
         label="Denominação"
         formControlName="type_id"
         [options]="churchTypes"
-        [optionSelected]="form.controls['type_id'].value"
+        [optionSelected]="form.controls.type_id.value"
       />
     </div>
 
@@ -78,11 +78,13 @@
 
       <app-card
         [title]="currentAddress()?.place ?? ''"
-        [description]="addressDescription"
+        [description]="addressDescription()"
         [clickable]="true"
-        [icons]="[{ name: 'edit', action: openAddressClick.emit.bind(openAddressClick) }]"
-        (click)="openAddressClick.emit()"
+        [icons]="[{ name: 'edit', action: openAddress.bind(this) }]"
+        (click)="openAddress()"
       />
     </div>
   </form>
 </section>
+
+<app-social-media [form]="form" />

@@ -1,11 +1,21 @@
-import { Component, Input, Output, EventEmitter, Signal } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { finalize, map } from 'rxjs';
 import { InputComponent } from '../../common/input/input';
 import { SelectComponent } from '../../common/select/select';
 import { CardComponent } from '../../common/card/card.component';
-import { Address } from '../../../domain/addresses/entities/address.entity';
+import { SocialMedia } from '../social-media/social-media';
+import { ChurchStore } from '../../../application/church/church-store';
+import { ChurchService } from '../../../application/church/church-service';
+import { AuthStore } from '../../../application/auth/auth-store';
+import { Container } from '../../../util/container.service';
+import { AddressList } from '../../schedule/address-list/address-list';
+import { Church } from '../../../domain/church';
+import { phoneMask } from '../../../masks/phone.mask';
+import { Router } from '@angular/router';
+import { namedRoutes } from '../../../named-routes';
 
 @Component({
   selector: 'app-church-data',
@@ -16,21 +26,240 @@ import { Address } from '../../../domain/addresses/entities/address.entity';
     InputComponent,
     SelectComponent,
     CardComponent,
+    SocialMedia,
   ],
   templateUrl: './church-data.html',
   styleUrl: './church-data.scss',
 })
-export class ChurchData {
-  @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) churchTypes!: { value: string; label: string }[];
-  @Input({ required: true }) currentAddress!: Signal<Address | null | undefined>;
-  @Input({ required: true }) addressDescription!: string;
-  @Input() churchAvatar: string | null = null;
-  @Input() churchBanner: string | null = null;
-  @Input() uploadingPhoto = false;
-  @Input() uploadingBanner = false;
+export class ChurchData implements OnInit {
+  private readonly container = inject(Container);
+  private readonly fb = inject(FormBuilder);
+  private readonly churchService = inject(ChurchService);
+  private readonly authStore = inject(AuthStore);
+  private readonly churchStore = inject(ChurchStore);
+  private readonly router = inject(Router);
 
-  @Output() openFilePickerAvatarClick = new EventEmitter<void>();
-  @Output() openFilePickerBannerClick = new EventEmitter<void>();
-  @Output() openAddressClick = new EventEmitter<void>();
+  protected readonly currentAddress = this.churchStore.getAddres();
+  protected churchAvatar: string | null = null;
+  protected churchBanner: string | null = null;
+  protected uploadingPhoto = false;
+  protected uploadingBanner = false;
+  protected churchTypes: { value: string; label: string }[] = [];
+
+  private pendingAvatarFile: File | null = null;
+  private pendingBannerFile: File | null = null;
+  private initialFormValue: ReturnType<typeof this.form.getRawValue> | null = null;
+
+  isLoading = false;
+
+  constructor() {
+    effect(() => {
+      const addr = this.currentAddress();
+      this.form.patchValue({ address_id: addr?.id ?? '' });
+    });
+  }
+
+  get hasChurch(): boolean {
+    return !!this.authStore.getUserLogged()()?.church_id;
+  }
+
+  get isButtonDisabled(): boolean {
+    if (!this.hasChurch) {
+      return this.form.invalid;
+    }
+
+    if (!this.initialFormValue) {
+      return true;
+    }
+
+    const { address_id: _curAddr, ...currentValues } = this.form.getRawValue();
+    const { address_id: _iniAddr, ...initialValues } = this.initialFormValue;
+
+    return (
+      this.form.invalid ||
+      JSON.stringify(currentValues) === JSON.stringify(initialValues)
+    );
+  }
+
+  readonly form = this.fb.group({
+    phone: ['', Validators.required],
+    name: ['', Validators.required],
+    address_id: ['', Validators.required],
+    type_id: ['', Validators.required],
+    facebook: [''],
+    instagram: [''],
+    youtube: [''],
+  });
+
+  ngOnInit(): void {
+    this.loadChurchTypes();
+    this.loadChurch();
+  }
+
+  private loadChurch(): void {
+    const cached = this.churchStore.getChurchCached()();
+    if (cached) {
+      this.patchFormFromChurch(cached);
+    }
+
+    this.churchService.findById().subscribe((church) => {
+      this.patchFormFromChurch(church);
+    });
+  }
+
+  private patchFormFromChurch(church: Church): void {
+    this.form.patchValue({
+      phone: phoneMask(church.phone ?? ''),
+      name: church.name,
+      address_id: church.address?.id ?? '',
+      type_id: church.type?.id ?? '',
+      facebook: church.facebook,
+      instagram: church.instagram,
+      youtube: church.youtube,
+    });
+
+    this.churchStore.setAddress(church.address ?? null);
+    this.churchAvatar = church.church_avatar || null;
+    this.churchBanner = church.church_banner || null;
+    this.initialFormValue = this.form.getRawValue();
+  }
+
+  private loadChurchTypes(): void {
+    this.churchService
+      .listChurchType()
+      .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
+      .subscribe((types) => {
+        this.churchTypes = types;
+        if (!this.form.controls.type_id.value) {
+          this.form.patchValue({ type_id: types[0]?.value });
+        }
+      });
+  }
+
+  protected openAddress(): void {
+    const modal = this.container.vcr?.createComponent(AddressList).instance;
+    modal!.isChurch = true;
+  }
+
+  protected addressDescription(): string {
+    const addr = this.currentAddress();
+    return addr ? `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}` : '';
+  }
+
+  sendChurch(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const { phone, name, address_id, type_id, facebook, instagram, youtube } =
+      this.form.getRawValue();
+
+    this.isLoading = true;
+    const isCreating = !this.hasChurch;
+
+    const payload = {
+      phone: (phone ?? '').replace(/\D/g, ''),
+      name: name ?? '',
+      type_id: type_id ?? '',
+      facebook: facebook || null,
+      instagram: instagram || null,
+      youtube: youtube || null,
+      ...(isCreating ? {} : { address_id: address_id ?? '' }),
+    };
+
+    const action$ = isCreating
+      ? this.churchService.createChurch(payload)
+      : this.churchService.updateChurch(payload);
+
+    action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
+      next: () => {
+        if (!isCreating) {
+          this.initialFormValue = this.form.getRawValue();
+          const selectedType = this.churchTypes.find((t) => t.value === type_id);
+          this.churchStore.patchChurchUpdate({
+            name: name ?? '',
+            phone: (phone ?? '').replace(/\D/g, ''),
+            facebook: facebook || null,
+            instagram: instagram || null,
+            youtube: youtube || null,
+            ...(selectedType ? { type: { id: selectedType.value, name: selectedType.label } } : {}),
+          });
+        }
+        if (isCreating && this.pendingAvatarFile) {
+          this.uploadAvatar(this.pendingAvatarFile);
+          this.pendingAvatarFile = null;
+        }
+        if (isCreating && this.pendingBannerFile) {
+          this.uploadBanner(this.pendingBannerFile);
+          this.pendingBannerFile = null;
+        }
+        if (isCreating) {
+          this.router.navigate([namedRoutes.schedule]);
+        }
+      },
+    });
+  }
+
+  protected openFilePickerAvatar(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: Event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if (!this.hasChurch) {
+        this.churchAvatar = URL.createObjectURL(file);
+        this.pendingAvatarFile = file;
+        return;
+      }
+
+      this.uploadAvatar(file);
+    };
+    input.click();
+  }
+
+  private uploadAvatar(file: File): void {
+    this.uploadingPhoto = true;
+    this.churchService
+      .updateChurchIcon({ file })
+      .pipe(finalize(() => (this.uploadingPhoto = false)))
+      .subscribe({
+        next: (resp) => {
+          this.churchAvatar = resp.image;
+        },
+      });
+  }
+
+  protected openFilePickerBanner(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: Event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if (!this.hasChurch) {
+        this.churchBanner = URL.createObjectURL(file);
+        this.pendingBannerFile = file;
+        return;
+      }
+
+      this.uploadBanner(file);
+    };
+    input.click();
+  }
+
+  private uploadBanner(file: File): void {
+    this.uploadingBanner = true;
+    this.churchService
+      .updateChurchBanner({ file })
+      .pipe(finalize(() => (this.uploadingBanner = false)))
+      .subscribe({
+        next: (resp) => {
+          this.churchBanner = resp.image;
+        },
+      });
+  }
 }

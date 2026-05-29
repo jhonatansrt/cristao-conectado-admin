@@ -1,27 +1,13 @@
 <article class="flex flex-column">
-  <app-church-data
-    [form]="form"
-    [churchTypes]="churchTypes"
-    [currentAddress]="currentAddress"
-    [addressDescription]="addressDescription()"
-    [churchAvatar]="churchAvatar"
-    [churchBanner]="churchBanner"
-    [uploadingPhoto]="uploadingPhoto"
-    [uploadingBanner]="uploadingBanner"
-    (openFilePickerAvatarClick)="openFilePickerAvatar()"
-    (openFilePickerBannerClick)="openFilePickerBanner()"
-    (openAddressClick)="openAddress()"
-  />
-
-  <app-social-media [form]="form" />
+  <app-church-data #churchData />
 
   <div class="buttons-actions flex items-center justify-end">
     <app-button
-      (click)="sendChurch()"
+      (click)="churchData.sendChurch()"
       btnClass="btn-primary"
-      [disabled]="isButtonDisabled"
-      [loading]="isLoading"
-      >{{ hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
+      [disabled]="churchData.isButtonDisabled"
+      [loading]="churchData.isLoading"
+      >{{ churchData.hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
     >
   </div>
 </article>
