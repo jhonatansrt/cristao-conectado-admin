@@ -14,7 +14,7 @@ export class ChurchStore {
   private readonly churchCached = signal<Church | null>(null);
   private readonly pendingAvatarFile = signal<File | null>(null);
   private readonly pendingBannerFile = signal<File | null>(null);
-  private readonly churchTypesSignal = signal<{ value: string; label: string }[]>([]);
+  private readonly churchTypes = signal<{ value: string; label: string }[]>([]);
 
   public setChurch(church: Church[]): void {
     this.church.set(church);
@@ -125,11 +125,11 @@ export class ChurchStore {
   }
 
   public setChurchTypes(types: { value: string; label: string }[]): void {
-    this.churchTypesSignal.set(types);
+    this.churchTypes.set(types);
   }
 
   public getChurchTypes(): Signal<{ value: string; label: string }[]> {
-    return this.churchTypesSignal;
+    return this.churchTypes;
   }
 
   public clear(): void {

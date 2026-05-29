@@ -28,6 +28,13 @@ export class ChurchData implements OnInit {
   protected readonly churchTypes = this.churchStore.getChurchTypes();
 
   ngOnInit(): void {
+    if (this.churchTypes().length > 0) {
+      if (!this.form.controls['type_id'].value) {
+        this.form.patchValue({ type_id: this.churchTypes()[0]?.value });
+      }
+      return;
+    }
+
     this.churchService
       .listChurchType()
       .pipe(map((types) => types.map((t) => ({ value: t.id, label: t.name }))))
