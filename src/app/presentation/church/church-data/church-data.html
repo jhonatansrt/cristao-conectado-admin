@@ -1,0 +1,88 @@
+<section class="flex flex-column">
+  <h2>Dados da igreja</h2>
+
+  <div class="images flex flex-column">
+    <div class="avatar" (click)="openFilePickerAvatarClick.emit()">
+      <figure class="flex justify-center items-center">
+        @if (uploadingPhoto) {
+          <mat-spinner diameter="40" />
+        } @else if (churchAvatar) {
+          <img [src]="churchAvatar" alt="Foto_da_Igreja" />
+        } @else {
+          <mat-icon aria-hidden="true">person</mat-icon>
+        }
+      </figure>
+      <button
+        class="flex justify-center items-center"
+        aria-label="Alterar foto"
+        [disabled]="uploadingPhoto"
+      >
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+    </div>
+
+    <div class="banner flex justify-center items-center" (click)="openFilePickerBannerClick.emit()">
+      @if (uploadingBanner) {
+        <mat-spinner diameter="40" />
+      } @else if (churchBanner) {
+        <img [src]="churchBanner" alt="Banner_da_Igreja" />
+        <button
+          class="flex justify-center items-center"
+          aria-label="Alterar banner"
+          [disabled]="uploadingBanner"
+        >
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+      } @else {
+        <div class="banner-placeholder flex flex-column items-center justify-center">
+          <mat-icon>image</mat-icon>
+          <span>Banner da Igreja</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <form class="flex flex-column" [formGroup]="form">
+    <div class="flex">
+      <app-input
+        label="Nome"
+        placeholder="Ex: Igreja Batista Transcoqueiro"
+        formControlName="name"
+        [errorMessage]="
+          form.controls['name'].touched && form.controls['name'].hasError('required')
+            ? 'Nome é obrigatório'
+            : ''
+        "
+      />
+      <app-input
+        label="Telefone"
+        placeholder="Ex: (99) 99999-9999"
+        formControlName="phone"
+        [phoneMask]="true"
+        [errorMessage]="
+          form.controls['phone'].touched && form.controls['phone'].hasError('required')
+            ? 'Telefone é obrigatório'
+            : ''
+        "
+      />
+      <app-select
+        label="Denominação"
+        formControlName="type_id"
+        [options]="churchTypes"
+        [optionSelected]="form.controls['type_id'].value"
+      />
+    </div>
+
+    <div class="address flex flex-column">
+      <label>Endereço</label>
+
+      <app-card
+        [title]="currentAddress()?.place ?? ''"
+        [description]="addressDescription"
+        [clickable]="true"
+        [icons]="[{ name: 'edit', action: openAddressClick.emit.bind(openAddressClick) }]"
+        (click)="openAddressClick.emit()"
+      />
+    </div>
+  </form>
+</section>

@@ -1,19 +1,15 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { InputComponent } from '../common/input/input';
 import { ChurchStore } from '../../application/church/church-store';
 import { ChurchService } from '../../application/church/church-service';
 import { Church } from '../../domain/church';
-import { SelectComponent } from '../common/select/select';
 import { finalize, map } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Container } from '../../util/container.service';
 import { AddressList } from '../schedule/address-list/address-list';
-import { CardComponent } from '../common/card/card.component';
 import { ButtonComponent } from '../common/button/button.component';
 import { SocialMedia } from './social-media/social-media';
+import { ChurchData } from './church-data/church-data';
 import { AuthStore } from '../../application/auth/auth-store';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { phoneMask } from '../../masks/phone.mask';
 import { Router } from '@angular/router';
 import { namedRoutes } from '../../named-routes';
@@ -21,14 +17,10 @@ import { namedRoutes } from '../../named-routes';
 @Component({
   selector: 'app-church',
   imports: [
-    MatIconModule,
-    InputComponent,
-    SelectComponent,
     ReactiveFormsModule,
-    CardComponent,
     ButtonComponent,
-    MatProgressSpinnerModule,
     SocialMedia,
+    ChurchData,
   ],
   templateUrl: './church.html',
   styleUrl: './church.scss',
