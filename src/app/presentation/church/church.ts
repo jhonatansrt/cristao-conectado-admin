@@ -146,17 +146,15 @@ export class ChurchPage implements OnInit {
       ? this.churchService.createChurch(payload)
       : this.churchService.updateChurch(payload);
 
-    action$.pipe(finalize(() => (this.isLoading = false))).subscribe({
-      next: () => {
-        this.patchChurchUpdate();
+    action$.pipe(finalize(() => (this.isLoading = false))).subscribe(() => {
+      this.patchChurchUpdate();
 
-        if (isCreating) {
-          this.initialFormValue = this.form.getRawValue();
-          this.imagesComponent.uploadPendingFiles();
-          this.router.navigate([namedRoutes.schedule]);
-          return;
-        }
-      },
+      if (isCreating) {
+        this.initialFormValue = this.form.getRawValue();
+        this.imagesComponent.uploadPendingFiles();
+        this.router.navigate([namedRoutes.schedule]);
+        return;
+      }
     });
   }
 }
