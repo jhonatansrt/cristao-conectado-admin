@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiBaseURL: 'https://cristao-conectado-crtnv.ondigitalocean.app/',
 };
