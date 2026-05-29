@@ -3,7 +3,7 @@
 
   <app-social-media [form]="form" />
 
-  <div class="buttons-actions flex items-center justify-end">
+  <section class="flex items-center justify-end">
     <app-button
       (click)="sendChurch()"
       btnClass="btn-primary"
@@ -11,5 +11,5 @@
       [loading]="isLoading"
       >{{ hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
     >
-  </div>
+  </section>
 </article>
