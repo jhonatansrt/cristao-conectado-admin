@@ -13,7 +13,7 @@ export const loginGuard: CanActivateFn = async () => {
   await authService.getUserLogged();
 
   if (authStore.getUserLogged()()) {
-    return router.createUrlTree([`/${namedRoutes.home}`]);
+    return router.createUrlTree([`/${namedRoutes.schedule}`]);
   }
 
   return true;

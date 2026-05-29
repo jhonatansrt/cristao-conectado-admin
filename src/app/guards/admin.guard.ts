@@ -13,7 +13,7 @@ export const adminGuard: CanActivateFn = () => {
   const allowedRoles = [TypeUser.MASTER, TypeUser.ADMIN];
 
   if (!user || !allowedRoles.includes(user.type)) {
-    return router.createUrlTree([`/${namedRoutes.home}`]);
+    return router.createUrlTree([`/${namedRoutes.login}`]);
   }
 
   return true;
