@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
@@ -19,23 +19,21 @@ export class ImagesComponent {
 
   private readonly churchCached = this.churchStore.getChurchCached();
 
-  protected pendingAvatarPreview: string | null = null;
-  protected pendingBannerPreview: string | null = null;
+  protected readonly pendingAvatarPreview = signal<string | null>(null);
+  protected readonly pendingBannerPreview = signal<string | null>(null);
 
-  protected get churchAvatar(): string | null {
-    return this.churchCached()?.church_avatar || this.pendingAvatarPreview || null;
-  }
+  protected readonly churchAvatar = computed(
+    () => this.churchCached()?.church_avatar || this.pendingAvatarPreview() || null,
+  );
 
-  protected get churchBanner(): string | null {
-    return this.churchCached()?.church_banner || this.pendingBannerPreview || null;
-  }
+  protected readonly churchBanner = computed(
+    () => this.churchCached()?.church_banner || this.pendingBannerPreview() || null,
+  );
 
   protected uploadingPhoto = false;
   protected uploadingBanner = false;
 
-  private get hasChurch(): boolean {
-    return !!this.authStore.getUserLogged()()?.church_id;
-  }
+  private readonly hasChurch = computed(() => !!this.authStore.getUserLogged()()?.church_id);
 
   protected openFilePickerAvatar(): void {
     const input = document.createElement('input');
@@ -45,8 +43,8 @@ export class ImagesComponent {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      if (!this.hasChurch) {
-        this.pendingAvatarPreview = URL.createObjectURL(file);
+      if (!this.hasChurch()) {
+        this.pendingAvatarPreview.set(URL.createObjectURL(file));
         this.churchStore.setPendingAvatarFile(file);
         return;
       }
@@ -72,8 +70,8 @@ export class ImagesComponent {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      if (!this.hasChurch) {
-        this.pendingBannerPreview = URL.createObjectURL(file);
+      if (!this.hasChurch()) {
+        this.pendingBannerPreview.set(URL.createObjectURL(file));
         this.churchStore.setPendingBannerFile(file);
         return;
       }
