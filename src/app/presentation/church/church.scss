@@ -1,6 +1,6 @@
 @use '../../../theme/breakpoint.scss' as *;
 
-.church {
+article {
   gap: 24px;
 
   section {
@@ -144,7 +144,7 @@
 }
 
 @media screen and (max-width: $breakpoint-mobile) {
-  .church {
+  article {
     section {
       .images {
         flex-direction: column;
