@@ -12,12 +12,10 @@ import { Requests } from './presentation/requests/requests';
 import { Testimonials } from './presentation/testimonials/testimonials';
 import { Template } from './presentation/template/template';
 import { Videos } from './presentation/videos/videos';
-import {
-  churchRequiredGuard,
-  loginGuard,
-  playlistSelectedGuard,
-  userGuard,
-} from './guards/user.guard';
+import { churchRequiredGuard } from './guards/church-required.guard';
+import { loginGuard } from './guards/login.guard';
+import { playlistSelectedGuard } from './guards/playlist-selected.guard';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
