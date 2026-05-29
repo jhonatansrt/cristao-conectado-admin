@@ -153,7 +153,6 @@ export class ChurchPage implements OnInit {
         this.initialFormValue = this.form.getRawValue();
         this.imagesComponent.uploadPendingFiles();
         this.router.navigate([namedRoutes.schedule]);
-        return;
       }
     });
   }
