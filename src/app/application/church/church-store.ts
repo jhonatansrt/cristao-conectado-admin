@@ -12,8 +12,8 @@ export class ChurchStore {
   private readonly isLoading = signal(false);
   private readonly addressSelected = signal<Address | null>(null);
   private readonly churchCached = signal<Church | null>(null);
-  private readonly _pendingAvatarFile = signal<File | null>(null);
-  private readonly _pendingBannerFile = signal<File | null>(null);
+  private readonly pendingAvatarFile = signal<File | null>(null);
+  private readonly pendingBannerFile = signal<File | null>(null);
 
   public setChurch(church: Church[]): void {
     this.church.set(church);
@@ -108,19 +108,19 @@ export class ChurchStore {
   }
 
   public setPendingAvatarFile(file: File | null): void {
-    this._pendingAvatarFile.set(file);
+    this.pendingAvatarFile.set(file);
   }
 
   public setPendingBannerFile(file: File | null): void {
-    this._pendingBannerFile.set(file);
+    this.pendingBannerFile.set(file);
   }
 
   public getPendingAvatarFile(): File | null {
-    return this._pendingAvatarFile();
+    return this.pendingAvatarFile();
   }
 
   public getPendingBannerFile(): File | null {
-    return this._pendingBannerFile();
+    return this.pendingBannerFile();
   }
 
   public clear(): void {
@@ -128,7 +128,7 @@ export class ChurchStore {
     this.isLoading.set(false);
     this.addressSelected.set(null);
     this.churchCached.set(null);
-    this._pendingAvatarFile.set(null);
-    this._pendingBannerFile.set(null);
+    this.pendingAvatarFile.set(null);
+    this.pendingBannerFile.set(null);
   }
 }
