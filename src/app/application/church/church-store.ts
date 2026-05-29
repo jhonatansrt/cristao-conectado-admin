@@ -64,14 +64,19 @@ export class ChurchStore {
   }): void {
     const current = this.churchCached();
     if (!current) return;
-    const updated = {
+    const updated: Church = {
       ...current,
       name: data.name,
       phone: data.phone,
-      facebook: data.facebook,
-      instagram: data.instagram,
-      youtube: data.youtube,
-      ...(data.type ? { type_id: data.type.id, type: data.type } : {}),
+      facebook: data.facebook ?? undefined,
+      instagram: data.instagram ?? undefined,
+      youtube: data.youtube ?? undefined,
+      ...(data.type
+        ? {
+            type_id: data.type.id,
+            type: data.type,
+          }
+        : {}),
     };
     this.churchCached.set(updated);
     this.storage.setStorage('churchLogged', updated);
