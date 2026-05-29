@@ -21,7 +21,6 @@ import { ImagesComponent } from './images/images';
 })
 export class ChurchPage implements OnInit {
   @ViewChild(ChurchData) private readonly churchData!: ChurchData;
-  @ViewChild(ImagesComponent) private readonly imagesComponent!: ImagesComponent;
 
   private readonly fb = inject(FormBuilder);
   private readonly churchService = inject(ChurchService);
@@ -151,7 +150,7 @@ export class ChurchPage implements OnInit {
 
       if (isCreating) {
         this.initialFormValue = this.form.getRawValue();
-        this.imagesComponent.uploadPendingFiles();
+        this.churchService.uploadPendingFiles();
         this.router.navigate([namedRoutes.schedule]);
       }
     });

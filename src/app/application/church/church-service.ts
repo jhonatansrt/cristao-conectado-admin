@@ -173,6 +173,19 @@ export class ChurchService {
     );
   }
 
+  public uploadPendingFiles(): void {
+    const avatar = this.churchStore.getPendingAvatarFile();
+    if (avatar) {
+      this.updateChurchIcon({ file: avatar }).subscribe();
+      this.churchStore.setPendingAvatarFile(null);
+    }
+    const banner = this.churchStore.getPendingBannerFile();
+    if (banner) {
+      this.updateChurchBanner({ file: banner }).subscribe();
+      this.churchStore.setPendingBannerFile(null);
+    }
+  }
+
   private toChurchPayload({
     phone,
     name,

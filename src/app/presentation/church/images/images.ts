@@ -33,22 +33,8 @@ export class ImagesComponent {
   protected uploadingPhoto = false;
   protected uploadingBanner = false;
 
-  private pendingAvatarFile: File | null = null;
-  private pendingBannerFile: File | null = null;
-
   private get hasChurch(): boolean {
     return !!this.authStore.getUserLogged()()?.church_id;
-  }
-
-  uploadPendingFiles(): void {
-    if (this.pendingAvatarFile) {
-      this.uploadAvatar(this.pendingAvatarFile);
-      this.pendingAvatarFile = null;
-    }
-    if (this.pendingBannerFile) {
-      this.uploadBanner(this.pendingBannerFile);
-      this.pendingBannerFile = null;
-    }
   }
 
   protected openFilePickerAvatar(): void {
@@ -61,7 +47,7 @@ export class ImagesComponent {
 
       if (!this.hasChurch) {
         this.pendingAvatarPreview = URL.createObjectURL(file);
-        this.pendingAvatarFile = file;
+        this.churchStore.setPendingAvatarFile(file);
         return;
       }
 
@@ -88,7 +74,7 @@ export class ImagesComponent {
 
       if (!this.hasChurch) {
         this.pendingBannerPreview = URL.createObjectURL(file);
-        this.pendingBannerFile = file;
+        this.churchStore.setPendingBannerFile(file);
         return;
       }
 
