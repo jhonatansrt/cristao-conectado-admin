@@ -52,82 +52,88 @@ export class AddressesService {
       return of(void 0);
     }
 
-    return this.addressesRepository.createAddress({
-      cep: geocoded.cep,
-      number: geocoded.number,
-      street: geocoded.street,
-      district: geocoded.district,
-      city: geocoded.city,
-      state: geocoded.state,
-      latitude: geocoded.lat,
-      longitude: geocoded.lng,
-      place,
-      churchId,
-      isMain: true,
-    }).pipe(
-      switchMap(() => this.getAddresses()),
-      tap((addresses) => this.addressesStore.setAddresses(addresses)),
-      map(() => void 0),
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    return this.addressesRepository
+      .createAddress({
+        cep: geocoded.cep,
+        number: geocoded.number,
+        street: geocoded.street,
+        district: geocoded.district,
+        city: geocoded.city,
+        state: geocoded.state,
+        latitude: geocoded.lat,
+        longitude: geocoded.lng,
+        place,
+        churchId,
+        isMain: true,
+      })
+      .pipe(
+        switchMap(() => this.getAddresses()),
+        tap((addresses) => this.addressesStore.setAddresses(addresses)),
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
   }
 
   public updateAddress(address: Address, place: string, number: string): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
     const updatedAddress: Address = { ...address, place, number };
-    return this.addressesRepository.updateAddress(address.id, {
-      cep: address.cep,
-      number,
-      street: address.street,
-      district: address.district,
-      city: address.city,
-      state: address.state,
-      latitude: parseFloat(address.latitude),
-      longitude: parseFloat(address.longitude),
-      place,
-      churchId,
-    }).pipe(
-      switchMap(() => this.getAddresses()),
-      tap((addresses) => {
-        this.addressesStore.setAddresses(addresses);
-        const selectedAddress = this.churchStore.getAddres()();
-        if (selectedAddress?.id === address.id) {
-          this.churchStore.setAddress(updatedAddress);
-          this.churchStore.patchChurchAddress(updatedAddress);
-        }
-      }),
-      map(() => void 0),
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    return this.addressesRepository
+      .updateAddress(address.id, {
+        cep: address.cep,
+        number,
+        street: address.street,
+        district: address.district,
+        city: address.city,
+        state: address.state,
+        latitude: parseFloat(address.latitude),
+        longitude: parseFloat(address.longitude),
+        place,
+        churchId,
+      })
+      .pipe(
+        switchMap(() => this.getAddresses()),
+        tap((addresses) => {
+          this.addressesStore.setAddresses(addresses);
+          const selectedAddress = this.churchStore.getAddress()();
+          if (selectedAddress?.id === address.id) {
+            this.churchStore.setAddress(updatedAddress);
+            this.churchStore.patchChurchAddress(updatedAddress);
+          }
+        }),
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
   }
 
   public setAddressAsMain(address: Address): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
-    return this.addressesRepository.updateAddress(address.id, {
-      cep: address.cep,
-      number: address.number,
-      street: address.street,
-      district: address.district,
-      city: address.city,
-      state: address.state,
-      latitude: parseFloat(address.latitude),
-      longitude: parseFloat(address.longitude),
-      place: address.place,
-      churchId,
-      isMain: true,
-    }).pipe(
-      map(() => void 0),
-      catchError((e) => {
-        this.toastService.openToast({ message: e?.error?.message });
-        return throwError(() => e);
-      }),
-    );
+    return this.addressesRepository
+      .updateAddress(address.id, {
+        cep: address.cep,
+        number: address.number,
+        street: address.street,
+        district: address.district,
+        city: address.city,
+        state: address.state,
+        latitude: parseFloat(address.latitude),
+        longitude: parseFloat(address.longitude),
+        place: address.place,
+        churchId,
+        isMain: true,
+      })
+      .pipe(
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
   }
 
   public deleteAddress(id: string): Observable<void> {

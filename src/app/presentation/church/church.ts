@@ -26,7 +26,7 @@ export class ChurchPage implements OnInit {
   private readonly churchStore = inject(ChurchStore);
   private readonly router = inject(Router);
 
-  private readonly currentAddress = this.churchStore.getAddres();
+  private readonly currentAddress = this.churchStore.getAddress();
   private initialFormValue: ReturnType<typeof this.form.getRawValue> | null = null;
 
   protected isLoading = false;
@@ -96,7 +96,9 @@ export class ChurchPage implements OnInit {
   private patchChurchUpdate() {
     const payload = this.getPayload();
 
-    const selectedType = this.churchStore.getChurchTypes()().find((t) => t.value === payload.type_id);
+    const selectedType = this.churchStore
+      .getChurchTypes()()
+      .find((t) => t.value === payload.type_id);
 
     this.churchStore.patchChurchUpdate({
       name: payload.name ?? '',
