@@ -88,38 +88,11 @@
     </form>
   </section>
 
-  <section class="flex flex-column">
-    <h2>Redes sociais</h2>
-    <form class="flex flex-column" [formGroup]="form">
-      <div class="flex">
-        <app-input
-          label="Instagram"
-          placeholder="https://www.instagram.com/igreja"
-          formControlName="instagram"
-        />
-
-        <app-input
-          label="Facebook"
-          placeholder="https://www.facebook.com/igreja"
-          formControlName="facebook"
-        />
-      </div>
-      <div class="flex">
-        <app-input
-          label="YouTube"
-          placeholder="https://www.youtube.com/igreja"
-          formControlName="youtube"
-        />
-      </div>
-    </form>
-    <div class="buttons-actions flex items-center justify-end">
-      <app-button
-        (click)="sendChurch()"
-        btnClass="btn-primary"
-        [disabled]="isButtonDisabled"
-        [loading]="isLoading"
-        >{{ hasChurch ? 'Atualizar Igreja' : 'Criar Igreja' }}</app-button
-      >
-    </div>
-  </section>
+  <app-social-media
+    [form]="form"
+    [isButtonDisabled]="isButtonDisabled"
+    [isLoading]="isLoading"
+    [hasChurch]="hasChurch"
+    (save)="sendChurch()"
+  />
 </article>
