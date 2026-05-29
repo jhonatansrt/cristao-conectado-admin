@@ -1,0 +1,55 @@
+@use '../../../../theme/breakpoint.scss' as *;
+
+section {
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--box-shadow);
+  gap: 24px;
+
+  h2 {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  form {
+    gap: 24px;
+
+    > div {
+      gap: 24px;
+
+      app-input,
+      app-select {
+        flex: 1;
+        min-width: 0;
+      }
+
+      label {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-16);
+        font-weight: var(--font-weight-semibold);
+      }
+    }
+  }
+
+  &:last-child {
+    form > div:last-child {
+      max-width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+  section {
+    form > div {
+      flex-direction: column;
+    }
+
+    &:last-child {
+      form > div:last-child {
+        max-width: 100%;
+      }
+    }
+  }
+}

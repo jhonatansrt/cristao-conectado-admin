@@ -135,12 +135,6 @@ article {
       }
     }
   }
-
-  section:last-child {
-    form > div:last-child {
-      max-width: 50%;
-    }
-  }
 }
 
 @media screen and (max-width: $breakpoint-mobile) {
@@ -158,12 +152,6 @@ article {
 
       form > div {
         flex-direction: column;
-      }
-    }
-
-    section:last-child {
-      form > div:last-child {
-        max-width: 100%;
       }
     }
   }
