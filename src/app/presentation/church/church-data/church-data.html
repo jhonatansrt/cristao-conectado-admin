@@ -25,7 +25,7 @@
       <app-select
         label="Denominação"
         formControlName="type_id"
-        [options]="churchTypes"
+        [options]="churchTypes()"
         [optionSelected]="form.controls['type_id'].value"
       />
     </div>
