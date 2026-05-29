@@ -5,6 +5,7 @@ import { finalize } from 'rxjs';
 import { ChurchStore } from '../../../application/church/church-store';
 import { ChurchService } from '../../../application/church/church-service';
 import { AuthStore } from '../../../application/auth/auth-store';
+import { ToastService } from '../../common/toast/toast.service';
 
 @Component({
   selector: 'app-images',
@@ -16,6 +17,7 @@ export class ImagesComponent {
   private readonly churchService = inject(ChurchService);
   private readonly churchStore = inject(ChurchStore);
   private readonly authStore = inject(AuthStore);
+  private readonly toastService = inject(ToastService);
 
   private readonly churchCached = this.churchStore.getChurchCached();
 
@@ -78,7 +80,12 @@ export class ImagesComponent {
     this.churchService
       .updateChurchIcon({ file })
       .pipe(finalize(() => (this.uploadingPhoto = false)))
-      .subscribe();
+      .subscribe(() => {
+        this.toastService.openToast({
+          success: true,
+          message: 'Perfil da igreja atualizado com sucesso',
+        });
+      });
   }
 
   private uploadBanner(file: File): void {
@@ -86,6 +93,11 @@ export class ImagesComponent {
     this.churchService
       .updateChurchBanner({ file })
       .pipe(finalize(() => (this.uploadingBanner = false)))
-      .subscribe();
+      .subscribe(() => {
+        this.toastService.openToast({
+          success: true,
+          message: 'Banner da igreja atualizado com sucesso',
+        });
+      });
   }
 }
