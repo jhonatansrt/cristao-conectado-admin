@@ -1,5 +1,20 @@
 @use '../../../../../theme/breakpoint.scss' as *;
 
+section {
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--box-shadow);
+  gap: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+}
+
 .images {
   gap: 16px;
 
