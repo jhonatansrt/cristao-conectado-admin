@@ -10,21 +10,6 @@ main {
     gap: 32px;
 
     header {
-      gap: 12px;
-
-      .btn-back {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--color-primary);
-        font-size: 20px;
-        padding: 4px;
-        flex-shrink: 0;
-      }
-
       h1 {
         font-size: var(--font-size-20);
         font-weight: var(--font-weight-bold);

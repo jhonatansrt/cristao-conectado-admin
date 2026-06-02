@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { namedRoutes } from '../../named-routes';
 
 @Component({
   selector: 'app-privacy-policy-page',
@@ -9,10 +7,4 @@ import { namedRoutes } from '../../named-routes';
   templateUrl: './privacy-policy-page.html',
   styleUrl: './privacy-policy-page.scss',
 })
-export class PrivacyPolicyPage {
-  private readonly router = inject(Router);
-
-  public goBack(): void {
-    this.router.navigate([namedRoutes.login]);
-  }
-}
+export class PrivacyPolicyPage {}
