@@ -16,6 +16,7 @@ import { churchRequiredGuard } from './guards/church-required.guard';
 import { loginGuard } from './guards/login.guard';
 import { playlistSelectedGuard } from './guards/playlist-selected.guard';
 import { userGuard } from './guards/user.guard';
+import { PrivacyPolicyPage } from './presentation/privacy-policy-page/privacy-policy-page';
 
 export const routes: Routes = [
   {
@@ -83,5 +84,9 @@ export const routes: Routes = [
     path: namedRoutes.login,
     component: Login,
     canActivate: [loginGuard],
+  },
+  {
+    path: namedRoutes.privacyPolicy,
+    component: PrivacyPolicyPage,
   },
 ];

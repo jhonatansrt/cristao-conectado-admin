@@ -10,4 +10,5 @@ export const namedRoutes = {
   pray: 'pray',
   videos: 'videos',
   login: 'login',
+  privacyPolicy: 'privacy-policy',
 } as const;
