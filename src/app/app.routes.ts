@@ -1,27 +1,14 @@
 import { Routes } from '@angular/router';
 import { namedRoutes } from './named-routes';
-import { Login } from './presentation/auth/login/login';
-import { ChurchPage } from './presentation/church/church';
-import { Home } from './presentation/home/home';
-import { Members } from './presentation/members/members';
-import { Notices } from './presentation/notices/notices';
-import { Playlists } from './presentation/playlists/playlists';
-import { Schedule } from './presentation/schedule/schedule';
-import { Pray } from './presentation/pray/pray';
-import { Requests } from './presentation/requests/requests';
-import { Testimonials } from './presentation/testimonials/testimonials';
-import { Template } from './presentation/template/template';
-import { Videos } from './presentation/videos/videos';
 import { churchRequiredGuard } from './guards/church-required.guard';
 import { loginGuard } from './guards/login.guard';
 import { playlistSelectedGuard } from './guards/playlist-selected.guard';
 import { userGuard } from './guards/user.guard';
-import { PrivacyPolicyPage } from './presentation/privacy-policy-page/privacy-policy-page';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Template,
+    loadComponent: () => import('./presentation/template/template').then(m => m.Template),
     canActivate: [userGuard],
     children: [
       {
@@ -31,62 +18,62 @@ export const routes: Routes = [
       },
       {
         path: namedRoutes.home,
-        component: Home,
+        loadComponent: () => import('./presentation/home/home').then(m => m.Home),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.members,
-        component: Members,
+        loadComponent: () => import('./presentation/members/members').then(m => m.Members),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.schedule,
-        component: Schedule,
+        loadComponent: () => import('./presentation/schedule/schedule').then(m => m.Schedule),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.playlists,
-        component: Playlists,
+        loadComponent: () => import('./presentation/playlists/playlists').then(m => m.Playlists),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.notices,
-        component: Notices,
+        loadComponent: () => import('./presentation/notices/notices').then(m => m.Notices),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.testimonials,
-        component: Testimonials,
+        loadComponent: () => import('./presentation/testimonials/testimonials').then(m => m.Testimonials),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.church,
-        component: ChurchPage,
+        loadComponent: () => import('./presentation/church/church').then(m => m.ChurchPage),
       },
       {
         path: namedRoutes.pray,
-        component: Pray,
+        loadComponent: () => import('./presentation/pray/pray').then(m => m.Pray),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.requests,
-        component: Requests,
+        loadComponent: () => import('./presentation/requests/requests').then(m => m.Requests),
         canActivate: [churchRequiredGuard],
       },
       {
         path: namedRoutes.videos,
-        component: Videos,
+        loadComponent: () => import('./presentation/videos/videos').then(m => m.Videos),
         canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
     ],
   },
   {
     path: namedRoutes.login,
-    component: Login,
+    loadComponent: () => import('./presentation/auth/login/login').then(m => m.Login),
     canActivate: [loginGuard],
   },
   {
     path: namedRoutes.privacyPolicy,
-    component: PrivacyPolicyPage,
+    loadComponent: () => import('./presentation/privacy-policy-page/privacy-policy-page').then(m => m.PrivacyPolicyPage),
   },
 ];
