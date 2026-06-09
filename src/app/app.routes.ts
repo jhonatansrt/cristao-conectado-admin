@@ -27,6 +27,11 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard],
       },
       {
+        path: namedRoutes.membersReports,
+        loadComponent: () => import('./presentation/members/reports/reports').then(m => m.Reports),
+        canActivate: [churchRequiredGuard],
+      },
+      {
         path: namedRoutes.schedule,
         loadComponent: () => import('./presentation/schedule/schedule').then(m => m.Schedule),
         canActivate: [churchRequiredGuard],

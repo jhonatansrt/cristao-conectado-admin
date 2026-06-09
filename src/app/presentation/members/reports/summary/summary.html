@@ -1,0 +1,15 @@
+<section>
+  <ul class="flex flex-wrap">
+    @for (item of items; track item.label) {
+      <li>
+        <article class="flex items-center">
+          <span class="material-symbols-outlined" [style.color]="item.color">{{ item.icon }}</span>
+          <div class="flex flex-column">
+            <strong>{{ item.value }}</strong>
+            <small>{{ item.label }}</small>
+          </div>
+        </article>
+      </li>
+    }
+  </ul>
+</section>
