@@ -24,6 +24,9 @@ import { IMembersRepository } from '../../domain/members';
 import { MembersRepository } from '../members/members-repository';
 import { IChurchRepository } from '../../domain/church';
 import { ChurchRepository } from '../church/church-repository';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
+import { MemberRowPipe } from '../../pipes/member-row.pipe';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -104,6 +107,9 @@ const commonProviders = [
   requestsProvider,
   membersProvider,
   churchProvider,
+  CapitalizeNamePipe,
+  FormatDatePipe,
+  MemberRowPipe,
 ];
 
 export const providers = [...commonProviders];
