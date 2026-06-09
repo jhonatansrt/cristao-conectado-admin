@@ -15,8 +15,19 @@ section {
         box-shadow: var(--box-shadow);
         min-width: 180px;
 
-        span.material-symbols-outlined {
-          font-size: 36px;
+        span.icon-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1.5px solid;
+          border-radius: 10px;
+          padding: 8px;
+
+          mat-icon {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+          }
         }
 
         div {
