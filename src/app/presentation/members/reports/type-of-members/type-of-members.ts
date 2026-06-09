@@ -16,8 +16,8 @@ interface MemberType {
 })
 export class TypeOfMembers {
   protected readonly types: MemberType[] = [
-    { label: 'Membro', count: 10, percentage: 50, color: '#4A90D9' },
-    { label: 'Congregado', count: 4, percentage: 20, color: '#4CAF50' },
+    { label: 'Membro', count: 10, percentage: 40, color: '#4A90D9' },
+    { label: 'Congregado', count: 4, percentage: 30, color: '#4CAF50' },
     { label: 'Visitante', count: 3, percentage: 15, color: '#FF9800' },
     { label: 'Master', count: 3, percentage: 15, color: '#7B61FF' },
   ];

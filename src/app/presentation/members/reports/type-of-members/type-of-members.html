@@ -1,17 +1,8 @@
-<section>
+<section class="flex flex-column">
   <h3>Distribuição por tipo de membro</h3>
 
   <figure class="flex items-center">
     <div [ngStyle]="{ background: conicGradient }"></div>
-
-    <ul class="flex flex-wrap">
-      @for (type of types; track type.label) {
-        <li class="flex items-center">
-          <i [ngStyle]="{ background: type.color }"></i>
-          {{ type.label }}
-        </li>
-      }
-    </ul>
   </figure>
 
   <ul class="flex flex-wrap">
