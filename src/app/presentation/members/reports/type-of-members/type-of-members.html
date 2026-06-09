@@ -1,0 +1,26 @@
+<section>
+  <h3>Distribuição por tipo de membro</h3>
+
+  <div class="chart-wrapper flex items-center">
+    <div class="pie" [ngStyle]="{ background: conicGradient }"></div>
+
+    <ul class="legend flex flex-wrap">
+      @for (type of types; track type.label) {
+        <li class="flex items-center">
+          <span class="dot" [ngStyle]="{ background: type.color }"></span>
+          {{ type.label }}
+        </li>
+      }
+    </ul>
+  </div>
+
+  <ul class="counts flex flex-wrap">
+    @for (type of types; track type.label) {
+      <li class="flex items-center">
+        <span class="dot" [ngStyle]="{ background: type.color }"></span>
+        <span class="type-label">{{ type.label }}</span>
+        <strong>{{ type.count }}</strong>
+      </li>
+    }
+  </ul>
+</section>
