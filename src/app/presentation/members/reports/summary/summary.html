@@ -3,7 +3,7 @@
     @for (item of items; track item.label) {
       <li>
         <article class="flex items-center">
-          <span class="material-symbols-outlined" [style.color]="item.color">{{ item.icon }}</span>
+          <mat-icon aria-hidden="true" [style.color]="item.color">{{ item.icon }}</mat-icon>
           <div class="flex flex-column">
             <strong>{{ item.value }}</strong>
             <small>{{ item.label }}</small>
