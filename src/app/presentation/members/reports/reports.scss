@@ -1,0 +1,11 @@
+main {
+  padding: 24px;
+  gap: 24px;
+
+  header h1 {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+}
