@@ -1,7 +1,7 @@
-import { Member } from 'src/app/domain/members';
-import { TableRow } from 'src/app/application/table/table-store';
-import { CapitalizeNamePipe } from 'src/app/pipes/capitalize-name.pipe';
-import { FormatDatePipe } from 'src/app/pipes/format-date.pipe';
+import { TableRow } from '../../application/table/table-store';
+import { Member } from '../../domain/members';
+import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 
 const capitalizeName = new CapitalizeNamePipe();
 const formatDate = new FormatDatePipe();
