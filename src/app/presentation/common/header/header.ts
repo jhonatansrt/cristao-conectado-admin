@@ -35,6 +35,7 @@ export class Header {
   private readonly routeTitles: Record<string, string> = {
     [namedRoutes.home]: 'Home',
     [namedRoutes.members]: 'Membros',
+    [namedRoutes.membersReports]: 'Relatórios de membros',
     [namedRoutes.schedule]: 'Agenda',
     [namedRoutes.playlists]: 'Playlists',
     [namedRoutes.notices]: 'Avisos',
@@ -47,13 +48,14 @@ export class Header {
   protected readonly buttonsActions = this.actionBarStore.getButtonsActions();
 
   protected readonly title = computed(() => {
-    const route = this.currentUrl().replace(/^\//, '').split('/')[0] ?? '';
+    const fullPath = this.currentUrl().replace(/^\//, '');
+    const firstSegment = fullPath.split('/')[0] ?? '';
 
-    if (route === namedRoutes.videos) {
+    if (firstSegment === namedRoutes.videos) {
       return this.playlistSelectedStore.getPlaylistSelected()()[0]?.name ?? 'Vídeos';
     }
 
-    return this.routeTitles[route] ?? 'Igreja';
+    return this.routeTitles[fullPath] ?? this.routeTitles[firstSegment] ?? 'Igreja';
   });
 
   protected toggleMenu(event: MouseEvent): void {
