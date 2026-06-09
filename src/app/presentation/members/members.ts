@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { MembersService } from '../../application/members/members-service';
-import { MemberRowPipe } from '../../pipes/member-row.pipe';
+import { MemberTransform } from '../../infrastructure/members/member-transform';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 
 @Component({
@@ -14,7 +14,6 @@ import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 export class Members {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly membersService = inject(MembersService);
-  private readonly memberRowPipe = inject(MemberRowPipe);
   protected readonly isLoading = this.tableStore.isLoading();
   protected readonly hasMembers = this.tableStore.hasRows;
 
@@ -34,7 +33,7 @@ export class Members {
 
     this.membersService.getMembersByChurch().subscribe({
       next: (members) => {
-        this.tableStore.setRows(members.map((member) => this.memberRowPipe.transform(member)));
+        this.tableStore.setRows(members.map(MemberTransform.toRow));
         this.tableStore.setLoading(false);
       },
       error: () => {
