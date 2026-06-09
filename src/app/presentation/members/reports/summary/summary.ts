@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 interface SummaryItem {
   value: number;
@@ -11,6 +12,7 @@ interface SummaryItem {
   selector: 'app-summary',
   templateUrl: './summary.html',
   styleUrl: './summary.scss',
+  imports: [MatIcon],
 })
 export class Summary {
   protected readonly items: SummaryItem[] = [

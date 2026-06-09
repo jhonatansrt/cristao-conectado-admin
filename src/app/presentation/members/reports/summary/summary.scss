@@ -6,6 +6,8 @@ section {
     gap: 16px;
 
     li {
+      flex-grow: 1;
+
       article {
         background: var(--color-surface);
         border: 1px solid var(--color-border);
@@ -13,7 +15,6 @@ section {
         padding: 20px 24px;
         gap: 16px;
         box-shadow: var(--box-shadow);
-        min-width: 180px;
 
         span.material-symbols-outlined {
           font-size: 36px;
