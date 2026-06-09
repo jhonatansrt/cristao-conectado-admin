@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { MembersService } from '../../application/members/members-service';
-import { CapitalizeNamePipe } from '../../pipes/capitalize-name.pipe';
-import { FormatDatePipe } from '../../pipes/format-date.pipe';
-import { Member } from '../../domain/members';
+import { MemberRowPipe } from '../../pipes/member-row.pipe';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 
 @Component({
@@ -16,8 +14,7 @@ import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 export class Members {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly membersService = inject(MembersService);
-  private readonly capitalizeNamePipe = new CapitalizeNamePipe();
-  private readonly formatDatePipe = new FormatDatePipe();
+  private readonly memberRowPipe = inject(MemberRowPipe);
   protected readonly isLoading = this.tableStore.isLoading();
   protected readonly hasMembers = this.tableStore.hasRows;
 
@@ -37,21 +34,12 @@ export class Members {
 
     this.membersService.getMembersByChurch().subscribe({
       next: (members) => {
-        this.tableStore.setRows(members.map((member) => this.buildRow(member)));
+        this.tableStore.setRows(members.map((member) => this.memberRowPipe.transform(member)));
         this.tableStore.setLoading(false);
       },
       error: () => {
         this.tableStore.setLoading(false);
       },
     });
-  }
-
-  private buildRow(member: Member): TableRow {
-    return {
-      id: member.id,
-      name: this.capitalizeNamePipe.transform(member.name),
-      email: member.email,
-      birthDate: this.formatDatePipe.transform(member.birth_date),
-    };
   }
 }
