@@ -2,7 +2,24 @@
   <h3>Distribuição por tipo de membro</h3>
 
   <figure class="flex items-center">
-    <div [ngStyle]="{ background: conicGradient }"></div>
+    <div class="chart-wrapper">
+      <svg viewBox="0 0 160 160" width="160" height="160">
+        @for (type of types; track type.label; let i = $index) {
+          <path
+            [attr.d]="getSlicePath(type, i)"
+            [attr.fill]="type.color"
+            (mouseenter)="hoveredType.set(type)"
+            (mouseleave)="hoveredType.set(null)"
+          />
+        }
+      </svg>
+      @if (hoveredType()) {
+        <div class="tooltip">
+          <span>{{ hoveredType()!.label }}</span>
+          <strong>{{ hoveredType()!.percentage }}%</strong>
+        </div>
+      }
+    </div>
   </figure>
 
   <ul class="flex flex-wrap">
