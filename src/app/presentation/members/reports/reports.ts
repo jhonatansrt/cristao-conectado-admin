@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Summary } from './summary/summary';
 import { TypeOfMembers } from './type-of-members/type-of-members';
+import { ActiveMembers } from './active-members/active-members';
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 import { Router } from '@angular/router';
 import { namedRoutes } from '../../../named-routes';
 
 @Component({
   selector: 'app-reports',
-  imports: [Summary, TypeOfMembers],
+  imports: [Summary, TypeOfMembers, ActiveMembers],
   templateUrl: './reports.html',
   styleUrl: './reports.scss',
 })

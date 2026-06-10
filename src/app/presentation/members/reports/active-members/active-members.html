@@ -1,0 +1,31 @@
+<section class="flex flex-column">
+  <h3>Membros ativos vs. inativos</h3>
+
+  <figure class="flex justify-center">
+    <div [ngStyle]="{ background: donutGradient }"></div>
+  </figure>
+
+  <footer class="flex justify-center">
+    <span class="flex items-center">
+      <i [ngStyle]="{ background: active.color }"></i>
+      Ativos
+    </span>
+    <span class="flex items-center">
+      <i [ngStyle]="{ background: inactive.color }"></i>
+      Inativos
+    </span>
+  </footer>
+
+  <ul class="flex justify-center">
+    <li class="flex flex-column items-center">
+      <strong [ngStyle]="{ color: active.color }">{{ active.count }}</strong>
+      <span>Ativos</span>
+      <small>{{ active.percentage }}.0%</small>
+    </li>
+    <li class="flex flex-column items-center">
+      <strong [ngStyle]="{ color: inactive.color }">{{ inactive.count }}</strong>
+      <span>Inativos</span>
+      <small>{{ inactive.percentage }}.0%</small>
+    </li>
+  </ul>
+</section>
