@@ -3,7 +3,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-interface MaritalStatus {
+interface MaritalStatusModel {
   label: string;
   count: number;
   color: string;
@@ -17,7 +17,7 @@ interface MaritalStatus {
 export class MaritalStatus implements AfterViewInit, OnDestroy {
   @ViewChild('chartCanvas') private readonly chartCanvas!: ElementRef<HTMLCanvasElement>;
 
-  protected readonly statuses: MaritalStatus[] = [
+  protected readonly statuses: MaritalStatusModel[] = [
     { label: 'Casado(a)', count: 9, color: '#4A90D9' },
     { label: 'Solteiro(a)', count: 7, color: '#1FB892' },
     { label: 'Divorciado(a)', count: 2, color: '#FF9800' },
