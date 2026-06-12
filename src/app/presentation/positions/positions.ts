@@ -1,17 +1,14 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
 import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
-import { CreatePosition, PositionCreated } from './create-position/create-position';
+import { CreatePosition } from './create-position/create-position';
 import { AlertService } from '../common/alert/alert.service';
-
-interface Position {
-  id: string;
-  name: string;
-  membersCount: number;
-}
+import { Position } from '../../domain/positions';
+import { PositionsService } from '../../application/positions/positions-service';
+import { PositionsStore } from '../../application/positions/positions-store';
 
 @Component({
   selector: 'app-positions',
@@ -24,14 +21,9 @@ export class Positions implements OnInit, OnDestroy {
   private readonly actionBarStore = inject(ActionBarStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
-  protected readonly isLoading = this.tableStore.isLoading();
-
-  private positions: Position[] = [
-    { id: '1', name: 'Pastor', membersCount: 2 },
-    { id: '2', name: 'Líder de louvor', membersCount: 5 },
-    { id: '3', name: 'Diácono', membersCount: 8 },
-    { id: '4', name: 'Voluntário de mídia', membersCount: 12 },
-  ];
+  private readonly positionsService = inject(PositionsService);
+  private readonly positionsStore = inject(PositionsStore);
+  protected readonly isLoading = this.positionsStore.getIsLoading();
 
   constructor() {
     const columns: TableColumn[] = [
@@ -40,11 +32,16 @@ export class Positions implements OnInit, OnDestroy {
     ];
 
     this.tableStore.setColumns(columns);
+
+    effect(() => {
+      const positions = this.positionsStore.getPositions()();
+      this.tableStore.setRows(positions.map((position) => this.toRow(position)));
+    });
   }
 
   ngOnInit(): void {
     this.setButtonsActions();
-    this.loadPositions();
+    this.positionsService.loadPositions();
   }
 
   ngOnDestroy(): void {
@@ -66,15 +63,13 @@ export class Positions implements OnInit, OnDestroy {
   }
 
   private readonly handleCreatePosition = (): void => {
-    const componentRef = this.container.vcr?.createComponent(CreatePosition);
-    componentRef?.instance.positionCreated.subscribe((position) => this.onPositionCreated(position));
+    this.positionsStore.setPositionSelected(null);
+    this.container.vcr?.createComponent(CreatePosition);
   };
 
   private handleEditPosition(position: Position): void {
-    const componentRef = this.container.vcr?.createComponent(CreatePosition);
-    componentRef?.setInput('registerId', position.id);
-    componentRef?.setInput('initialName', position.name);
-    componentRef?.instance.positionCreated.subscribe((result) => this.onPositionCreated(result));
+    this.positionsStore.setPositionSelected(position);
+    this.container.vcr?.createComponent(CreatePosition);
   }
 
   private async handleDeletePosition(position: Position): Promise<void> {
@@ -86,46 +81,28 @@ export class Positions implements OnInit, OnDestroy {
       return;
     }
 
-    this.positions = this.positions.filter((item) => item.id !== position.id);
-    this.loadPositions();
+    this.positionsService.deletePosition(position.id).subscribe();
   }
 
-  private onPositionCreated(result: PositionCreated): void {
-    if (result.id) {
-      this.positions = this.positions.map((item) =>
-        item.id === result.id ? { ...item, name: result.name } : item,
-      );
-    } else {
-      this.positions = [
-        ...this.positions,
-        { id: crypto.randomUUID(), name: result.name, membersCount: 0 },
-      ];
-    }
-
-    this.loadPositions();
-  }
-
-  private loadPositions(): void {
-    this.tableStore.setRows(
-      this.positions.map((position) => ({
-        id: position.id,
-        name: position.name,
-        membersCount: position.membersCount,
-        actions: [
-          {
-            key: 'edit',
-            icon: 'edit',
-            label: 'Editar cargo',
-            onClick: () => this.handleEditPosition(position),
-          },
-          {
-            key: 'delete',
-            icon: 'delete',
-            label: 'Excluir cargo',
-            onClick: () => this.handleDeletePosition(position),
-          },
-        ],
-      })),
-    );
+  private toRow(position: Position): TableRow {
+    return {
+      id: position.id,
+      name: position.name,
+      membersCount: position.membersCount,
+      actions: [
+        {
+          key: 'edit',
+          icon: 'edit',
+          label: 'Editar cargo',
+          onClick: () => this.handleEditPosition(position),
+        },
+        {
+          key: 'delete',
+          icon: 'delete',
+          label: 'Excluir cargo',
+          onClick: () => this.handleDeletePosition(position),
+        },
+      ],
+    };
   }
 }

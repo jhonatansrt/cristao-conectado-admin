@@ -24,6 +24,8 @@ import { IMembersRepository } from '../../domain/members';
 import { MembersRepository } from '../members/members-repository';
 import { IChurchRepository } from '../../domain/church';
 import { ChurchRepository } from '../church/church-repository';
+import { IPositionsRepository } from '../../domain/positions';
+import { PositionsRepository } from '../positions/positions-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -90,6 +92,11 @@ const churchProvider = {
   useClass: ChurchRepository
 }
 
+const positionsProvider = {
+  provide: IPositionsRepository,
+  useClass: PositionsRepository,
+};
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -104,6 +111,7 @@ const commonProviders = [
   requestsProvider,
   membersProvider,
   churchProvider,
+  positionsProvider,
 ];
 
 export const providers = [...commonProviders];
