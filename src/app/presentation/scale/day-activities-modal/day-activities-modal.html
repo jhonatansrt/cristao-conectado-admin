@@ -3,6 +3,19 @@
     @for (activity of activities(); track $index) {
       <app-accordion [title]="activity.description" [description]="activity.hourInitial | hourRange: activity.hourFinal">
         <div class="flex flex-column">
+          @if (activity.address) {
+            <div class="flex items-center">
+              <figure class="flex items-center justify-center">
+                <mat-icon aria-hidden="true">location_on</mat-icon>
+              </figure>
+
+              <div class="flex flex-column">
+                <strong>{{ activity.address.place }}</strong>
+                <small>{{ formatAddress(activity.address) }}</small>
+              </div>
+            </div>
+          }
+
           <div class="flex items-center">
             <figure class="flex items-center justify-center">
               <mat-icon aria-hidden="true">schedule</mat-icon>
@@ -40,6 +53,13 @@
               <mat-icon>delete</mat-icon>
               <span>Excluir</span>
             </button>
+
+            @if (activity.address) {
+              <button class="flex flex-column items-center" type="button" (click)="onOpenMap(activity)">
+                <mat-icon>map</mat-icon>
+                <span>Mapa</span>
+              </button>
+            }
           </footer>
         </div>
       </app-accordion>
