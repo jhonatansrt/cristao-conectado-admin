@@ -28,6 +28,18 @@ export class Scale implements OnInit, OnDestroy {
     this.nativeCalendarStore.setIsLoading(false);
   }
 
+  private getMockMonthActivities(month: number, year: number): { date: string; count: number }[] {
+    const monthLength = new Date(year, month, 0).getDate();
+    const mockCounts = [2, 1, 3, 1, 2];
+
+    return mockCounts.map((count, index) => {
+      const day = ((index * 6) % monthLength) + 1;
+      const date = `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+
+      return { date, count };
+    });
+  }
+
   ngOnDestroy(): void {
     this.actionBarStore.clearButtonsActions();
   }
@@ -42,7 +54,18 @@ export class Scale implements OnInit, OnDestroy {
     ]);
   }
 
-  protected onMonthChange(monthChange: NativeCalendarMonthChange): void {}
+  protected onMonthChange({ month, year }: NativeCalendarMonthChange): void {
+    const monthActivities = this.getMockMonthActivities(month, year);
+
+    this.nativeCalendarStore.setCountsByDate(
+      new Map(monthActivities.map((activity) => [this.parseEndpointDateToKey(activity.date), activity.count])),
+    );
+  }
+
+  private parseEndpointDateToKey(date: string): string {
+    const [day, month, year] = date.split('-');
+    return `${year}-${month}-${day}`;
+  }
 
   protected onDaySelect(selectedDate: NativeCalendarSelectedDate): void {}
 }
