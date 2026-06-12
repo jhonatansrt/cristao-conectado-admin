@@ -5,6 +5,7 @@ section {
   padding: 20px 24px;
   box-shadow: var(--box-shadow);
   gap: 24px;
+  height: 420px;
 
   h3 {
     font-size: var(--font-size-14);
@@ -13,8 +14,10 @@ section {
   }
 
   figure {
+    flex: 1;
     gap: 32px;
     margin: 0;
+    justify-content: center;
 
     canvas {
       width: 160px !important;
