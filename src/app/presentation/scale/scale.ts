@@ -24,9 +24,27 @@ export class Scale implements OnInit, OnDestroy {
   private readonly container = inject(Container);
 
   private readonly mockActivitiesPool: DayActivityItem[] = [
-    { title: 'Limpeza - Meera Gonzalez', description: '08:00 - 11:00 · Lavar o banheiro' },
-    { title: 'Som - Carlos Silva', description: '09:00 - 12:00 · Operar mesa de som' },
-    { title: 'Recepção - Ana Souza', description: '08:30 - 10:30 · Receber visitantes' },
+    {
+      name: 'Meera Gonzalez',
+      tag: 'Limpeza',
+      hourInitial: 800,
+      hourFinal: 1100,
+      description: 'Lavar o banheiro',
+    },
+    {
+      name: 'Carlos Silva',
+      tag: 'Som',
+      hourInitial: 900,
+      hourFinal: 1200,
+      description: 'Operar mesa de som',
+    },
+    {
+      name: 'Ana Souza',
+      tag: 'Recepção',
+      hourInitial: 830,
+      hourFinal: 1030,
+      description: 'Receber visitantes',
+    },
   ];
 
   private activitiesByDate = new Map<string, DayActivityItem[]>();
