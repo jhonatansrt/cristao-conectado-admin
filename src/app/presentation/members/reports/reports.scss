@@ -1,3 +1,13 @@
 article {
   gap: 24px;
+
+  div {
+    width: 100%;
+
+    app-type-of-members,
+    app-active-members {
+      flex-grow: 1;
+      flex-shrink: 0;
+    }
+  }
 }
