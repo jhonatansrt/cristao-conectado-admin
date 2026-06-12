@@ -11,10 +11,10 @@ export interface DayActivityPerson {
 }
 
 export interface DayActivityItem {
-  tag: string;
+  description: string;
   hourInitial: number;
   hourFinal: number;
-  people: DayActivityPerson[];
+  peoples: DayActivityPerson[];
 }
 
 @Component({
