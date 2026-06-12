@@ -37,6 +37,7 @@ export class Header {
     [namedRoutes.members]: 'Membros',
     [namedRoutes.membersReports]: 'Relatórios de membros',
     [namedRoutes.schedule]: 'Agenda',
+    [namedRoutes.scale]: 'Escala',
     [namedRoutes.playlists]: 'Playlists',
     [namedRoutes.notices]: 'Avisos',
     [namedRoutes.testimonials]: 'Testemunhos',

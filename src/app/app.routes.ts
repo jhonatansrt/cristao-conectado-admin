@@ -37,6 +37,11 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard],
       },
       {
+        path: namedRoutes.scale,
+        loadComponent: () => import('./presentation/scale/scale').then(m => m.Scale),
+        canActivate: [churchRequiredGuard],
+      },
+      {
         path: namedRoutes.playlists,
         loadComponent: () => import('./presentation/playlists/playlists').then(m => m.Playlists),
         canActivate: [churchRequiredGuard],

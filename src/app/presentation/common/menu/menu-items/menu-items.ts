@@ -35,6 +35,7 @@ export class MenuItems {
   private readonly allItems = [
     // { label: 'Home', icon: 'home_outlined', route: namedRoutes.home },
     { label: 'Agenda', icon: 'calendar_month', route: namedRoutes.schedule, requiresChurch: true },
+    { label: 'Escala', icon: 'event_repeat', route: namedRoutes.scale, requiresChurch: true },
     { label: 'Playlists', icon: 'smart_display', route: namedRoutes.playlists, requiresChurch: true },
     { label: 'Avisos', icon: 'warning_amber', route: namedRoutes.notices, requiresChurch: true },
     { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials, requiresChurch: true },

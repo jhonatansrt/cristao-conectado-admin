@@ -2,6 +2,7 @@ export const namedRoutes = {
   home: 'home',
   members: 'members',
   schedule: 'schedule',
+  scale: 'scale',
   playlists: 'playlists',
   notices: 'notices',
   testimonials: 'testimonials',
