@@ -8,7 +8,10 @@
               <mat-icon aria-hidden="true">schedule</mat-icon>
             </figure>
 
-            <time>{{ activity.hourInitial | hourRange: activity.hourFinal }}</time>
+            <div class="flex flex-column">
+              <strong>Horário</strong>
+              <time>{{ activity.hourInitial | hourRange: activity.hourFinal }}</time>
+            </div>
           </div>
 
           <ul class="flex flex-column">
