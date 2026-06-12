@@ -30,7 +30,9 @@ export class PositionsService {
   }
 
   public loadPositions(): Observable<Position[]> {
-    return this.getPositions().pipe(tap((positions) => this.positionsStore.setPositions(positions)));
+    return this.getPositions().pipe(
+      tap((positions) => this.positionsStore.setPositions(positions)),
+    );
   }
 
   public createPosition(name: string): Observable<void> {
@@ -51,10 +53,10 @@ export class PositionsService {
     );
   }
 
-  public updatePosition(id: string, name: string): Observable<void> {
+  public updatePosition(id: string, name: string) {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
 
-    return this.positionsRepository.updatePosition(id, { churchId, name }).pipe(
+    this.positionsRepository.updatePosition(id, { churchId, name }).pipe(
       switchMap(() => this.getPositions()),
       tap((positions) => this.positionsStore.setPositions(positions)),
       catchError((e) => {
@@ -64,8 +66,8 @@ export class PositionsService {
     );
   }
 
-  public deletePosition(id: string): Observable<void> {
-    return this.positionsRepository.deletePosition(id).pipe(
+  public deletePosition(id: string) {
+    this.positionsRepository.deletePosition(id).pipe(
       switchMap(() => this.getPositions()),
       tap((positions) => this.positionsStore.setPositions(positions)),
       catchError((e) => {

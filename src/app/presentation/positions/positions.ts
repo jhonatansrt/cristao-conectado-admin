@@ -84,10 +84,10 @@ export class Positions implements OnInit, OnDestroy {
 
     this.tableStore.setLoading(true);
 
-    this.positionsService
-      .deletePosition(position.id)
-      .pipe(finalize(() => this.tableStore.setLoading(false)))
-      .subscribe();
+    // this.positionsService
+    //   .deletePosition(position.id)
+    //   .pipe(finalize(() => this.tableStore.setLoading(false)))
+    //   .subscribe();
   }
 
   private loadPositions(): void {

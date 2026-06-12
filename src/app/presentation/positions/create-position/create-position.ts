@@ -58,9 +58,9 @@ export class CreatePosition implements OnInit {
       ? this.positionsService.updatePosition(position.id, name ?? '')
       : this.positionsService.createPosition(name ?? '');
 
-    request.pipe(finalize(() => (this.loading = false))).subscribe(() => {
-      this.positionsStore.setPositionSelected(null);
-      this.modal?.closeModal();
-    });
+    // request.pipe(finalize(() => (this.loading = false))).subscribe(() => {
+    //   this.positionsStore.setPositionSelected(null);
+    //   this.modal?.closeModal();
+    // });
   }
 }
