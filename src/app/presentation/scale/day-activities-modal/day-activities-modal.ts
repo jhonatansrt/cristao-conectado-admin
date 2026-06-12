@@ -1,17 +1,22 @@
 import { Component, input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 import { ModalComponent } from '../../common/modal/modal.component';
-import { CardComponent } from '../../common/card/card.component';
+import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 
 export interface DayActivityItem {
-  title: string;
+  name: string;
+  tag: string;
+  avatarUrl?: string | null;
+  hourInitial: number;
+  hourFinal: number;
   description: string;
 }
 
 @Component({
   selector: 'app-day-activities-modal',
   standalone: true,
-  imports: [ModalComponent, CardComponent],
+  imports: [ModalComponent, MatIconModule, HourRangePipe],
   templateUrl: './day-activities-modal.html',
   styleUrl: './day-activities-modal.scss',
 })
