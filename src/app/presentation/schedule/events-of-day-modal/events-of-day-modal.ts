@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SchedulesService } from '../../../application/schedules/schedules-service';
 import { ScheduleDetails } from '../../../domain/schedules';
 import { SchedulesStore } from '../../../application/schedules/schedules-store';
+import { NativeCalendarStore } from '../../../application/native-calendar/native-calendar-store';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { ModalComponent } from '../../common/modal/modal.component';
@@ -40,6 +41,7 @@ export class EventsOfDayModal {
 
   private readonly schedulesService = inject(SchedulesService);
   private readonly schedulesStore = inject(SchedulesStore);
+  private readonly nativeCalendarStore = inject(NativeCalendarStore);
   private readonly container = inject(Container);
   private readonly alertService = inject(AlertService);
 
@@ -75,7 +77,9 @@ export class EventsOfDayModal {
     if (!selectedDate) return;
 
     const date = new Date(selectedDate.iso);
-    this.schedulesService.getMonthSchedules(date.getUTCMonth() + 1, date.getUTCFullYear()).subscribe();
+    this.schedulesService
+      .getMonthSchedules(date.getUTCMonth() + 1, date.getUTCFullYear())
+      .subscribe(() => this.nativeCalendarStore.setCountsByDate(this.schedulesStore.getMonthSchedulesByDate()()));
     this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
   }
 

@@ -9,7 +9,6 @@ export class SchedulesStore {
   private readonly monthSchedulesByDate = signal(new Map<string, number>());
   private readonly daySchedules = signal<DaySchedule[]>([]);
   private readonly scheduleDetailsMap = signal<Record<string, ScheduleDetails>>({});
-  private readonly isLoadingCalendar = signal(true);
   private readonly currentMonth = signal(new Date().getMonth() + 1);
   private readonly currentYear = signal(new Date().getFullYear());
   private readonly selectedDate = signal<{ iso: string; weekDay: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | null>(null);
@@ -27,10 +26,6 @@ export class SchedulesStore {
 
   public getScheduleDetailsMap(): Signal<Record<string, ScheduleDetails>> {
     return this.scheduleDetailsMap;
-  }
-
-  public getIsLoadingCalendar(): Signal<boolean> {
-    return this.isLoadingCalendar;
   }
 
   public getCurrentMonth(): Signal<number> {
@@ -63,10 +58,6 @@ export class SchedulesStore {
       delete updated[id];
       return updated;
     });
-  }
-
-  public setIsLoadingCalendar(isLoading: boolean): void {
-    this.isLoadingCalendar.set(isLoading);
   }
 
   public setCurrentMonthAndYear(month: number, year: number): void {
