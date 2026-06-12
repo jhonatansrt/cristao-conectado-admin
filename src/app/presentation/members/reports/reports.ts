@@ -3,13 +3,14 @@ import { Summary } from './summary/summary';
 import { TypeOfMembers } from './type-of-members/type-of-members';
 import { ActiveMembers } from './active-members/active-members';
 import { MaritalStatus } from './marital-status/marital-status';
+import { RoleDistribution } from './role-distribution/role-distribution';
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 import { Router } from '@angular/router';
 import { namedRoutes } from '../../../named-routes';
 
 @Component({
   selector: 'app-reports',
-  imports: [Summary, TypeOfMembers, ActiveMembers, MaritalStatus],
+  imports: [Summary, TypeOfMembers, ActiveMembers, MaritalStatus, RoleDistribution],
   templateUrl: './reports.html',
   styleUrl: './reports.scss',
 })
