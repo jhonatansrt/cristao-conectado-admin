@@ -15,12 +15,9 @@ section {
   figure {
     margin: 0;
 
-    div {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      mask: radial-gradient(circle, transparent 55%, black 55%);
-      -webkit-mask: radial-gradient(circle, transparent 55%, black 55%);
+    canvas {
+      width: 160px !important;
+      height: 160px !important;
     }
   }
 

@@ -14,11 +14,11 @@ section {
 
   figure {
     gap: 32px;
+    margin: 0;
 
-    div {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
+    canvas {
+      width: 160px !important;
+      height: 160px !important;
       flex-shrink: 0;
     }
   }
