@@ -25,25 +25,22 @@ export class Scale implements OnInit, OnDestroy {
 
   private readonly mockActivitiesPool: DayActivityItem[] = [
     {
-      name: 'Meera Gonzalez',
       tag: 'Limpeza',
       hourInitial: 800,
       hourFinal: 1100,
-      description: 'Lavar o banheiro',
+      people: [{ name: 'Meera Gonzalez' }],
     },
     {
-      name: 'Carlos Silva',
       tag: 'Som',
       hourInitial: 900,
       hourFinal: 1200,
-      description: 'Operar mesa de som',
+      people: [{ name: 'Carlos Silva' }],
     },
     {
-      name: 'Ana Souza',
       tag: 'Recepção',
       hourInitial: 830,
       hourFinal: 1030,
-      description: 'Receber visitantes',
+      people: [{ name: 'Ana Souza' }],
     },
   ];
 

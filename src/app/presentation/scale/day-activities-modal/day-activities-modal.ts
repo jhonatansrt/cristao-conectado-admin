@@ -2,21 +2,25 @@ import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ModalComponent } from '../../common/modal/modal.component';
+import { AccordionComponent } from '../../common/accordion/accordion.component';
 import { HourRangePipe } from '../../../pipes/hour-range.pipe';
 
-export interface DayActivityItem {
+export interface DayActivityPerson {
   name: string;
-  tag: string;
   avatarUrl?: string | null;
+}
+
+export interface DayActivityItem {
+  tag: string;
   hourInitial: number;
   hourFinal: number;
-  description: string;
+  people: DayActivityPerson[];
 }
 
 @Component({
   selector: 'app-day-activities-modal',
   standalone: true,
-  imports: [ModalComponent, MatIconModule, HourRangePipe],
+  imports: [ModalComponent, AccordionComponent, MatIconModule, HourRangePipe],
   templateUrl: './day-activities-modal.html',
   styleUrl: './day-activities-modal.scss',
 })
