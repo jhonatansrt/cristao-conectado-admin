@@ -28,6 +28,14 @@ export class TypeOfMembers implements AfterViewInit, OnDestroy {
   private chart?: Chart;
 
   ngAfterViewInit(): void {
+    this.buildChart();
+  }
+
+  ngOnDestroy(): void {
+    this.chart?.destroy();
+  }
+
+  private buildChart(): void {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'pie',
       data: {
@@ -46,9 +54,5 @@ export class TypeOfMembers implements AfterViewInit, OnDestroy {
         },
       },
     });
-  }
-
-  ngOnDestroy(): void {
-    this.chart?.destroy();
   }
 }

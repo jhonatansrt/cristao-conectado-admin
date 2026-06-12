@@ -17,6 +17,14 @@ export class ActiveMembers implements AfterViewInit, OnDestroy {
   private chart?: Chart;
 
   ngAfterViewInit(): void {
+    this.buildChart();
+  }
+
+  ngOnDestroy(): void {
+    this.chart?.destroy();
+  }
+
+  private buildChart(): void {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'doughnut',
       data: {
@@ -36,9 +44,5 @@ export class ActiveMembers implements AfterViewInit, OnDestroy {
         },
       },
     });
-  }
-
-  ngOnDestroy(): void {
-    this.chart?.destroy();
   }
 }
