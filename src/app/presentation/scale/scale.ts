@@ -28,7 +28,7 @@ export class Scale implements OnInit, OnDestroy {
       description: 'Limpeza',
       hourInitial: 800,
       hourFinal: 1100,
-      peoples: [{ name: 'Meera Gonzalez' }],
+      peoples: [{ name: 'Meera Gonzalez' }, { name: 'Sheila Cruz' }, { name: 'Ivone Goncalves' }],
     },
     {
       description: 'Som',
