@@ -30,11 +30,20 @@ section {
       }
 
       > div {
-        gap: 8px;
+        gap: 12px;
+
+        div.flex-column {
+          gap: 2px;
+        }
+
+        strong {
+          font-weight: var(--font-weight-semibold);
+          font-size: var(--font-size-14);
+          color: var(--color-text-primary);
+        }
 
         time {
           font-size: var(--font-size-14);
-          font-weight: var(--font-weight-medium);
           color: var(--color-text-secondary);
         }
       }
