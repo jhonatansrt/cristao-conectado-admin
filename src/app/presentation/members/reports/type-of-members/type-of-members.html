@@ -2,13 +2,13 @@
   <h3>Distribuição por tipo de membro</h3>
 
   <figure class="flex items-center">
-    <div [ngStyle]="{ background: conicGradient }"></div>
+    <canvas #chartCanvas></canvas>
   </figure>
 
   <ul class="flex flex-wrap">
     @for (type of types; track type.label) {
       <li class="flex items-center">
-        <i [ngStyle]="{ background: type.color }"></i>
+        <i [style.background]="type.color"></i>
         <span>{{ type.label }}</span>
         <strong>{{ type.count }}</strong>
       </li>

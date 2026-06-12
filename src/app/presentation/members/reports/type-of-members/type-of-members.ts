@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Chart } from 'chart.js';
 
 interface MemberType {
   label: string;
@@ -12,9 +12,10 @@ interface MemberType {
   selector: 'app-type-of-members',
   templateUrl: './type-of-members.html',
   styleUrl: './type-of-members.scss',
-  imports: [NgStyle],
 })
-export class TypeOfMembers {
+export class TypeOfMembers implements AfterViewInit, OnDestroy {
+  @ViewChild('chartCanvas') private readonly chartCanvas!: ElementRef<HTMLCanvasElement>;
+
   protected readonly types: MemberType[] = [
     { label: 'Membro', count: 10, percentage: 40, color: '#4A90D9' },
     { label: 'Congregado', count: 4, percentage: 30, color: '#4CAF50' },
@@ -22,13 +23,30 @@ export class TypeOfMembers {
     { label: 'Master', count: 3, percentage: 15, color: '#7B61FF' },
   ];
 
-  protected get conicGradient(): string {
-    let angle = 0;
-    const stops = this.types.map((t) => {
-      const start = angle;
-      angle += (t.percentage / 100) * 360;
-      return `${t.color} ${start}deg ${angle}deg`;
+  private chart?: Chart;
+
+  ngAfterViewInit(): void {
+    this.chart = new Chart(this.chartCanvas.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: this.types.map((t) => t.label),
+        datasets: [
+          {
+            data: this.types.map((t) => t.count),
+            backgroundColor: this.types.map((t) => t.color),
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: { display: false },
+        },
+      },
     });
-    return `conic-gradient(${stops.join(', ')})`;
+  }
+
+  ngOnDestroy(): void {
+    this.chart?.destroy();
   }
 }
