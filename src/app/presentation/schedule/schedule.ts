@@ -4,10 +4,16 @@ import { finalize } from 'rxjs';
 import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
-import { NativeCalendar, NativeCalendarMonthChange } from './native-calendar/native-calendar';
+import {
+  NativeCalendar,
+  NativeCalendarMonthChange,
+} from '../common/native-calendar/native-calendar';
 import { SchedulesService } from '../../application/schedules/schedules-service';
 import { SchedulesStore } from '../../application/schedules/schedules-store';
-import { NativeCalendarSelectedDate, NativeCalendarStore } from '../../application/native-calendar/native-calendar-store';
+import {
+  NativeCalendarSelectedDate,
+  NativeCalendarStore,
+} from '../../application/native-calendar/native-calendar-store';
 import { EventsOfDayModal } from './events-of-day-modal/events-of-day-modal';
 
 @Component({

@@ -1,7 +1,10 @@
 import { Component, computed, effect, inject, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
-import { NativeCalendarSelectedDate, NativeCalendarStore } from '../../../application/native-calendar/native-calendar-store';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
+import {
+  NativeCalendarSelectedDate,
+  NativeCalendarStore,
+} from '../../../application/native-calendar/native-calendar-store';
 
 export type CalendarCell = {
   weekDay: string;
@@ -71,7 +74,10 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: day,
         isCurrentMonth: true,
-        count: this.nativeCalendarStore.getCountsByDate()().get(this.getMonthDateKey(year, month, day)) ?? 0,
+        count:
+          this.nativeCalendarStore
+            .getCountsByDate()()
+            .get(this.getMonthDateKey(year, month, day)) ?? 0,
       });
     }
 
