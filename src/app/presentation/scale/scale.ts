@@ -23,24 +23,39 @@ export class Scale implements OnInit, OnDestroy {
   private readonly nativeCalendarStore = inject(NativeCalendarStore);
   private readonly container = inject(Container);
 
+  private readonly mockAddress = {
+    place: 'Igreja',
+    cep: '01310-100',
+    number: '123',
+    street: 'Avenida Paulista',
+    district: 'Bela Vista',
+    city: 'São Paulo',
+    state: 'SP',
+    latitude: '-23.5613',
+    longitude: '-46.6562',
+  };
+
   private readonly mockActivitiesPool: DayActivityItem[] = [
     {
       description: 'Limpeza',
       hourInitial: 800,
       hourFinal: 1100,
       peoples: [{ name: 'Meera Gonzalez' }, { name: 'Sheila Cruz' }, { name: 'Ivone Goncalves' }],
+      address: this.mockAddress,
     },
     {
       description: 'Som',
       hourInitial: 900,
       hourFinal: 1200,
       peoples: [{ name: 'Carlos Silva' }],
+      address: this.mockAddress,
     },
     {
       description: 'Recepção',
       hourInitial: 830,
       hourFinal: 1030,
       peoples: [{ name: 'Ana Souza' }],
+      address: this.mockAddress,
     },
   ];
 

@@ -41,6 +41,11 @@ section {
           font-size: var(--font-size-14);
           color: var(--color-text-primary);
         }
+
+        small {
+          font-size: var(--font-size-14);
+          color: var(--color-text-secondary);
+        }
       }
 
       > div {
