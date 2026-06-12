@@ -41,6 +41,10 @@ section {
           font-size: var(--font-size-14);
           color: var(--color-text-primary);
         }
+      }
+
+      > div {
+        gap: 8px;
 
         time {
           font-size: var(--font-size-14);
