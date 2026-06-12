@@ -42,6 +42,8 @@ export class MaritalStatus implements AfterViewInit, OnDestroy {
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
         },
