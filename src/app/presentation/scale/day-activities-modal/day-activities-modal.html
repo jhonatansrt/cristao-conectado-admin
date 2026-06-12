@@ -29,6 +29,18 @@
               </li>
             }
           </ul>
+
+          <footer class="flex justify-around">
+            <button class="flex flex-column items-center" type="button" (click)="onEditActivity(activity)">
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button>
+
+            <button class="flex flex-column items-center" type="button" (click)="onDeleteActivity(activity)">
+              <mat-icon>delete</mat-icon>
+              <span>Excluir</span>
+            </button>
+          </footer>
         </div>
       </app-accordion>
     }
