@@ -1,31 +1,30 @@
 <app-modal title="Atividades do dia">
   <section class="body-modal flex flex-column">
     @for (activity of activities(); track $index) {
-      <article class="flex flex-column">
-        <header class="flex items-center">
-          <figure class="flex items-center justify-center">
-            @if (activity.avatarUrl) {
-              <img [src]="activity.avatarUrl" alt="Avatar" />
-            } @else {
-              <mat-icon aria-hidden="true">person</mat-icon>
-            }
-          </figure>
-
-          <div class="flex flex-column">
-            <strong>{{ activity.name }}</strong>
-            <span>{{ activity.tag }}</span>
-          </div>
-        </header>
-
-        <footer class="flex flex-column">
+      <app-accordion [title]="activity.tag" [description]="activity.hourInitial | hourRange: activity.hourFinal">
+        <div class="flex flex-column">
           <div class="flex items-center">
             <mat-icon aria-hidden="true">schedule</mat-icon>
             <time>{{ activity.hourInitial | hourRange: activity.hourFinal }}</time>
           </div>
 
-          <p>{{ activity.description }}</p>
-        </footer>
-      </article>
+          <ul class="flex flex-column">
+            @for (person of activity.people; track person.name) {
+              <li class="flex items-center">
+                <figure class="flex items-center justify-center">
+                  @if (person.avatarUrl) {
+                    <img [src]="person.avatarUrl" alt="Avatar" />
+                  } @else {
+                    <mat-icon aria-hidden="true">person</mat-icon>
+                  }
+                </figure>
+
+                <span>{{ person.name }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </app-accordion>
     }
   </section>
 </app-modal>
