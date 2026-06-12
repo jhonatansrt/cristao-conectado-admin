@@ -40,6 +40,7 @@ export class Header {
     [namedRoutes.scale]: 'Escala',
     [namedRoutes.playlists]: 'Playlists',
     [namedRoutes.notices]: 'Avisos',
+    [namedRoutes.positions]: 'Cargos',
     [namedRoutes.testimonials]: 'Testemunhos',
     [namedRoutes.pray]: 'Pedidos de oração',
     [namedRoutes.church]: 'Igreja',
