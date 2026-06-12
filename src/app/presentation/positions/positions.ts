@@ -1,4 +1,5 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import { finalize } from 'rxjs';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { EmptyCaseComponent } from '../common/empty-case/empty-case.component';
@@ -23,7 +24,7 @@ export class Positions implements OnInit, OnDestroy {
   private readonly alertService = inject(AlertService);
   private readonly positionsService = inject(PositionsService);
   private readonly positionsStore = inject(PositionsStore);
-  protected readonly isLoading = this.positionsStore.getIsLoading();
+  protected readonly isLoading = this.tableStore.isLoading();
 
   constructor() {
     const columns: TableColumn[] = [
@@ -41,7 +42,7 @@ export class Positions implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setButtonsActions();
-    this.positionsService.loadPositions();
+    this.loadPositions();
   }
 
   ngOnDestroy(): void {
@@ -81,7 +82,21 @@ export class Positions implements OnInit, OnDestroy {
       return;
     }
 
-    this.positionsService.deletePosition(position.id).subscribe();
+    this.tableStore.setLoading(true);
+
+    this.positionsService
+      .deletePosition(position.id)
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe();
+  }
+
+  private loadPositions(): void {
+    this.tableStore.setLoading(true);
+
+    this.positionsService
+      .loadPositions()
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe();
   }
 
   private toRow(position: Position): TableRow {

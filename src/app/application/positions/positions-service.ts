@@ -29,18 +29,8 @@ export class PositionsService {
     );
   }
 
-  public loadPositions(): void {
-    this.positionsStore.setIsLoading(true);
-
-    this.getPositions().subscribe({
-      next: (positions) => {
-        this.positionsStore.setPositions(positions);
-        this.positionsStore.setIsLoading(false);
-      },
-      error: () => {
-        this.positionsStore.setIsLoading(false);
-      },
-    });
+  public loadPositions(): Observable<Position[]> {
+    return this.getPositions().pipe(tap((positions) => this.positionsStore.setPositions(positions)));
   }
 
   public createPosition(name: string): Observable<void> {
