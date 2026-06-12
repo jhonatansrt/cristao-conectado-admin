@@ -4,7 +4,10 @@
       <app-accordion [title]="activity.tag" [description]="activity.hourInitial | hourRange: activity.hourFinal">
         <div class="flex flex-column">
           <div class="flex items-center">
-            <mat-icon aria-hidden="true">schedule</mat-icon>
+            <figure class="flex items-center justify-center">
+              <mat-icon aria-hidden="true">schedule</mat-icon>
+            </figure>
+
             <time>{{ activity.hourInitial | hourRange: activity.hourFinal }}</time>
           </div>
 
