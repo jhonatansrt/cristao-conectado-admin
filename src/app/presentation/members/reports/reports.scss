@@ -1,13 +1,19 @@
+@use '../../../../theme/breakpoint.scss' as *;
+
 article {
   gap: 24px;
 
-  div {
-    width: 100%;
+  .reports-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
 
-    app-type-of-members,
-    app-active-members {
-      flex-grow: 1;
-      flex-shrink: 0;
+@media screen and (max-width: $breakpoint-mobile) {
+  article {
+    .reports-grid {
+      grid-template-columns: 1fr;
     }
   }
 }
