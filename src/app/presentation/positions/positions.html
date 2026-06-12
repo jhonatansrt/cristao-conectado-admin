@@ -1,0 +1,5 @@
+@if (isLoading() || hasPositions()) {
+  <app-table />
+} @else {
+  <app-empty-case description="Nenhum cargo cadastrado até o momento." icon="badge" />
+}

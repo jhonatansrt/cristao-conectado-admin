@@ -5,6 +5,7 @@ export const namedRoutes = {
   scale: 'scale',
   playlists: 'playlists',
   notices: 'notices',
+  positions: 'positions',
   testimonials: 'testimonials',
   church: 'church',
   requests: 'requests',

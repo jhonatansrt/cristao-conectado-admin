@@ -1,0 +1,20 @@
+<app-modal [title]="registerId() ? 'Editar cargo' : 'Adicionar cargo'">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Nome do cargo"
+        formControlName="name"
+        [errorMessage]="
+          form.controls.name.touched && form.controls.name.hasError('required')
+            ? 'Nome do cargo é obrigatório'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>

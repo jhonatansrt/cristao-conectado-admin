@@ -52,6 +52,11 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard],
       },
       {
+        path: namedRoutes.positions,
+        loadComponent: () => import('./presentation/positions/positions').then(m => m.Positions),
+        canActivate: [churchRequiredGuard],
+      },
+      {
         path: namedRoutes.testimonials,
         loadComponent: () => import('./presentation/testimonials/testimonials').then(m => m.Testimonials),
         canActivate: [churchRequiredGuard],

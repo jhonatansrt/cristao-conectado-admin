@@ -41,6 +41,7 @@ export class MenuItems {
     { label: 'Testemunhos', icon: 'record_voice_over', route: namedRoutes.testimonials, requiresChurch: true },
     { label: 'Pedidos de oração', icon: 'volunteer_activism', route: namedRoutes.pray, requiresChurch: true },
     { label: 'Membros', icon: 'person_outline', route: namedRoutes.members, requiresChurch: true },
+    { label: 'Cargos', icon: 'badge', route: namedRoutes.positions, requiresChurch: true },
     { label: 'Igreja', icon: 'church', route: namedRoutes.church, requiresChurch: false },
     { label: 'Solicitações', icon: 'how_to_reg', route: namedRoutes.requests, requiresChurch: true },
     { label: 'Sair', icon: 'logout', action: 'logout', requiresChurch: false },
