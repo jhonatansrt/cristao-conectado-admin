@@ -9,6 +9,8 @@ import {
   NativeCalendarSelectedDate,
   NativeCalendarStore,
 } from '../../application/native-calendar/native-calendar-store';
+import { Container } from '../../util/container.service';
+import { DayActivitiesModal, DayActivityItem } from './day-activities-modal/day-activities-modal';
 
 @Component({
   selector: 'app-scale',
@@ -19,6 +21,15 @@ import {
 export class Scale implements OnInit, OnDestroy {
   private readonly actionBarStore = inject(ActionBarStore);
   private readonly nativeCalendarStore = inject(NativeCalendarStore);
+  private readonly container = inject(Container);
+
+  private readonly mockActivitiesPool: DayActivityItem[] = [
+    { title: 'Limpeza - Meera Gonzalez', description: '08:00 - 11:00 · Lavar o banheiro' },
+    { title: 'Som - Carlos Silva', description: '09:00 - 12:00 · Operar mesa de som' },
+    { title: 'Recepção - Ana Souza', description: '08:30 - 10:30 · Receber visitantes' },
+  ];
+
+  private activitiesByDate = new Map<string, DayActivityItem[]>();
 
   constructor() {
     this.setButtonsActions();
@@ -38,6 +49,13 @@ export class Scale implements OnInit, OnDestroy {
 
       return { date, count };
     });
+  }
+
+  private getMockDayActivities(count: number): DayActivityItem[] {
+    return Array.from(
+      { length: count },
+      (_, index) => this.mockActivitiesPool[index % this.mockActivitiesPool.length],
+    );
   }
 
   ngOnDestroy(): void {
@@ -60,6 +78,13 @@ export class Scale implements OnInit, OnDestroy {
     this.nativeCalendarStore.setCountsByDate(
       new Map(monthActivities.map((activity) => [this.parseEndpointDateToKey(activity.date), activity.count])),
     );
+
+    this.activitiesByDate = new Map(
+      monthActivities.map((activity) => [
+        this.parseEndpointDateToKey(activity.date),
+        this.getMockDayActivities(activity.count),
+      ]),
+    );
   }
 
   private parseEndpointDateToKey(date: string): string {
@@ -67,5 +92,17 @@ export class Scale implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
-  protected onDaySelect(selectedDate: NativeCalendarSelectedDate): void {}
+  protected onDaySelect(selectedDate: NativeCalendarSelectedDate): void {
+    const date = new Date(selectedDate.iso);
+    const dateKey = [
+      date.getUTCFullYear(),
+      String(date.getUTCMonth() + 1).padStart(2, '0'),
+      String(date.getUTCDate()).padStart(2, '0'),
+    ].join('-');
+
+    const activities = this.activitiesByDate.get(dateKey) ?? [];
+
+    const modal = this.container.vcr?.createComponent(DayActivitiesModal);
+    modal?.setInput('activities', activities);
+  }
 }
