@@ -1,17 +1,18 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
+import { Component, computed, effect, inject, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
-import { SchedulesStore } from '../../../application/schedules/schedules-store';
-import { SchedulesService } from '../../../application/schedules/schedules-service';
-import { Container } from '../../../util/container.service';
-import { EventsOfDayModal } from '../events-of-day-modal/events-of-day-modal';
+import { NativeCalendarSelectedDate, NativeCalendarStore } from '../../../application/native-calendar/native-calendar-store';
 
 export type CalendarCell = {
   weekDay: string;
   dayNumber: number;
   isCurrentMonth: boolean;
   count: number | null;
+};
+
+export type NativeCalendarMonthChange = {
+  month: number;
+  year: number;
 };
 
 @Component({
@@ -21,15 +22,16 @@ export type CalendarCell = {
   styleUrl: './native-calendar.scss',
 })
 export class NativeCalendar {
-  private readonly schedulesStore = inject(SchedulesStore);
-  private readonly schedulesService = inject(SchedulesService);
-  private readonly container = inject(Container);
+  private readonly nativeCalendarStore = inject(NativeCalendarStore);
   private readonly today = new Date();
   private readonly weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
+  public readonly monthChange = output<NativeCalendarMonthChange>();
+  public readonly daySelect = output<NativeCalendarSelectedDate>();
+
   protected monthOffset = signal(0);
 
-  protected isLoading = computed(() => this.schedulesStore.getIsLoadingCalendar()());
+  protected isLoading = computed(() => this.nativeCalendarStore.getIsLoading()());
 
   protected monthTitle = computed(() => {
     const date = this.visibleMonthDate();
@@ -69,9 +71,7 @@ export class NativeCalendar {
         weekDay: this.weekDays[cells.length % 7],
         dayNumber: day,
         isCurrentMonth: true,
-        count:
-          this.schedulesStore.getMonthSchedulesByDate()().get(this.getMonthDateKey(year, month, day)) ??
-          0,
+        count: this.nativeCalendarStore.getCountsByDate()().get(this.getMonthDateKey(year, month, day)) ?? 0,
       });
     }
 
@@ -87,6 +87,13 @@ export class NativeCalendar {
     return cells;
   });
 
+  constructor() {
+    effect(() => {
+      const date = this.visibleMonthDate();
+      this.monthChange.emit({ month: date.getMonth() + 1, year: date.getFullYear() });
+    });
+  }
+
   protected selectDay(cell: CalendarCell): void {
     if (!cell.isCurrentMonth || !cell.count) {
       return;
@@ -96,12 +103,10 @@ export class NativeCalendar {
     const selectedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), cell.dayNumber));
     const selectedDateISO = selectedDate.toISOString();
     const selectedWeekDay = selectedDate.getUTCDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    const selected: NativeCalendarSelectedDate = { iso: selectedDateISO, weekDay: selectedWeekDay };
 
-    this.schedulesStore.setSelectedDate({ iso: selectedDateISO, weekDay: selectedWeekDay });
-
-    this.schedulesService.getDaySchedules(selectedDateISO, selectedWeekDay).subscribe(() => {
-      this.container.vcr?.createComponent(EventsOfDayModal);
-    });
+    this.nativeCalendarStore.setSelectedDate(selected);
+    this.daySelect.emit(selected);
   }
 
   protected goToPreviousMonth(): void {
@@ -110,26 +115,10 @@ export class NativeCalendar {
     }
 
     this.monthOffset.update((offset) => offset - 1);
-    this.loadMonthSchedules();
   }
 
   protected goToNextMonth(): void {
     this.monthOffset.update((offset) => offset + 1);
-    this.loadMonthSchedules();
-  }
-
-  private loadMonthSchedules(): void {
-    const date = this.visibleMonthDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    this.schedulesStore.setCurrentMonthAndYear(month, year);
-    this.schedulesStore.setIsLoadingCalendar(true);
-
-    this.schedulesService
-      .getMonthSchedules(month, year)
-      .pipe(finalize(() => this.schedulesStore.setIsLoadingCalendar(false)))
-      .subscribe();
   }
 
   private visibleMonthDate(): Date {
