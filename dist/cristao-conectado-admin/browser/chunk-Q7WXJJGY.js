@@ -1,0 +1,1 @@
+import{Za as i}from"./chunk-WNOAZKO6.js";var n=class r{transform(e){if(!e?.trim())return"-";let t=new Date(e);return Number.isNaN(t.getTime())?"-":new Intl.DateTimeFormat("pt-BR",{timeZone:"UTC"}).format(t)}static \u0275fac=function(t){return new(t||r)};static \u0275pipe=i({name:"formatDate",type:r,pure:!0})};export{n as a};

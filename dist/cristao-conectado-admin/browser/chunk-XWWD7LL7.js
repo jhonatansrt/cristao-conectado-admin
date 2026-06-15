@@ -1,0 +1,1 @@
+import{S as n,ka as i}from"./chunk-WNOAZKO6.js";var s=class t{buttonsActions=i([]);setButtonsActions(o){this.buttonsActions.set(o)}clearButtonsActions(){this.buttonsActions.set([])}getButtonsActions(){return this.buttonsActions}static \u0275fac=function(c){return new(c||t)};static \u0275prov=n({token:t,factory:t.\u0275fac,providedIn:"root"})};export{s as a};

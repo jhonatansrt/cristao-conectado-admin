@@ -1,0 +1,1 @@
+import{S as l,ka as i}from"./chunk-WNOAZKO6.js";var a=class e{playlistSelected=i([]);setPlaylistSelected(t){this.playlistSelected.set([t])}clearPlaylistSelected(){this.playlistSelected.set([])}getPlaylistSelected(){return this.playlistSelected}static \u0275fac=function(s){return new(s||e)};static \u0275prov=l({token:e,factory:e.\u0275fac,providedIn:"root"})};export{a};
