@@ -1,7 +1,6 @@
 import { Component, inject, input, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { Address } from '../../../domain/addresses';
 import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
 import { CardComponent } from '../../common/card/card.component';
@@ -49,11 +48,9 @@ export class AddActivityModal implements OnInit {
 
   protected onChangeAddress(): void {
     const listRef = this.container.vcr?.createComponent(AddressList);
-    if (listRef) {
-      listRef.instance.onAddressSelectedCallback = (addr: Address) => {
-        this.currentAddress.set(addr);
-      };
-    }
+    listRef?.instance.addressSelected.subscribe((address) => {
+      this.currentAddress.set(address);
+    });
     this.modal.closeModal();
   }
 

@@ -4,6 +4,7 @@ import { finalize } from 'rxjs';
 import { ActionBarStore } from '../../application/action-bar/action-bar-store';
 import { Container } from '../../util/container.service';
 import { AddressList } from './address-list/address-list';
+import { AddEventModal } from './add-event-modal/add-event-modal';
 import {
   NativeCalendar,
   NativeCalendarMonthChange,
@@ -42,7 +43,13 @@ export class Schedule implements OnDestroy {
       {
         btnClass: 'btn-primary',
         label: 'Adicionar evento',
-        onClick: () => this.container.vcr?.createComponent(AddressList),
+        onClick: () => {
+          const listRef = this.container.vcr?.createComponent(AddressList);
+          listRef?.instance.addressSelected.subscribe((address) => {
+            const eventModal = this.container.vcr?.createComponent(AddEventModal);
+            eventModal?.setInput('address', address);
+          });
+        },
       },
     ]);
   }

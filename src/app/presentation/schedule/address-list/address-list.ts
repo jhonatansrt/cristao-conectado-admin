@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, output, ViewChild } from '@angular/core';
 import { AddressesStore } from '../../../application/addresses/addresses-store';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { Address } from '../../../domain/addresses';
@@ -12,9 +12,6 @@ import { SkeletonComponent } from '../../common/skeleton/skeleton.component';
 import { MapComponent } from '../../common/map/map.component';
 import { PredictionsComponent } from './predictions/predictions.component';
 import { AlertService } from '../../common/alert/alert.service';
-import { AddEventModal } from '../add-event-modal/add-event-modal';
-import { ChurchStore } from '../../../application/church/church-store';
-import { ToastService } from '../../common/toast/toast.service';
 
 interface AddressCard extends Address {
   actions: CardIconAction[];
@@ -30,16 +27,14 @@ interface AddressCard extends Address {
 export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
   @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
-  @Input() public isChurch: boolean = false;
-  public onAddressSelectedCallback?: (address: Address) => void;
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
   private readonly container = inject(Container);
   public readonly addressesStore = inject(AddressesStore);
   private readonly addressesService = inject(AddressesService);
-  private readonly churchStore = inject(ChurchStore);
-  private readonly toastService = inject(ToastService);
+
+  public readonly addressSelected = output<Address>();
 
   public searchAddress = '';
   public predictions: string[] = [];
@@ -87,21 +82,7 @@ export class AddressList implements OnInit {
 
   public onSelectAddress(address: Address): void {
     this.modal.closeModal();
-
-    if (this.isChurch) {
-      this.setAddressAsMain(address);
-      this.churchStore.setAddress(address);
-      this.churchStore.patchChurchAddress(address);
-      return;
-    }
-
-    if (this.onAddressSelectedCallback) {
-      this.onAddressSelectedCallback(address);
-      return;
-    }
-
-    const eventModal = this.container.vcr?.createComponent(AddEventModal);
-    eventModal?.setInput('address', address);
+    this.addressSelected.emit(address);
   }
 
   public onAddressCreated(): void {
@@ -109,34 +90,20 @@ export class AddressList implements OnInit {
     this.searchAddress = '';
     this.searchInput?.reset();
 
-    if (this.isChurch) {
-      const pending = this.addressesStore.getPendingAddress()();
-      if (pending) {
-        const mockAddress: Address = {
-          id: 'pending',
-          place: pending.place,
-          cep: pending.geocoded.cep,
-          number: pending.geocoded.number,
-          street: pending.geocoded.street,
-          district: pending.geocoded.district,
-          city: pending.geocoded.city,
-          state: pending.geocoded.state,
-          latitude: String(pending.geocoded.lat),
-          longitude: String(pending.geocoded.lng),
-          is_main: true,
-        };
-        this.onSelectAddress(mockAddress);
-      }
-    }
-  }
-
-  private setAddressAsMain(address: Address) {
-    if (address.id !== 'pending') {
-      this.addressesService.setAddressAsMain(address).subscribe(() => {
-        this.toastService.openToast({
-          success: true,
-          message: 'Endereço da igreja atualizado com sucesso',
-        });
+    const pending = this.addressesStore.getPendingAddress()();
+    if (pending) {
+      this.onSelectAddress({
+        id: 'pending',
+        place: pending.place,
+        cep: pending.geocoded.cep,
+        number: pending.geocoded.number,
+        street: pending.geocoded.street,
+        district: pending.geocoded.district,
+        city: pending.geocoded.city,
+        state: pending.geocoded.state,
+        latitude: String(pending.geocoded.lat),
+        longitude: String(pending.geocoded.lng),
+        is_main: false,
       });
     }
   }
