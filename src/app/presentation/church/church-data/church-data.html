@@ -35,7 +35,7 @@
 
       <app-card
         [title]="currentAddress()?.place ?? ''"
-        [description]="addressDescription()"
+        [description]="currentAddress() | addressDescription"
         [clickable]="true"
         [icons]="[{ name: 'edit', action: openAddress.bind(this) }]"
         (click)="openAddress()"

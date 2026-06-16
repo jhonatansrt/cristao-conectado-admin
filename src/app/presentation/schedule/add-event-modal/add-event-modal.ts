@@ -13,6 +13,8 @@ import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { SelectComponent } from '../../common/select/select';
 import { AddressList } from '../address-list/address-list';
+import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
+import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
 
 export interface EditScheduleData {
   scheduleId: string;
@@ -35,6 +37,7 @@ export interface EditScheduleData {
     MatIconModule,
     SelectComponent,
     CardComponent,
+    AddressDescriptionPipe,
   ],
   templateUrl: './add-event-modal.html',
   styleUrl: './add-event-modal.scss',
@@ -45,6 +48,7 @@ export class AddEventModal implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
+  private readonly parseTimePipe = new ParseTimePipe();
   protected readonly schedulesStore = inject(SchedulesStore);
 
   public readonly address = input<Address | null>(null);
@@ -77,11 +81,7 @@ export class AddEventModal implements OnInit {
   }
 
   ngOnInit(): void {
-    const addr = this.address();
-
-    if (addr) {
-      this.currentAddress.set(addr);
-    }
+    this.initAddress();
 
     const edit = this.schedulesStore.getScheduleToEdit()();
 
@@ -98,14 +98,11 @@ export class AddEventModal implements OnInit {
     }
   }
 
-  protected addressDescription(): string {
-    const addr = this.currentAddress();
-
-    if (!addr) {
-      return '';
+  private initAddress(): void {
+    const addr = this.address();
+    if (addr) {
+      this.currentAddress.set(addr);
     }
-
-    return `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}`;
   }
 
   protected onChangeAddress(): void {
@@ -135,8 +132,8 @@ export class AddEventModal implements OnInit {
       addressId: addr.id,
       title: title ?? '',
       description: description ?? '',
-      hourInitial: this.parseTime(startTime ?? ''),
-      hourFinal: this.parseTime(endTime ?? ''),
+      hourInitial: this.parseTimePipe.transform(startTime ?? ''),
+      hourFinal: this.parseTimePipe.transform(endTime ?? ''),
       ...(this.isFixed
         ? { day: Number(dayOfWeek) }
         : { scheduleDate: this.parseDate(date ?? ''), day: this.getDayOfWeek(date ?? '') }),
@@ -179,10 +176,6 @@ export class AddEventModal implements OnInit {
     }
 
     this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
-  }
-
-  private parseTime(value: string): number {
-    return parseInt(value.replace(':', ''), 10) || 0;
   }
 
   private parseDate(value: string): string {
