@@ -1,0 +1,37 @@
+<app-dialog title="Vincular membros" (close)="onClose()">
+  <section class="flex flex-column">
+    <app-input
+      label="Nome do membro"
+      placeholder="Buscar membro..."
+      (valueChange)="onSearch($event)"
+    />
+
+    @if (filteredMembers().length) {
+      <ul class="predictions flex flex-column">
+        @for (member of filteredMembers(); track member.id) {
+          <li (click)="onSelectMember(member)">
+            <app-member-item [member]="member" />
+          </li>
+        }
+      </ul>
+    }
+
+    @if (selectedMembers().length) {
+      <ul class="selected flex flex-column">
+        @for (member of selectedMembers(); track member.id) {
+          <li>
+            <app-member-item
+              [member]="member"
+              [removable]="true"
+              (remove)="onRemoveMember(member)"
+            />
+          </li>
+        }
+      </ul>
+    }
+
+    <footer class="flex justify-end">
+      <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+    </footer>
+  </section>
+</app-dialog>

@@ -1,0 +1,40 @@
+article {
+  gap: 12px;
+  cursor: default;
+
+  img,
+  figure {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    object-fit: cover;
+    background: var(--color-on-primary);
+
+    mat-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 28px;
+      color: var(--color-text-muted);
+    }
+  }
+
+  span {
+    flex: 1;
+    font-size: var(--font-size-16);
+    color: var(--color-text-primary);
+  }
+
+  button {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: var(--color-text-muted);
+
+    &:hover {
+      color: var(--color-error, #e53935);
+    }
+  }
+}

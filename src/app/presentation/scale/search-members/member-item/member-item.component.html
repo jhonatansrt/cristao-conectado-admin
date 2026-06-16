@@ -1,0 +1,17 @@
+<article class="flex items-center">
+  @if (member().avatar) {
+    <img [src]="member().avatar" [alt]="'Foto de ' + member().name" />
+  } @else {
+    <figure class="flex items-center justify-center" aria-hidden="true">
+      <mat-icon>person_outline</mat-icon>
+    </figure>
+  }
+
+  <span>{{ member().name | capitalizeName }}</span>
+
+  @if (removable()) {
+    <button type="button" [attr.aria-label]="'Remover ' + member().name" (click)="remove.emit()">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  }
+</article>

@@ -8,6 +8,7 @@ import { CardComponent } from '../../common/card/card.component';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { AddressList } from '../../schedule/address-list/address-list';
+import { SearchMembersComponent } from '../search-members/search-members.component';
 import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
 import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
 import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
@@ -66,18 +67,7 @@ export class AddActivityModal implements OnInit {
     const addr = this.currentAddress();
     if (!addr) return;
 
-    const { title, date, startTime, endTime } = this.form.getRawValue();
-
-    // TODO: integrar com serviço de escala
-    console.log('Nova atividade', {
-      addressId: addr.id,
-      title,
-      date: this.parseDatePipe.transform(date ?? ''),
-      hourInitial: this.parseTimePipe.transform(startTime ?? ''),
-      hourFinal: this.parseTimePipe.transform(endTime ?? ''),
-    });
-
-    this.modal.closeModal();
+    this.container.vcr?.createComponent(SearchMembersComponent);
   }
 
   protected onCancel(): void {
