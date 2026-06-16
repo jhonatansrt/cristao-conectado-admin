@@ -9,6 +9,9 @@ import { ChurchStore } from '../../../application/church/church-store';
 import { ChurchService } from '../../../application/church/church-service';
 import { Container } from '../../../util/container.service';
 import { AddressList } from '../../schedule/address-list/address-list';
+import { AddressesService } from '../../../application/addresses/addresses-service';
+import { ToastService } from '../../common/toast/toast.service';
+import { Address } from '../../../domain/addresses';
 
 @Component({
   selector: 'app-church-data',
@@ -22,6 +25,8 @@ export class ChurchData implements OnInit {
   private readonly churchService = inject(ChurchService);
   private readonly churchStore = inject(ChurchStore);
   private readonly container = inject(Container);
+  private readonly addressesService = inject(AddressesService);
+  private readonly toastService = inject(ToastService);
 
   protected readonly currentAddress = this.churchStore.getAddress();
   protected readonly churchTypes = this.churchStore.getChurchTypes();
@@ -56,7 +61,23 @@ export class ChurchData implements OnInit {
   }
 
   protected openAddress(): void {
-    const modal = this.container.vcr?.createComponent(AddressList).instance;
-    modal!.isChurch = true;
+    const listRef = this.container.vcr?.createComponent(AddressList);
+    listRef?.instance.addressSelected.subscribe((address) => {
+      this.onAddressSelected(address);
+    });
+  }
+
+  private onAddressSelected(address: Address): void {
+    this.churchStore.setAddress(address);
+    this.churchStore.patchChurchAddress(address);
+
+    if (address.id !== 'pending') {
+      this.addressesService.setAddressAsMain(address).subscribe(() => {
+        this.toastService.openToast({
+          success: true,
+          message: 'Endereço da igreja atualizado com sucesso',
+        });
+      });
+    }
   }
 }
