@@ -10,6 +10,7 @@ import { AlertService } from '../common/alert/alert.service';
 import { Position } from '../../domain/positions';
 import { PositionsService } from '../../application/positions/positions-service';
 import { PositionsStore } from '../../application/positions/positions-store';
+import { MembersService } from '../../application/members/members-service';
 
 @Component({
   selector: 'app-positions',
@@ -25,12 +26,10 @@ export class Positions implements OnInit, OnDestroy {
   private readonly positionsService = inject(PositionsService);
   private readonly positionsStore = inject(PositionsStore);
   protected readonly isLoading = this.tableStore.isLoading();
+  private readonly membersService = inject(MembersService);
 
   constructor() {
-    const columns: TableColumn[] = [
-      { key: 'name', header: 'Cargo' },
-      { key: 'membersCount', header: 'Quantidade de pessoas' },
-    ];
+    const columns: TableColumn[] = [{ key: 'name', header: 'Cargo' }];
 
     this.tableStore.setColumns(columns);
 
@@ -43,10 +42,47 @@ export class Positions implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setButtonsActions();
     this.loadPositions();
+    this.getMemberPositions();
   }
 
   ngOnDestroy(): void {
     this.actionBarStore.clearButtonsActions();
+  }
+
+  private getMemberPositions(): void {
+    this.tableStore.setLoading(true);
+
+    this.membersService.getMemberPositions().subscribe({
+      next: (positions) => {
+        const rows = positions.map((pos) => this.positionToRow(pos));
+        this.tableStore.setRows(rows);
+        this.tableStore.setLoading(false);
+      },
+      error: () => {
+        this.tableStore.setLoading(false);
+      },
+    });
+  }
+
+  private positionToRow(position: any): TableRow {
+    return {
+      id: position.id,
+      name: position.name,
+      actions: [
+        {
+          key: 'edit',
+          icon: 'edit',
+          label: 'Editar cargo',
+          onClick: () => this.handleEditPosition(position),
+        },
+        {
+          key: 'delete',
+          icon: 'delete',
+          label: 'Excluir cargo',
+          onClick: () => this.handleDeletePosition(position),
+        },
+      ],
+    };
   }
 
   protected hasPositions(): boolean {
