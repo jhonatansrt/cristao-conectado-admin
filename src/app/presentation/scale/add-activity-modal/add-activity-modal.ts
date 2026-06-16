@@ -10,6 +10,7 @@ import { ModalComponent } from '../../common/modal/modal.component';
 import { AddressList } from '../../schedule/address-list/address-list';
 import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
 import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
+import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
 
 @Component({
   selector: 'app-add-activity-modal',
@@ -24,6 +25,7 @@ export class AddActivityModal implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
   private readonly parseTimePipe = new ParseTimePipe();
+  private readonly parseDatePipe = new ParseDatePipe();
 
   public readonly address = input<Address | null>(null);
   protected readonly currentAddress = signal<Address | null>(null);
@@ -71,7 +73,7 @@ export class AddActivityModal implements OnInit {
     console.log('Nova atividade', {
       addressId: addr.id,
       title,
-      date: this.parseDate(date ?? ''),
+      date: this.parseDatePipe.transform(date ?? ''),
       hourInitial: this.parseTimePipe.transform(startTime ?? ''),
       hourFinal: this.parseTimePipe.transform(endTime ?? ''),
     });
@@ -83,8 +85,4 @@ export class AddActivityModal implements OnInit {
     this.modal.closeModal();
   }
 
-  private parseDate(value: string): string {
-    const [day, month, year] = value.split('/');
-    return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
-  }
 }

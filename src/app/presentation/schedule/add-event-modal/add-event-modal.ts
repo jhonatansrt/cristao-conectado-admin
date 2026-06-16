@@ -15,6 +15,7 @@ import { SelectComponent } from '../../common/select/select';
 import { AddressList } from '../address-list/address-list';
 import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
 import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
+import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
 
 export interface EditScheduleData {
   scheduleId: string;
@@ -49,6 +50,7 @@ export class AddEventModal implements OnInit {
   private readonly container = inject(Container);
   private readonly schedulesService = inject(SchedulesService);
   private readonly parseTimePipe = new ParseTimePipe();
+  private readonly parseDatePipe = new ParseDatePipe();
   protected readonly schedulesStore = inject(SchedulesStore);
 
   public readonly address = input<Address | null>(null);
@@ -136,7 +138,7 @@ export class AddEventModal implements OnInit {
       hourFinal: this.parseTimePipe.transform(endTime ?? ''),
       ...(this.isFixed
         ? { day: Number(dayOfWeek) }
-        : { scheduleDate: this.parseDate(date ?? ''), day: this.getDayOfWeek(date ?? '') }),
+        : { scheduleDate: this.parseDatePipe.transform(date ?? ''), day: this.getDayOfWeek(date ?? '') }),
     };
 
     this.loading = true;
@@ -176,11 +178,6 @@ export class AddEventModal implements OnInit {
     }
 
     this.schedulesService.getDaySchedules(selectedDate.iso, selectedDate.weekDay).subscribe();
-  }
-
-  private parseDate(value: string): string {
-    const [day, month, year] = value.split('/');
-    return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
   }
 
   private getDayOfWeek(value: string): number {
