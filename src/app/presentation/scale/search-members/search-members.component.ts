@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Member } from '../../../domain/members';
@@ -21,40 +21,38 @@ export class SearchMembersComponent implements OnInit {
   private readonly el = inject(ElementRef);
   private readonly membersService = inject(MembersService);
 
-  protected readonly allMembers = signal<Member[]>([]);
-  protected readonly filteredMembers = signal<Member[]>([]);
-  protected readonly selectedMembers = signal<Member[]>([]);
+  protected allMembers: Member[] = [];
+  protected filteredMembers: Member[] = [];
+  protected selectedMembers: Member[] = [];
 
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
-      this.allMembers.set(members);
+      this.allMembers = members;
     });
   }
 
   protected onSearch(value: string): void {
     if (!value.trim()) {
-      this.filteredMembers.set([]);
+      this.filteredMembers = [];
       return;
     }
 
     const lower = value.toLowerCase();
-    this.filteredMembers.set(
-      this.allMembers().filter(
-        (m) =>
-          m.name.toLowerCase().includes(lower) &&
-          !this.selectedMembers().some((s) => s.id === m.id),
-      ),
+    this.filteredMembers = this.allMembers.filter(
+      (m) =>
+        m.name.toLowerCase().includes(lower) &&
+        !this.selectedMembers.some((s) => s.id === m.id),
     );
   }
 
   protected onSelectMember(member: Member): void {
-    this.selectedMembers.update((prev) => [...prev, member]);
-    this.filteredMembers.set([]);
+    this.selectedMembers = [...this.selectedMembers, member];
+    this.filteredMembers = [];
     this.searchInput?.reset();
   }
 
   protected onRemoveMember(member: Member): void {
-    this.selectedMembers.update((prev) => prev.filter((m) => m.id !== member.id));
+    this.selectedMembers = this.selectedMembers.filter((m) => m.id !== member.id);
   }
 
   protected onConfirm(): void {
