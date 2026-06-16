@@ -4,7 +4,7 @@
       <label>Endereço</label>
       <app-card
         [title]="currentAddress()?.place ?? ''"
-        [description]="addressDescription()"
+        [description]="currentAddress() | addressDescription"
         [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
       />
     </fieldset>

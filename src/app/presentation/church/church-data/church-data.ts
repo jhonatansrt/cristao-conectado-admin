@@ -1,4 +1,4 @@
-import { Component, computed, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
 import { inject } from '@angular/core';
@@ -12,10 +12,11 @@ import { AddressList } from '../../schedule/address-list/address-list';
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { ToastService } from '../../common/toast/toast.service';
 import { Address } from '../../../domain/addresses';
+import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
 
 @Component({
   selector: 'app-church-data',
-  imports: [ReactiveFormsModule, InputComponent, SelectComponent, CardComponent],
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, CardComponent, AddressDescriptionPipe],
   templateUrl: './church-data.html',
   styleUrl: './church-data.scss',
 })
@@ -30,10 +31,6 @@ export class ChurchData implements OnInit {
 
   protected readonly currentAddress = this.churchStore.getAddress();
   protected readonly churchTypes = this.churchStore.getChurchTypes();
-  protected readonly addressDescription = computed(() => {
-    const addr = this.currentAddress();
-    return addr ? `${addr.street}, ${addr.district}, ${addr.city} - ${addr.state}` : '';
-  });
 
   ngOnInit(): void {
     this.listChurchType();
