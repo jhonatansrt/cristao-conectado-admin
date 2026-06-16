@@ -10,12 +10,14 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ModalComponent implements OnInit {
   @Input() public title: string | undefined;
-  public indexModal = 1;
+  public indexModal = 0;
+
+  private static nextIndex = 0;
 
   constructor(private el: ElementRef) {}
 
   ngOnInit() {
-    this.indexModal = document.querySelectorAll('.background-modal').length;
+    this.indexModal = ++ModalComponent.nextIndex;
   }
 
   public closeModal() {
