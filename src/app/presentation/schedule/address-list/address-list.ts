@@ -31,6 +31,7 @@ export class AddressList implements OnInit {
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
   @ViewChild(ModalComponent) private readonly modal!: ModalComponent;
   @Input() public isChurch: boolean = false;
+  public onAddressSelectedCallback?: (address: Address) => void;
 
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly alertService = inject(AlertService);
@@ -91,6 +92,11 @@ export class AddressList implements OnInit {
       this.setAddressAsMain(address);
       this.churchStore.setAddress(address);
       this.churchStore.patchChurchAddress(address);
+      return;
+    }
+
+    if (this.onAddressSelectedCallback) {
+      this.onAddressSelectedCallback(address);
       return;
     }
 

@@ -1,0 +1,30 @@
+.body-modal {
+  gap: 24px;
+
+  fieldset {
+    border: 0;
+    min-width: 0;
+    gap: 8px;
+
+    label {
+      color: var(--color-text-primary);
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+
+  form {
+    gap: 24px;
+
+    > div {
+      gap: 24px;
+      align-items: flex-start;
+
+      app-input,
+      app-select {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+}
