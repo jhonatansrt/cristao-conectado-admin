@@ -1,0 +1,58 @@
+<app-modal title="Nova atividade">
+  <section class="body-modal flex flex-column">
+    <fieldset class="flex flex-column">
+      <label>Endereço</label>
+      <app-card
+        [title]="currentAddress()?.place ?? ''"
+        [description]="addressDescription()"
+        [icons]="[{ name: 'edit', action: onChangeAddress.bind(this) }]"
+      />
+    </fieldset>
+
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Título"
+        placeholder="Ex: Culto da manhã"
+        formControlName="title"
+        [errorMessage]="
+          form.controls.title.touched && form.controls.title.hasError('required')
+            ? 'Título é obrigatório'
+            : ''
+        "
+      />
+
+      <div class="flex">
+        <app-input
+          label="Data"
+          type="tel"
+          [dateOfBirth]="true"
+          placeholder="dd/mm/aaaa"
+          formControlName="date"
+        />
+      </div>
+
+      <div class="flex">
+        <app-input
+          label="Início"
+          type="tel"
+          [timeMask]="true"
+          placeholder="HH:MM"
+          formControlName="startTime"
+        />
+
+        <app-input
+          label="Fim"
+          type="tel"
+          [timeMask]="true"
+          placeholder="HH:MM"
+          formControlName="endTime"
+        />
+      </div>
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>

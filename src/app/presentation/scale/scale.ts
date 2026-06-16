@@ -11,6 +11,9 @@ import {
 } from '../../application/native-calendar/native-calendar-store';
 import { Container } from '../../util/container.service';
 import { DayActivitiesModal, DayActivityItem } from './day-activities-modal/day-activities-modal';
+import { AddActivityModal } from './add-activity-modal/add-activity-modal';
+import { AddressList } from '../schedule/address-list/address-list';
+import { Address } from '../../domain/addresses';
 
 @Component({
   selector: 'app-scale',
@@ -97,9 +100,19 @@ export class Scale implements OnInit, OnDestroy {
       {
         btnClass: 'btn-primary',
         label: 'Adicionar atividade',
-        onClick: () => {},
+        onClick: () => this.onAddActivity(),
       },
     ]);
+  }
+
+  private onAddActivity(): void {
+    const listRef = this.container.vcr?.createComponent(AddressList);
+    if (!listRef) return;
+
+    listRef.instance.onAddressSelectedCallback = (address: Address) => {
+      const modalRef = this.container.vcr?.createComponent(AddActivityModal);
+      modalRef?.setInput('address', address);
+    };
   }
 
   protected onMonthChange({ month, year }: NativeCalendarMonthChange): void {
