@@ -55,7 +55,6 @@ export class AddActivityModal implements OnInit {
     listRef?.instance.addressSelected.subscribe((address) => {
       this.currentAddress.set(address);
     });
-    this.modal.closeModal();
   }
 
   protected onConfirm(): void {
