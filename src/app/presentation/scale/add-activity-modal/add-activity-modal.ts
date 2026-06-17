@@ -69,9 +69,9 @@ export class AddActivityModal implements OnInit {
     const addr = this.currentAddress();
     if (!addr) return;
 
-    const vincular = await this.alertService.openAlert({ message: 'Deseja vincular membros?' });
+    const link = await this.alertService.openAlert({ message: 'Deseja vincular membros?' });
 
-    if (vincular) {
+    if (link) {
       const ref = this.container.vcr?.createComponent(SearchMembersComponent);
       ref?.instance.closed.subscribe(() => this.modal.closeModal());
     } else {
