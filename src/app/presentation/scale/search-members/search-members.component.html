@@ -1,14 +1,13 @@
 <app-dialog title="Vincular membros" (close)="onClose()">
   <section class="flex flex-column">
     <app-input
-      label="Nome do membro"
       placeholder="Buscar membro..."
       (valueChange)="onSearch($event)"
     />
 
-    @if (filteredMembers().length) {
+    @if (filteredMembers.length) {
       <ul class="predictions flex flex-column">
-        @for (member of filteredMembers(); track member.id) {
+        @for (member of filteredMembers; track member.id) {
           <li (click)="onSelectMember(member)">
             <app-member-item [member]="member" />
           </li>
@@ -16,9 +15,9 @@
       </ul>
     }
 
-    @if (selectedMembers().length) {
+    @if (selectedMembers.length) {
       <ul class="selected flex flex-column">
-        @for (member of selectedMembers(); track member.id) {
+        @for (member of selectedMembers; track member.id) {
           <li>
             <app-member-item
               [member]="member"
