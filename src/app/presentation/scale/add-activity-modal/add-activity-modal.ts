@@ -12,6 +12,7 @@ import { SearchMembersComponent } from '../search-members/search-members.compone
 import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
 import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
 import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
+import { AlertService } from '../../common/alert/alert.service';
 
 @Component({
   selector: 'app-add-activity-modal',
@@ -25,6 +26,7 @@ export class AddActivityModal implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly container = inject(Container);
+  private readonly alertService = inject(AlertService);
   private readonly parseTimePipe = new ParseTimePipe();
   private readonly parseDatePipe = new ParseDatePipe();
 
@@ -58,7 +60,7 @@ export class AddActivityModal implements OnInit {
     });
   }
 
-  protected onConfirm(): void {
+  protected async onConfirm(): Promise<void> {
     if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
       return;
@@ -67,8 +69,14 @@ export class AddActivityModal implements OnInit {
     const addr = this.currentAddress();
     if (!addr) return;
 
-    const ref = this.container.vcr?.createComponent(SearchMembersComponent);
-    ref?.instance.closed.subscribe(() => this.modal.closeModal());
+    const vincular = await this.alertService.openAlert({ message: 'Deseja vincular membros?' });
+
+    if (vincular) {
+      const ref = this.container.vcr?.createComponent(SearchMembersComponent);
+      ref?.instance.closed.subscribe(() => this.modal.closeModal());
+    } else {
+      this.modal.closeModal();
+    }
   }
 
   protected onCancel(): void {
