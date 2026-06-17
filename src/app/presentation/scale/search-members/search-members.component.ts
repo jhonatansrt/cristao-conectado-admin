@@ -58,6 +58,7 @@ export class SearchMembersComponent implements OnInit {
 
   protected onConfirm(): void {
     this.el.nativeElement.remove();
+    this.onCloseAll();
   }
 
   protected onClose(): void {

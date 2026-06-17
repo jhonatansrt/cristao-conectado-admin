@@ -1,6 +1,5 @@
 article {
   gap: 12px;
-  cursor: default;
 
   img,
   figure {
@@ -32,9 +31,9 @@ article {
     display: flex;
     align-items: center;
     color: var(--color-text-muted);
-
-    &:hover {
-      color: var(--color-error, #e53935);
-    }
   }
+}
+
+.pointer {
+  cursor: pointer;
 }
