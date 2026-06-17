@@ -67,7 +67,8 @@ export class AddActivityModal implements OnInit {
     const addr = this.currentAddress();
     if (!addr) return;
 
-    this.container.vcr?.createComponent(SearchMembersComponent);
+    const ref = this.container.vcr?.createComponent(SearchMembersComponent);
+    ref?.instance.closed.subscribe(() => this.modal.closeModal());
   }
 
   protected onCancel(): void {

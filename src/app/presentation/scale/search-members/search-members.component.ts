@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Member } from '../../../domain/members';
@@ -16,6 +16,7 @@ import { MemberItemComponent } from './member-item/member-item.component';
   styleUrl: './search-members.component.scss',
 })
 export class SearchMembersComponent implements OnInit {
+  @Output() closed = new EventEmitter<void>();
   @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
 
   private readonly el = inject(ElementRef);
@@ -60,6 +61,12 @@ export class SearchMembersComponent implements OnInit {
   }
 
   protected onClose(): void {
+    this.closed.emit();
+    this.el.nativeElement.remove();
+  }
+
+  protected onCloseAll(): void {
+    this.closed.emit();
     this.el.nativeElement.remove();
   }
 }
