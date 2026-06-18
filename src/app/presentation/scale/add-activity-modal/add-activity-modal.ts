@@ -5,7 +5,6 @@ import { Address } from '../../../domain/addresses';
 import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
 import { CardComponent } from '../../common/card/card.component';
-import { CheckboxComponent } from '../../common/checkbox/checkbox';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { SelectComponent } from '../../common/select/select';
@@ -30,7 +29,7 @@ export const WEEK_DAYS = [
 @Component({
   selector: 'app-add-activity-modal',
   standalone: true,
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe, SelectComponent, CheckboxComponent, WeekDayPicker],
+  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe, SelectComponent, WeekDayPicker],
   templateUrl: './add-activity-modal.html',
   styleUrl: './add-activity-modal.scss',
 })
@@ -49,7 +48,7 @@ export class AddActivityModal implements OnInit {
   public loading = false;
 
   protected readonly weekDays = WEEK_DAYS;
-  protected readonly selectedWeekDays = signal<Set<string>>(new Set());
+  protected selectedWeekDays: string[] = [];
 
   protected readonly activityTypeOptions = [
     { label: 'Pontual', value: 'pontual' },

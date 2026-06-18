@@ -1,7 +1,7 @@
 <fieldset>
-  <legend>{{ legend() }}</legend>
+  <legend>Dias da semana</legend>
   <div class="flex flex-wrap">
-    @for (day of days(); track day.value) {
+    @for (day of days; track day.value) {
       <button
         type="button"
         [attr.aria-pressed]="isDaySelected(day.value)"
