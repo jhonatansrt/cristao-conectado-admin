@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -21,6 +21,7 @@ export class CreatePosition implements OnInit {
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
   public loading = false;
+  public positionCreated = output<void>();
 
   public readonly form = this.fb.group({
     name: ['', Validators.required],
@@ -50,17 +51,16 @@ export class CreatePosition implements OnInit {
     }
 
     const { name } = this.form.getRawValue();
-    const position = this.positionSelected;
 
     this.loading = true;
 
-    const request = position
-      ? this.positionsService.updatePosition(position.id, name ?? '')
-      : this.positionsService.createPosition(name ?? '');
-
-    // request.pipe(finalize(() => (this.loading = false))).subscribe(() => {
-    //   this.positionsStore.setPositionSelected(null);
-    //   this.modal?.closeModal();
-    // });
+    this.positionsService
+      .createPosition(name ?? '')
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(() => {
+        this.positionsService.loadPositions().subscribe();
+        this.positionCreated.emit();
+        this.modal?.closeModal();
+      });
   }
 }

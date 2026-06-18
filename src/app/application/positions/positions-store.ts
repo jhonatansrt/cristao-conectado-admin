@@ -16,7 +16,7 @@ export class PositionsStore {
     this.positionSelected.set(position);
   }
 
-  public getPositions(): Signal<Position[]> {
+  public getMemberPositions(): Signal<Position[]> {
     return this.positions;
   }
 
