@@ -15,6 +15,7 @@ import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe'
 import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
 import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
 import { AlertService } from '../../common/alert/alert.service';
+import { WeekDayPicker } from '../../common/week-day-picker/week-day-picker';
 
 export const WEEK_DAYS = [
   { label: 'Dom', value: 'dom' },
@@ -29,7 +30,7 @@ export const WEEK_DAYS = [
 @Component({
   selector: 'app-add-activity-modal',
   standalone: true,
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe, SelectComponent, CheckboxComponent],
+  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe, SelectComponent, CheckboxComponent, WeekDayPicker],
   templateUrl: './add-activity-modal.html',
   styleUrl: './add-activity-modal.scss',
 })
@@ -100,20 +101,6 @@ export class AddActivityModal implements OnInit {
     listRef?.instance.addressSelected.subscribe((address) => {
       this.currentAddress.set(address);
     });
-  }
-
-  protected toggleWeekDay(day: string, checked: boolean): void {
-    const days = new Set(this.selectedWeekDays());
-    if (checked) {
-      days.add(day);
-    } else {
-      days.delete(day);
-    }
-    this.selectedWeekDays.set(days);
-  }
-
-  protected isDaySelected(day: string): boolean {
-    return this.selectedWeekDays().has(day);
   }
 
   protected async onConfirm(): Promise<void> {

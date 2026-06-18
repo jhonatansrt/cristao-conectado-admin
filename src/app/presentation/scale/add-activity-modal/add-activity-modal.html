@@ -46,21 +46,7 @@
       />
 
       @if (isFixa) {
-        <fieldset class="flex flex-column week-days-fieldset">
-          <label>Dias da semana</label>
-          <div class="week-days flex">
-            @for (day of weekDays; track day.value) {
-              <button
-                type="button"
-                class="day-btn"
-                [class.selected]="isDaySelected(day.value)"
-                (click)="toggleWeekDay(day.value, !isDaySelected(day.value))"
-              >
-                {{ day.label }}
-              </button>
-            }
-          </div>
-        </fieldset>
+        <app-week-day-picker [days]="weekDays" [(selected)]="selectedWeekDays" />
       } @else {
         <app-input
           label="Data da atividade"
