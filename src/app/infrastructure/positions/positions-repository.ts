@@ -16,14 +16,10 @@ import {
 export class PositionsRepository implements IPositionsRepository {
   constructor(private httpClient: HttpClient) {}
 
- 
-
- 
-
-  public getPositions(props: GetPositionsDTO): Observable<any[]> {
+  public getPositions(props: GetPositionsDTO): Observable<Position[]> {
     const url = `${environment.apiBaseURL}/members/memberPosition/${props.churchId}`;
 
-    return this.httpClient.get<any[]>(url);
+    return this.httpClient.get<Position[]>(url);
   }
 
   public createPosition(props: CreatePositionDTO): Observable<Position> {
@@ -35,8 +31,14 @@ export class PositionsRepository implements IPositionsRepository {
     return this.httpClient.post<Position>(url, body);
   }
 
-  public updatePosition(id: string, props: UpdatePositionDTO): Observable<void> {
-    return of(void 0);
+  public updatePosition(id: string, props: UpdatePositionDTO): Observable<Position> {
+    const url = `${environment.apiBaseURL}/members/memberPosition/${id}`;
+
+    const body = {
+      name: props.name,
+    };
+
+    return this.httpClient.put<Position>(url, body);
   }
 
   public deletePosition(id: string): Observable<void> {
