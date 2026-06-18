@@ -14,14 +14,14 @@ export class PositionsService {
   private toastService = inject(ToastService);
   private positionsStore = inject(PositionsStore);
 
-  public getMemberPositions(): Observable<any[]> {
+  public getPositions(): Observable<any[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
     if (!churchId) {
       return of([]);
     }
 
-    return this.positionsRepository.getMemberPositions({ churchId }).pipe(
+    return this.positionsRepository.getPositions({ churchId }).pipe(
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
         return throwError(() => e);
@@ -30,7 +30,7 @@ export class PositionsService {
   }
 
   public loadPositions(): Observable<Position[]> {
-    return this.getMemberPositions().pipe(
+    return this.getPositions().pipe(
       tap((positions) => this.positionsStore.setPositions(positions)),
     );
   }
@@ -43,7 +43,7 @@ export class PositionsService {
     }
 
     return this.positionsRepository.createPosition({ churchId, name }).pipe(
-      switchMap(() => this.getMemberPositions()),
+      switchMap(() => this.getPositions()),
       tap((positions) => this.positionsStore.setPositions(positions)),
       map(() => void 0),
       catchError((e) => {
@@ -57,7 +57,7 @@ export class PositionsService {
     const churchId = this.authStore.getUserLogged()()?.church_id ?? '';
 
     this.positionsRepository.updatePosition(id, { churchId, name }).pipe(
-      switchMap(() => this.getMemberPositions()),
+      switchMap(() => this.getPositions()),
       tap((positions) => this.positionsStore.setPositions(positions)),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });
@@ -68,7 +68,7 @@ export class PositionsService {
 
   public deletePosition(id: string) {
     this.positionsRepository.deletePosition(id).pipe(
-      switchMap(() => this.getMemberPositions()),
+      switchMap(() => this.getPositions()),
       tap((positions) => this.positionsStore.setPositions(positions)),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message });

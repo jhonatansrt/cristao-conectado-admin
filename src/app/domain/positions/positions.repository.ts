@@ -9,7 +9,7 @@ import { GetMembersDTO } from '../members';
 export abstract class IPositionsRepository {
   abstract getPositions(props: GetPositionsDTO): Observable<Position[]>;
   abstract createPosition(props: CreatePositionDTO): Observable<{ id?: string }>;
-  abstract getMemberPositions(props: GetMembersDTO): Observable<GetPositionsDTO[]>;
+  abstract getPositions(props: GetMembersDTO): Observable<GetPositionsDTO[]>;
   abstract updatePosition(id: string, props: UpdatePositionDTO): Observable<void>;
   abstract deletePosition(id: string): Observable<void>;
 }

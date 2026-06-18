@@ -34,7 +34,7 @@ export class PositionsRepository implements IPositionsRepository {
   //   return of({ id });
   // }
 
-  public getMemberPositions(props: GetPositionsDTO): Observable<any[]> {
+  public getPositions(props: GetPositionsDTO): Observable<any[]> {
     const url = `${environment.apiBaseURL}/members/memberPosition/${props.churchId}`;
 
     return this.httpClient.get<any[]>(url);

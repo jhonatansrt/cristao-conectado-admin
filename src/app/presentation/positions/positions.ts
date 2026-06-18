@@ -32,7 +32,7 @@ export class Positions implements OnInit, OnDestroy {
     this.tableStore.setColumns(columns);
 
     effect(() => {
-      const positions = this.positionsStore.getMemberPositions()();
+      const positions = this.positionsStore.getPositions()();
       console.log('positions', positions);
 
       this.tableStore.setRows(positions.map((position) => this.toRow(position)));
@@ -48,10 +48,10 @@ export class Positions implements OnInit, OnDestroy {
     this.actionBarStore.clearButtonsActions();
   }
 
-  public getMemberPositions(): void {
+  public getPositions(): void {
     this.tableStore.setLoading(true);
 
-    this.positionsService.getMemberPositions().subscribe({
+    this.positionsService.getPositions().subscribe({
       next: (positions) => {
         const rows = positions.map((pos) => this.positionToRow(pos));
         this.tableStore.setRows(rows);
