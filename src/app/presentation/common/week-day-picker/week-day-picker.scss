@@ -2,12 +2,12 @@ fieldset {
   border: 0;
   padding: 0;
   min-width: 0;
+  gap: 8px;
 
-  legend {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-medium);
-    margin-bottom: 8px;
+  label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-semibold);
   }
 
   div {

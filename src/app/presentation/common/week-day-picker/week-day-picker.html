@@ -1,6 +1,6 @@
-<fieldset>
-  <legend>Dias da semana</legend>
-  <div class="flex flex-wrap">
+<fieldset class="flex flex-column">
+  <label>Dias da semana</label>
+  <div class="flex flex-wrap justify-between">
     @for (day of days; track day.value) {
       <button
         type="button"
