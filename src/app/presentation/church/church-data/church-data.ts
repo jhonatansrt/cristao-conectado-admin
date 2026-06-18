@@ -9,10 +9,11 @@ import { ChurchStore } from '../../../application/church/church-store';
 import { ChurchService } from '../../../application/church/church-service';
 import { Container } from '../../../util/container.service';
 import { AddressList } from '../../schedule/address-list/address-list';
+import { AddressDescriptionPipe } from "../../../pipes/address-description.pipe";
 import { AddressesService } from '../../../application/addresses/addresses-service';
 import { ToastService } from '../../common/toast/toast.service';
 import { Address } from '../../../domain/addresses';
-import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
+imimports: [ReactiveFormsModule, InputComponent, SelectComponent, CardComponent, AddressDescriptionPipe];
 
 @Component({
   selector: 'app-church-data',
