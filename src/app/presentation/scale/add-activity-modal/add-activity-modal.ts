@@ -48,7 +48,7 @@ export class AddActivityModal implements OnInit {
   public loading = false;
 
   protected readonly weekDays = WEEK_DAYS;
-  protected readonly selectedWeekDays = signal<string[]>([]);
+  protected selectedWeekDays: string[] = [];
 
   protected readonly activityTypeOptions = [
     { label: 'Pontual', value: 'pontual' },

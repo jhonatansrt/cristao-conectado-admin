@@ -46,7 +46,7 @@
       />
 
       @if (isFixa) {
-        <app-week-day-picker (selectionChange)="selectedWeekDays.set($event)" />
+        <app-week-day-picker (selectionChange)="selectedWeekDays = $event" />
       } @else {
         <app-input
           label="Data da atividade"
