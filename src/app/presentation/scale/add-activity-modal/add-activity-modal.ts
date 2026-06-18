@@ -5,8 +5,10 @@ import { Address } from '../../../domain/addresses';
 import { Container } from '../../../util/container.service';
 import { ButtonComponent } from '../../common/button/button.component';
 import { CardComponent } from '../../common/card/card.component';
+import { CheckboxComponent } from '../../common/checkbox/checkbox';
 import { InputComponent } from '../../common/input/input';
 import { ModalComponent } from '../../common/modal/modal.component';
+import { SelectComponent } from '../../common/select/select';
 import { AddressList } from '../../schedule/address-list/address-list';
 import { SearchMembersComponent } from '../search-members/search-members.component';
 import { AddressDescriptionPipe } from '../../../pipes/address-description.pipe';
@@ -14,10 +16,20 @@ import { ParseTimePipe } from '../../../pipes/parse-time.pipe';
 import { ParseDatePipe } from '../../../pipes/parse-date.pipe';
 import { AlertService } from '../../common/alert/alert.service';
 
+export const WEEK_DAYS = [
+  { label: 'Dom', value: 'dom' },
+  { label: 'Seg', value: 'seg' },
+  { label: 'Ter', value: 'ter' },
+  { label: 'Qua', value: 'qua' },
+  { label: 'Qui', value: 'qui' },
+  { label: 'Sex', value: 'sex' },
+  { label: 'Sáb', value: 'sab' },
+];
+
 @Component({
   selector: 'app-add-activity-modal',
   standalone: true,
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe],
+  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule, CardComponent, AddressDescriptionPipe, SelectComponent, CheckboxComponent],
   templateUrl: './add-activity-modal.html',
   styleUrl: './add-activity-modal.scss',
 })
@@ -35,12 +47,42 @@ export class AddActivityModal implements OnInit {
 
   public loading = false;
 
+  protected readonly weekDays = WEEK_DAYS;
+  protected readonly selectedWeekDays = signal<Set<string>>(new Set());
+
+  protected readonly activityTypeOptions = [
+    { label: 'Pontual', value: 'pontual' },
+    { label: 'Fixa (recorrente)', value: 'fixa' },
+  ];
+
+  protected readonly participantLimitOptions = [
+    { label: 'Ilimitado', value: 'ilimitado' },
+    { label: 'Limitado', value: 'limitado' },
+  ];
+
+  protected readonly participationOptions = [
+    { label: 'Atividade livre', value: 'livre' },
+    { label: 'Somente admin', value: 'admin' },
+  ];
+
   public readonly form = this.fb.group({
     title: ['', Validators.required],
     date: [''],
     startTime: [''],
     endTime: [''],
+    activityType: ['pontual'],
+    participantLimit: ['ilimitado'],
+    maxParticipants: [null as number | null],
+    participation: ['livre'],
   });
+
+  protected get isFixa(): boolean {
+    return this.form.controls.activityType.value === 'fixa';
+  }
+
+  protected get isLimited(): boolean {
+    return this.form.controls.participantLimit.value === 'limitado';
+  }
 
   ngOnInit(): void {
     this.initAddress();
@@ -58,6 +100,20 @@ export class AddActivityModal implements OnInit {
     listRef?.instance.addressSelected.subscribe((address) => {
       this.currentAddress.set(address);
     });
+  }
+
+  protected toggleWeekDay(day: string, checked: boolean): void {
+    const days = new Set(this.selectedWeekDays());
+    if (checked) {
+      days.add(day);
+    } else {
+      days.delete(day);
+    }
+    this.selectedWeekDays.set(days);
+  }
+
+  protected isDaySelected(day: string): boolean {
+    return this.selectedWeekDays().has(day);
   }
 
   protected async onConfirm(): Promise<void> {

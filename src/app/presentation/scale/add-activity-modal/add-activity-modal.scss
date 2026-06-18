@@ -1,3 +1,39 @@
+.week-days-fieldset {
+  border: 0;
+  min-width: 0;
+  gap: 8px;
+
+  > label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .week-days {
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .day-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-border, #ccc);
+      background: transparent;
+      color: var(--color-text-primary);
+      font-size: var(--font-size-14, 14px);
+      font-weight: var(--font-weight-medium, 500);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+      &.selected {
+        background: var(--color-primary, #2196f3);
+        border-color: var(--color-primary, #2196f3);
+        color: #fff;
+      }
+    }
+  }
+}
+
 .body-modal {
   gap: 24px;
 

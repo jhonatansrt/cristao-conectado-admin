@@ -23,17 +23,7 @@
 
       <div class="flex">
         <app-input
-          label="Data"
-          type="tel"
-          [dateOfBirth]="true"
-          placeholder="dd/mm/aaaa"
-          formControlName="date"
-        />
-      </div>
-
-      <div class="flex">
-        <app-input
-          label="Início"
+          label="Hora inicial"
           type="tel"
           [timeMask]="true"
           placeholder="HH:MM"
@@ -41,13 +31,66 @@
         />
 
         <app-input
-          label="Fim"
+          label="Hora final"
           type="tel"
           [timeMask]="true"
           placeholder="HH:MM"
           formControlName="endTime"
         />
       </div>
+
+      <app-select
+        label="Tipo de atividade"
+        formControlName="activityType"
+        [options]="activityTypeOptions"
+      />
+
+      @if (isFixa) {
+        <fieldset class="flex flex-column week-days-fieldset">
+          <label>Dias da semana</label>
+          <div class="week-days flex">
+            @for (day of weekDays; track day.value) {
+              <button
+                type="button"
+                class="day-btn"
+                [class.selected]="isDaySelected(day.value)"
+                (click)="toggleWeekDay(day.value, !isDaySelected(day.value))"
+              >
+                {{ day.label }}
+              </button>
+            }
+          </div>
+        </fieldset>
+      } @else {
+        <app-input
+          label="Data da atividade"
+          type="tel"
+          [dateOfBirth]="true"
+          placeholder="dd/mm/aaaa"
+          formControlName="date"
+        />
+      }
+
+      <app-select
+        label="Limite de participantes"
+        formControlName="participantLimit"
+        [options]="participantLimitOptions"
+      />
+
+      @if (isLimited) {
+        <app-input
+          label="Quantidade máxima"
+          type="tel"
+          placeholder="Ex: 20"
+          formControlName="maxParticipants"
+        />
+      }
+
+      <app-select
+        label="Participação"
+        formControlName="participation"
+        [options]="participationOptions"
+      />
     </form>
   </section>
 
