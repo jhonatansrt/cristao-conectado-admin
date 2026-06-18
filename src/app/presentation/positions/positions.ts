@@ -33,6 +33,8 @@ export class Positions implements OnInit, OnDestroy {
 
     effect(() => {
       const positions = this.positionsStore.getMemberPositions()();
+      console.log('positions', positions);
+
       this.tableStore.setRows(positions.map((position) => this.toRow(position)));
     });
   }

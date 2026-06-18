@@ -14,21 +14,6 @@ export class PositionsService {
   private toastService = inject(ToastService);
   private positionsStore = inject(PositionsStore);
 
-  // public getPositions(): Observable<Position[]> {
-  //   const churchId = this.authStore.getUserLogged()()?.church_id;
-
-  //   if (!churchId) {
-  //     return of([]);
-  //   }
-
-  //   return this.positionsRepository.getPositions({ churchId }).pipe(
-  //     catchError((e) => {
-  //       this.toastService.openToast({ message: e?.error?.message });
-  //       return throwError(() => e);
-  //     }),
-  //   );
-  // }
-
   public getMemberPositions(): Observable<any[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
