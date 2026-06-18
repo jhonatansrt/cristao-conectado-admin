@@ -1,5 +1,5 @@
 export type Position = {
   id: string;
   name: string;
-  membersCount: number;
+  church_id: string;
 };
