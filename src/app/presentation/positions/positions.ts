@@ -33,8 +33,6 @@ export class Positions implements OnInit, OnDestroy {
 
     effect(() => {
       const positions = this.positionsStore.getPositions()();
-      console.log('positions', positions);
-
       this.tableStore.setRows(positions.map((position) => this.toRow(position)));
     });
   }
@@ -138,7 +136,6 @@ export class Positions implements OnInit, OnDestroy {
     return {
       id: position.id,
       name: position.name,
-      // membersCount: position.membersCount,
       actions: [
         {
           key: 'edit',

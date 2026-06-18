@@ -14,7 +14,7 @@ export class PositionsService {
   private toastService = inject(ToastService);
   private positionsStore = inject(PositionsStore);
 
-  public getPositions(): Observable<any[]> {
+  public getPositions(): Observable<Position[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
     if (!churchId) {
