@@ -1,9 +1,14 @@
-import { Component, input, model } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 
-export type WeekDay = {
-  label: string;
-  value: string;
-};
+const WEEK_DAYS = [
+  { label: 'Dom', value: 'dom' },
+  { label: 'Seg', value: 'seg' },
+  { label: 'Ter', value: 'ter' },
+  { label: 'Qua', value: 'qua' },
+  { label: 'Qui', value: 'qui' },
+  { label: 'Sex', value: 'sex' },
+  { label: 'Sáb', value: 'sab' },
+];
 
 @Component({
   selector: 'app-week-day-picker',
@@ -12,21 +17,21 @@ export type WeekDay = {
   styleUrl: './week-day-picker.scss',
 })
 export class WeekDayPicker {
-  public readonly legend = input<string>('Dias da semana');
-  public readonly days = input<WeekDay[]>([]);
-  public readonly selected = model<Set<string>>(new Set());
+  public readonly selectionChange = output<string[]>();
+
+  protected readonly days = WEEK_DAYS;
+  protected readonly selected = signal<string[]>([]);
 
   protected isDaySelected(value: string): boolean {
-    return this.selected().has(value);
+    return this.selected().includes(value);
   }
 
   protected toggle(value: string): void {
-    const next = new Set(this.selected());
-    if (next.has(value)) {
-      next.delete(value);
-    } else {
-      next.add(value);
-    }
+    const current = this.selected();
+    const next = current.includes(value)
+      ? current.filter((d) => d !== value)
+      : [...current, value];
     this.selected.set(next);
+    this.selectionChange.emit(next);
   }
 }
