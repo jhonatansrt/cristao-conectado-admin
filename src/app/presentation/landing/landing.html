@@ -1,0 +1,55 @@
+<div>
+
+  <!-- Hero -->
+  <header>
+    <nav class="flex justify-between items-center">
+      <img src="assets/logo.png" alt="Cristão Conectado" />
+      <button (click)="goToLogin()">Acessar plataforma</button>
+    </nav>
+
+    <section class="flex flex-column items-center">
+      <h1>Gerencie sua Igreja com facilidade</h1>
+      <p>
+        O <strong>Cristão Conectado</strong> é a plataforma completa para administradores de
+        igrejas organizarem agenda, membros, escalas, louvores e muito mais — tudo em um só lugar.
+      </p>
+      <button (click)="goToLogin()">Começar agora</button>
+    </section>
+
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#e8f0f6" />
+    </svg>
+  </header>
+
+  <!-- Features -->
+  <main>
+    <hgroup class="flex flex-column items-center">
+      <h2>Tudo que sua Igreja precisa</h2>
+      <p>Funcionalidades pensadas para facilitar o dia a dia da liderança e da comunidade.</p>
+    </hgroup>
+
+    <ul class="flex flex-wrap justify-center">
+      @for (feature of features; track feature.title) {
+        <li class="flex flex-column">
+          <span class="flex items-center justify-center">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </span>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </li>
+      }
+    </ul>
+  </main>
+
+  <!-- CTA Final -->
+  <section class="flex flex-column items-center">
+    <h2>Pronto para transformar a gestão da sua Igreja?</h2>
+    <p>Acesse agora e experimente todas as funcionalidades.</p>
+    <button (click)="goToLogin()">Entrar na plataforma</button>
+  </section>
+
+  <footer class="flex justify-center items-center">
+    <p>&copy; 2025 Cristão Conectado. Todos os direitos reservados.</p>
+  </footer>
+
+</div>

@@ -14,4 +14,5 @@ export const namedRoutes = {
   login: 'login',
   privacyPolicy: 'privacy-policy',
   membersReports: 'members/reports',
+  landing: 'sobre',
 } as const;
