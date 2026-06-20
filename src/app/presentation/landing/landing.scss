@@ -1,4 +1,4 @@
-@use '../../../../theme/breakpoint.scss' as bp;
+@use '../../../theme/breakpoint.scss' as bp;
 
 :host {
   display: block;
@@ -40,20 +40,20 @@ header {
   & > section {
     text-align: center;
     padding: 64px 24px 96px;
-    max-width: 720px;
-    margin: 0 auto;
     gap: 20px;
 
     h1 {
       font-size: var(--font-size-28);
       font-weight: var(--font-weight-bold);
       line-height: 1.2;
+      max-width: 720px;
     }
 
     p {
       font-size: var(--font-size-16);
       line-height: 1.7;
       color: rgba(255, 255, 255, 0.88);
+      max-width: 720px;
     }
 
     button {
