@@ -15,27 +15,12 @@ header nav {
     height: 48px;
     filter: brightness(0) invert(1);
   }
-
-  button {
-    background: var(--white);
-    color: var(--blue-primary-dark);
-    font-weight: var(--font-weight-bold);
-    border-radius: 8px;
-    padding: 10px 24px;
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-14);
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
 }
 
 /* HERO */
 header {
-  background: linear-gradient(135deg, var(--blue-primary-dark) 0%, var(--blue-primary) 100%);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: var(--color-text-inverse);
 
   & > section {
     text-align: center;
@@ -54,21 +39,6 @@ header {
       line-height: 1.7;
       color: rgba(255, 255, 255, 0.88);
       max-width: 720px;
-    }
-
-    button {
-      background: var(--white);
-      color: var(--blue-primary-dark);
-      font-weight: var(--font-weight-bold);
-      border-radius: 8px;
-      padding: 14px 36px;
-      border: none;
-      cursor: pointer;
-      font-size: var(--font-size-16);
-
-      &:hover {
-        opacity: 0.9;
-      }
     }
   }
 
@@ -153,10 +123,10 @@ main {
 
 /* CTA FINAL */
 div > section {
-  background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-primary-dark) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   text-align: center;
   padding: 80px 24px;
-  color: var(--white);
+  color: var(--color-text-inverse);
   gap: 16px;
 
   h2 {
@@ -168,26 +138,11 @@ div > section {
     font-size: var(--font-size-16);
     color: rgba(255, 255, 255, 0.85);
   }
-
-  button {
-    background: var(--white);
-    color: var(--blue-primary-dark);
-    font-weight: var(--font-weight-bold);
-    border-radius: 8px;
-    padding: 14px 40px;
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-16);
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
 }
 
 /* FOOTER */
 footer {
-  background: var(--blue-primary-dark);
+  background: var(--color-primary-dark);
   padding: 24px;
   color: rgba(255, 255, 255, 0.6);
   font-size: var(--font-size-12);
@@ -200,7 +155,7 @@ footer {
   }
 
   header > section {
-    padding: 48px 24px; 
+    padding: 48px 24px;
     gap: 16px;
 
     h1 {
@@ -212,17 +167,17 @@ footer {
     }
   }
 
-  main  {
-    padding: 48px 24px; 
+  main {
+    padding: 48px 24px;
     gap: 24px;
-    
+
     hgroup h2 {
       font-size: var(--font-size-20);
     }
   }
 
   div > section {
-    padding: 48px 24px; 
+    padding: 48px 24px;
 
     h2 {
       font-size: var(--font-size-20);
