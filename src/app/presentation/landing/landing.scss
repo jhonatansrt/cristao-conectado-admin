@@ -200,7 +200,7 @@ footer {
   }
 
   header > section {
-    padding: 40px 20px 72px;
+    padding: 48px 24px; 
     gap: 16px;
 
     h1 {
@@ -212,11 +212,20 @@ footer {
     }
   }
 
-  main hgroup h2 {
-    font-size: var(--font-size-20);
+  main  {
+    padding: 48px 24px; 
+    gap: 24px;
+    
+    hgroup h2 {
+      font-size: var(--font-size-20);
+    }
   }
 
-  div > section h2 {
-    font-size: var(--font-size-20);
+  div > section {
+    padding: 48px 24px; 
+
+    h2 {
+      font-size: var(--font-size-20);
+    }
   }
 }
