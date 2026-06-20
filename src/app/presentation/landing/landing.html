@@ -1,0 +1,57 @@
+<div class="landing">
+
+  <!-- Hero -->
+  <header class="hero">
+    <nav class="nav">
+      <img src="assets/logo.png" alt="Cristão Conectado" class="nav__logo" />
+      <a [routerLink]="loginRoute" class="btn-primary nav__cta">Acessar plataforma</a>
+    </nav>
+
+    <div class="hero__content">
+      <h1 class="hero__title">Gerencie sua Igreja com facilidade</h1>
+      <p class="hero__subtitle">
+        O <strong>Cristão Conectado</strong> é a plataforma completa para administradores de
+        igrejas organizarem agenda, membros, escalas, louvores e muito mais — tudo em um só lugar.
+      </p>
+      <a [routerLink]="loginRoute" class="btn-primary hero__cta">Começar agora</a>
+    </div>
+
+    <div class="hero__wave">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#e8f0f6" />
+      </svg>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="features__container">
+      <h2 class="features__heading">Tudo que sua Igreja precisa</h2>
+      <p class="features__sub">Funcionalidades pensadas para facilitar o dia a dia da liderança e da comunidade.</p>
+
+      <div class="features__grid">
+        @for (feature of features; track feature.title) {
+          <div class="feature-card">
+            <div class="feature-card__icon">
+              <mat-icon>{{ feature.icon }}</mat-icon>
+            </div>
+            <h3 class="feature-card__title">{{ feature.title }}</h3>
+            <p class="feature-card__desc">{{ feature.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="cta-section">
+    <h2 class="cta-section__title">Pronto para transformar a gestão da sua Igreja?</h2>
+    <p class="cta-section__sub">Acesse agora e experimente todas as funcionalidades.</p>
+    <a [routerLink]="loginRoute" class="btn-primary cta-section__btn">Entrar na plataforma</a>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; {{ 2025 }} Cristão Conectado. Todos os direitos reservados.</p>
+  </footer>
+
+</div>

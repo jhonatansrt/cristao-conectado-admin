@@ -91,4 +91,8 @@ export const routes: Routes = [
     path: namedRoutes.privacyPolicy,
     loadComponent: () => import('./presentation/privacy-policy-page/privacy-policy-page').then(m => m.PrivacyPolicyPage),
   },
+  {
+    path: namedRoutes.landing,
+    loadComponent: () => import('./presentation/landing/landing').then(m => m.Landing),
+  },
 ];
