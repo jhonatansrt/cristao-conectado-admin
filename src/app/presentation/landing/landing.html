@@ -4,7 +4,7 @@
   <header>
     <nav class="flex justify-between items-center">
       <img src="assets/logo.png" alt="Cristão Conectado" />
-      <a [routerLink]="loginRoute">Acessar plataforma</a>
+      <button (click)="goToLogin()">Acessar plataforma</button>
     </nav>
 
     <section class="flex flex-column items-center">
@@ -13,7 +13,7 @@
         O <strong>Cristão Conectado</strong> é a plataforma completa para administradores de
         igrejas organizarem agenda, membros, escalas, louvores e muito mais — tudo em um só lugar.
       </p>
-      <a [routerLink]="loginRoute">Começar agora</a>
+      <button (click)="goToLogin()">Começar agora</button>
     </section>
 
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +45,7 @@
   <section class="flex flex-column items-center">
     <h2>Pronto para transformar a gestão da sua Igreja?</h2>
     <p>Acesse agora e experimente todas as funcionalidades.</p>
-    <a [routerLink]="loginRoute">Entrar na plataforma</a>
+    <button (click)="goToLogin()">Entrar na plataforma</button>
   </section>
 
   <footer class="flex justify-center items-center">

@@ -16,13 +16,14 @@ header nav {
     filter: brightness(0) invert(1);
   }
 
-  a {
+  button {
     background: var(--white);
     color: var(--blue-primary-dark);
     font-weight: var(--font-weight-bold);
     border-radius: 8px;
     padding: 10px 24px;
-    text-decoration: none;
+    border: none;
+    cursor: pointer;
     font-size: var(--font-size-14);
 
     &:hover {
@@ -55,13 +56,14 @@ header {
       color: rgba(255, 255, 255, 0.88);
     }
 
-    a {
+    button {
       background: var(--white);
       color: var(--blue-primary-dark);
       font-weight: var(--font-weight-bold);
       border-radius: 8px;
       padding: 14px 36px;
-      text-decoration: none;
+      border: none;
+      cursor: pointer;
       font-size: var(--font-size-16);
 
       &:hover {
@@ -167,13 +169,14 @@ div > section {
     color: rgba(255, 255, 255, 0.85);
   }
 
-  a {
+  button {
     background: var(--white);
     color: var(--blue-primary-dark);
     font-weight: var(--font-weight-bold);
     border-radius: 8px;
     padding: 14px 40px;
-    text-decoration: none;
+    border: none;
+    cursor: pointer;
     font-size: var(--font-size-16);
 
     &:hover {
