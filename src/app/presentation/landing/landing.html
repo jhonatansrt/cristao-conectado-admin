@@ -37,15 +37,42 @@
     </ul>
   </main>
 
+  <!-- Sobre -->
+  <section class="about flex flex-column items-center">
+    <hgroup class="flex flex-column items-center">
+      <h2>Sobre o Cristão Conectado</h2>
+      <p>
+        O Cristão Conectado é uma plataforma digital desenvolvida para auxiliar igrejas e
+        comunidades cristãs na gestão de suas atividades. Nossa missão é simplificar a
+        administração eclesiástica, permitindo que líderes foquem no que realmente importa:
+        servir e cuidar das pessoas.
+      </p>
+      <p>
+        Oferecemos ferramentas para gerenciamento de membros, escalas de serviço, agenda de
+        eventos, playlists de louvor, pedidos de oração e muito mais — tudo em uma única
+        plataforma segura e intuitiva.
+      </p>
+    </hgroup>
+  </section>
+
   <!-- CTA Final -->
-  <section class="flex flex-column items-center">
+  <section class="cta flex flex-column items-center">
     <h2>Pronto para transformar a gestão da sua Igreja?</h2>
     <p>Acesse agora e experimente todas as funcionalidades.</p>
     <app-button (click)="goToLogin()">Entrar na plataforma</app-button>
   </section>
 
-  <footer class="flex justify-center items-center">
+  <!-- Contato -->
+  <section class="contact flex flex-column items-center">
+    <h2>Contato</h2>
+    <p>Dúvidas, sugestões ou suporte? Entre em contato conosco:</p>
+    <a href="mailto:admin@cristaoconectado.com">admin&#64;cristaoconectado.com</a>
+    <p class="domain">cristaoconectado.com</p>
+  </section>
+
+  <footer class="flex justify-between items-center flex-wrap">
     <p>&copy; 2025 Cristão Conectado. Todos os direitos reservados.</p>
+    <a routerLink="/privacy-policy">Política de Privacidade</a>
   </footer>
 
 </div>

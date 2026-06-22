@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { namedRoutes } from '../../named-routes';
 import { ButtonComponent } from '../common/button/button.component';
 
 @Component({
   selector: 'app-landing',
-  imports: [MatIconModule, ButtonComponent],
+  imports: [MatIconModule, ButtonComponent, RouterLink],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })

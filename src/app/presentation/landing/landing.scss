@@ -121,8 +121,32 @@ main {
   }
 }
 
+/* SOBRE */
+.about {
+  padding: 72px 24px;
+  background: var(--color-background);
+
+  hgroup {
+    max-width: 800px;
+    text-align: center;
+    gap: 16px;
+
+    h2 {
+      font-size: var(--font-size-28);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+    }
+
+    p {
+      font-size: var(--font-size-16);
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+  }
+}
+
 /* CTA FINAL */
-div > section {
+.cta {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   text-align: center;
   padding: 80px 24px;
@@ -140,15 +164,62 @@ div > section {
   }
 }
 
+/* CONTATO */
+.contact {
+  padding: 64px 24px;
+  background: var(--color-surface);
+  text-align: center;
+  gap: 12px;
+
+  h2 {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  p {
+    font-size: var(--font-size-16);
+    color: var(--color-text-secondary);
+  }
+
+  a {
+    font-size: var(--font-size-16);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: var(--font-weight-bold);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .domain {
+    font-size: var(--font-size-14);
+    color: var(--color-text-secondary);
+  }
+}
+
 /* FOOTER */
 footer {
   background: var(--color-primary-dark);
-  padding: 24px;
+  padding: 24px 40px;
   color: rgba(255, 255, 255, 0.6);
   font-size: var(--font-size-12);
+  gap: 16px;
 
   p {
     text-align: center;
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: underline;
+    }
   }
 }
 
@@ -180,11 +251,17 @@ footer {
     }
   }
 
-  div > section {
-    padding: 48px 24px;
+  .about hgroup h2,
+  .cta h2 {
+    font-size: var(--font-size-20);
+  }
 
-    h2 {
-      font-size: var(--font-size-20);
-    }
+  .cta {
+    padding: 48px 24px;
+  }
+
+  footer {
+    padding: 24px 20px;
+    justify-content: center;
   }
 }
