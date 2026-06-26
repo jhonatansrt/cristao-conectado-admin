@@ -5,11 +5,12 @@ import { TableColumn, TableRow, TableStore } from '../../../application/table/ta
 import { Container } from '../../../util/container.service';
 import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
-import { CreateTurma, TurmaType } from './create-turma/create-turma';
+import { CreateTurma, EBD_CLASS_OPTIONS, TurmaType } from './create-turma/create-turma';
 
 interface EbdTurma {
   id: string;
   name: string;
+  classId: string;
   teacher: string;
   schoolYear: number;
   maxStudents: number | null;
@@ -32,6 +33,7 @@ export class Turmas implements OnInit, OnDestroy {
     {
       id: '1',
       name: 'Adultos - Manhã',
+      classId: '6',
       teacher: 'Pr. João Silva',
       schoolYear: 2026,
       maxStudents: 30,
@@ -40,6 +42,7 @@ export class Turmas implements OnInit, OnDestroy {
     {
       id: '2',
       name: 'Jovens - Manhã',
+      classId: '5',
       teacher: 'Maria Oliveira',
       schoolYear: 2026,
       maxStudents: 25,
@@ -48,6 +51,7 @@ export class Turmas implements OnInit, OnDestroy {
     {
       id: '3',
       name: 'Música',
+      classId: '4',
       teacher: 'Lucas Pereira',
       schoolYear: 2026,
       maxStudents: null,
@@ -56,6 +60,7 @@ export class Turmas implements OnInit, OnDestroy {
     {
       id: '4',
       name: 'Discipulado',
+      classId: '5',
       teacher: 'Ana Costa',
       schoolYear: 2026,
       maxStudents: 15,
@@ -64,6 +69,7 @@ export class Turmas implements OnInit, OnDestroy {
     {
       id: '5',
       name: 'Teologia Básica',
+      classId: '6',
       teacher: 'Pr. Pedro Santos',
       schoolYear: 2026,
       maxStudents: null,
@@ -74,6 +80,7 @@ export class Turmas implements OnInit, OnDestroy {
   constructor() {
     const columns: TableColumn[] = [
       { key: 'name', header: 'Nome da turma' },
+      { key: 'class', header: 'Classe' },
       { key: 'teacher', header: 'Professor responsável' },
       { key: 'schoolYear', header: 'Ano letivo' },
       { key: 'maxStudents', header: 'Limite de alunos' },
@@ -111,10 +118,15 @@ export class Turmas implements OnInit, OnDestroy {
     return this.tableStore.hasRows();
   }
 
+  private className(classId: string): string {
+    return EBD_CLASS_OPTIONS.find((option) => option.value === classId)?.label ?? '—';
+  }
+
   private toRow(turma: EbdTurma): TableRow {
     return {
       id: turma.id,
       name: turma.name,
+      class: this.className(turma.classId),
       teacher: turma.teacher,
       schoolYear: String(turma.schoolYear),
       maxStudents: turma.maxStudents === null ? 'Sem limite' : `${turma.maxStudents} alunos`,
