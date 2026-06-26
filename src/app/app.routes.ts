@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ebdRoutes, namedRoutes } from './named-routes';
+import { namedRoutes } from './named-routes';
 import { churchRequiredGuard } from './guards/church-required.guard';
 import { loginGuard } from './guards/login.guard';
 import { playlistSelectedGuard } from './guards/playlist-selected.guard';
@@ -81,22 +81,22 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
       {
-        path: namedRoutes.ebd,
+        path: namedRoutes.ebd.home,
         loadComponent: () => import('./presentation/ebd/ebd').then(m => m.Ebd),
         canActivate: [churchRequiredGuard],
         children: [
           {
             path: '',
-            redirectTo: ebdRoutes.classes,
+            redirectTo: namedRoutes.ebd.classes,
             pathMatch: 'full',
           },
           {
-            path: ebdRoutes.classes,
+            path: namedRoutes.ebd.classes,
             loadComponent: () => import('./presentation/ebd/classes/classes').then(m => m.Classes),
           },
           {
             path: '**',
-            redirectTo: ebdRoutes.classes,
+            redirectTo: namedRoutes.ebd.classes,
           },
         ],
       },
