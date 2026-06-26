@@ -2,8 +2,10 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 import { TableColumn, TableRow, TableStore } from '../../../application/table/table-store';
+import { Container } from '../../../util/container.service';
 import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
+import { CreateClass } from './create-class/create-class';
 
 interface EbdClass {
   id: string;
@@ -21,6 +23,7 @@ interface EbdClass {
 export class Classes implements OnInit, OnDestroy {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly actionBarStore = inject(ActionBarStore);
+  private readonly container = inject(Container);
   protected readonly isLoading = this.tableStore.isLoading();
 
   private readonly classes: EbdClass[] = [
@@ -48,6 +51,7 @@ export class Classes implements OnInit, OnDestroy {
       {
         btnClass: 'btn-primary',
         label: 'Adicionar classe',
+        onClick: this.handleCreateClass,
       },
     ]);
   }
@@ -55,6 +59,10 @@ export class Classes implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.actionBarStore.clearButtonsActions();
   }
+
+  private readonly handleCreateClass = (): void => {
+    this.container.vcr?.createComponent(CreateClass);
+  };
 
   protected hasClasses(): boolean {
     return this.tableStore.hasRows();
