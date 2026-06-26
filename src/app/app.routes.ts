@@ -95,6 +95,10 @@ export const routes: Routes = [
             loadComponent: () => import('./presentation/ebd/classes/classes').then(m => m.Classes),
           },
           {
+            path: namedRoutes.ebd.turmas,
+            loadComponent: () => import('./presentation/ebd/turmas/turmas').then(m => m.Turmas),
+          },
+          {
             path: '**',
             redirectTo: namedRoutes.ebd.classes,
           },
