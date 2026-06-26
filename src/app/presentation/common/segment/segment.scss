@@ -4,9 +4,21 @@ nav {
     list-style: none;
     margin: 0;
     padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  li {
+    flex: 0 0 auto;
   }
 
   button {
+    white-space: nowrap;
     gap: 8px;
     padding: 8px 16px;
     border: 1px solid var(--color-border);
