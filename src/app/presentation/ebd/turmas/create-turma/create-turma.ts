@@ -8,9 +8,19 @@ import { SelectComponent, SelectOption } from '../../../common/select/select';
 
 export type TurmaType = 'principal' | 'complementar';
 
+export const EBD_CLASS_OPTIONS: SelectOption[] = [
+  { label: 'Berçário', value: '1' },
+  { label: 'Maternal', value: '2' },
+  { label: 'Juniores', value: '3' },
+  { label: 'Adolescentes', value: '4' },
+  { label: 'Jovens', value: '5' },
+  { label: 'Adultos', value: '6' },
+];
+
 export interface EbdTurmaData {
   id: string;
   name: string;
+  classId: string;
   teacher: string;
   schoolYear: number;
   maxStudents: number | null;
@@ -30,6 +40,8 @@ export class CreateTurma implements OnInit {
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
+  protected readonly classOptions = EBD_CLASS_OPTIONS;
+
   protected readonly typeOptions: SelectOption[] = [
     { label: 'Principal', value: 'principal' },
     { label: 'Complementar', value: 'complementar' },
@@ -37,6 +49,7 @@ export class CreateTurma implements OnInit {
 
   public readonly form = this.fb.group({
     name: ['', Validators.required],
+    classId: ['', Validators.required],
     teacher: ['', Validators.required],
     schoolYear: ['', [Validators.required, Validators.min(2000)]],
     maxStudents: ['', Validators.min(1)],
@@ -51,6 +64,7 @@ export class CreateTurma implements OnInit {
     if (this.turma) {
       this.form.patchValue({
         name: this.turma.name,
+        classId: this.turma.classId,
         teacher: this.turma.teacher,
         schoolYear: String(this.turma.schoolYear),
         maxStudents: this.turma.maxStudents === null ? '' : String(this.turma.maxStudents),
