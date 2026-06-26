@@ -1,5 +1,4 @@
-<app-segment [options]="options" [selected]="selected()" (selectedChange)="onSelect($event)" />
-
-<section class="ebd-content">
+<article class="flex flex-column">
+  <app-segment [options]="options" [selected]="selected()" (selectedChange)="onSelect($event)" />
   <router-outlet />
-</section>
+</article>

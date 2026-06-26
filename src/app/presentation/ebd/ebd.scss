@@ -1,4 +1,7 @@
-.ebd-content {
-  display: block;
-  margin-top: 24px;
+article {
+  gap: 24px;
+
+  router-outlet {
+    display: none;
+  }
 }
