@@ -80,6 +80,11 @@ export const routes: Routes = [
         loadComponent: () => import('./presentation/videos/videos').then(m => m.Videos),
         canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
+      {
+        path: namedRoutes.ebd,
+        loadComponent: () => import('./presentation/ebd/ebd').then(m => m.Ebd),
+        canActivate: [churchRequiredGuard],
+      },
     ],
   },
   {
