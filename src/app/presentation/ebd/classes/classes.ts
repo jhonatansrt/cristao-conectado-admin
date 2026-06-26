@@ -64,6 +64,11 @@ export class Classes implements OnInit, OnDestroy {
     this.container.vcr?.createComponent(CreateClass);
   };
 
+  private readonly handleEditClass = (ebdClass: EbdClass): void => {
+    const componentRef = this.container.vcr?.createComponent(CreateClass);
+    componentRef?.setInput('ebdClass', ebdClass);
+  };
+
   protected hasClasses(): boolean {
     return this.tableStore.hasRows();
   }
@@ -74,6 +79,14 @@ export class Classes implements OnInit, OnDestroy {
       name: ebdClass.name,
       minAge: `${ebdClass.minAge} anos`,
       maxAge: `${ebdClass.maxAge} anos`,
+      actions: [
+        {
+          key: 'edit',
+          icon: 'edit',
+          label: 'Editar classe',
+          onClick: () => this.handleEditClass(ebdClass),
+        },
+      ],
     };
   }
 }
