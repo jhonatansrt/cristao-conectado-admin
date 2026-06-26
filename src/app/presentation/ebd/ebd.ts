@@ -1,13 +1,20 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
+
 import { SegmentComponent, SegmentOption } from '../common/segment/segment';
 
 @Component({
   selector: 'app-ebd',
-  imports: [SegmentComponent],
+  imports: [SegmentComponent, RouterOutlet],
   templateUrl: './ebd.html',
   styleUrl: './ebd.scss',
 })
 export class Ebd {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
   protected readonly options: SegmentOption[] = [
     { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
     { label: 'Alunos', value: 'alunos', icon: 'person_outline' },
@@ -21,9 +28,22 @@ export class Ebd {
     { label: 'Relatórios', value: 'relatorios', icon: 'bar_chart' },
   ];
 
-  protected readonly selected = signal<string>('dashboard');
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects),
+      startWith(this.router.url),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  protected readonly selected = computed(() => {
+    const segments = this.currentUrl().split('?')[0].split('/').filter(Boolean);
+    const last = segments[segments.length - 1] ?? '';
+    return this.options.some((option) => option.value === last) ? last : 'classes';
+  });
 
   protected onSelect(value: string): void {
-    this.selected.set(value);
+    this.router.navigate([value], { relativeTo: this.route });
   }
 }

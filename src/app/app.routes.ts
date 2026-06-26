@@ -84,6 +84,21 @@ export const routes: Routes = [
         path: namedRoutes.ebd,
         loadComponent: () => import('./presentation/ebd/ebd').then(m => m.Ebd),
         canActivate: [churchRequiredGuard],
+        children: [
+          {
+            path: '',
+            redirectTo: 'classes',
+            pathMatch: 'full',
+          },
+          {
+            path: 'classes',
+            loadComponent: () => import('./presentation/ebd/classes/classes').then(m => m.Classes),
+          },
+          {
+            path: '**',
+            redirectTo: 'classes',
+          },
+        ],
       },
     ],
   },

@@ -1,0 +1,5 @@
+@if (isLoading() || hasClasses()) {
+  <app-table />
+} @else {
+  <app-empty-case description="Nenhuma classe cadastrada até o momento." icon="groups" />
+}
