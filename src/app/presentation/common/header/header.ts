@@ -45,7 +45,7 @@ export class Header {
     [namedRoutes.pray]: 'Pedidos de oração',
     [namedRoutes.church]: 'Igreja',
     [namedRoutes.requests]: 'Solicitações',
-    [namedRoutes.ebd]: 'EBD',
+    [namedRoutes.ebd.home]: 'EBD',
   };
 
   protected readonly buttonsActions = this.actionBarStore.getButtonsActions();
