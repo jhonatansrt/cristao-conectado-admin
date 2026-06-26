@@ -1,0 +1,64 @@
+<app-modal [title]="title">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Nome da turma"
+        formControlName="name"
+        [errorMessage]="
+          form.controls.name.touched && form.controls.name.hasError('required')
+            ? 'Nome da turma é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Professor responsável"
+        formControlName="teacher"
+        [errorMessage]="
+          form.controls.teacher.touched && form.controls.teacher.hasError('required')
+            ? 'Professor responsável é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Ano letivo"
+        type="number"
+        formControlName="schoolYear"
+        [errorMessage]="
+          form.controls.schoolYear.touched && form.controls.schoolYear.invalid
+            ? 'Informe um ano letivo válido'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Limite máximo de alunos (opcional)"
+        type="number"
+        formControlName="maxStudents"
+        [errorMessage]="
+          form.controls.maxStudents.touched && form.controls.maxStudents.invalid
+            ? 'O limite deve ser maior que zero'
+            : ''
+        "
+      />
+
+      <app-select
+        label="Tipo da turma"
+        placeholder="Selecione o tipo"
+        formControlName="type"
+        [options]="typeOptions"
+        [errorMessage]="
+          form.controls.type.touched && form.controls.type.hasError('required')
+            ? 'Tipo da turma é obrigatório'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>

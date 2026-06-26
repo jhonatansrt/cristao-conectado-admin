@@ -11,7 +11,7 @@ export const namedRoutes = {
   requests: 'requests',
   pray: 'pray',
   videos: 'videos',
-  ebd: { home: 'ebd', classes: 'classes' },
+  ebd: { home: 'ebd', classes: 'classes', turmas: 'turmas' },
   login: 'login',
   privacyPolicy: 'privacy-policy',
   membersReports: 'members/reports',
