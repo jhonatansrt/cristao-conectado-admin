@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { namedRoutes } from './named-routes';
+import { ebdRoutes, namedRoutes } from './named-routes';
 import { churchRequiredGuard } from './guards/church-required.guard';
 import { loginGuard } from './guards/login.guard';
 import { playlistSelectedGuard } from './guards/playlist-selected.guard';
@@ -87,16 +87,16 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'classes',
+            redirectTo: ebdRoutes.classes,
             pathMatch: 'full',
           },
           {
-            path: 'classes',
+            path: ebdRoutes.classes,
             loadComponent: () => import('./presentation/ebd/classes/classes').then(m => m.Classes),
           },
           {
             path: '**',
-            redirectTo: 'classes',
+            redirectTo: ebdRoutes.classes,
           },
         ],
       },

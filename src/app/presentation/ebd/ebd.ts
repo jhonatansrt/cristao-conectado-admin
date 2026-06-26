@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
+import { ebdRoutes } from '../../named-routes';
 import { SegmentComponent, SegmentOption } from '../common/segment/segment';
 
 @Component({
@@ -40,7 +41,7 @@ export class Ebd {
   protected readonly selected = computed(() => {
     const segments = this.currentUrl().split('?')[0].split('/').filter(Boolean);
     const last = segments[segments.length - 1] ?? '';
-    return this.options.some((option) => option.value === last) ? last : 'classes';
+    return this.options.some((option) => option.value === last) ? last : ebdRoutes.classes;
   });
 
   protected onSelect(value: string): void {

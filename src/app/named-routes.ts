@@ -17,3 +17,7 @@ export const namedRoutes = {
   membersReports: 'members/reports',
   landing: 'sobre',
 } as const;
+
+export const ebdRoutes = {
+  classes: 'classes',
+} as const;
