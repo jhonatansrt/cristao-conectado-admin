@@ -1,0 +1,42 @@
+<app-modal title="Adicionar classe">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Nome da classe"
+        formControlName="name"
+        [errorMessage]="
+          form.controls.name.touched && form.controls.name.hasError('required')
+            ? 'Nome da classe é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Faixa etária mínima"
+        type="number"
+        formControlName="minAge"
+        [errorMessage]="
+          form.controls.minAge.touched && form.controls.minAge.invalid
+            ? 'Informe a faixa etária mínima'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Faixa etária máxima"
+        type="number"
+        formControlName="maxAge"
+        [errorMessage]="
+          form.controls.maxAge.touched && form.controls.maxAge.invalid
+            ? 'Informe a faixa etária máxima'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>
