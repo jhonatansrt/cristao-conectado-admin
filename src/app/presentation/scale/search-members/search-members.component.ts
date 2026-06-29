@@ -1,30 +1,33 @@
-import { Component, ElementRef, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, ElementRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
 
 import { Member } from '../../../domain/members';
 import { MembersService } from '../../../application/members/members-service';
+import { AutocompleteComponent, AutocompleteOption } from '../../common/autocomplete/autocomplete';
 import { ButtonComponent } from '../../common/button/button.component';
 import { DialogComponent } from '../../common/dialog/dialog.component';
-import { InputComponent } from '../../common/input/input';
 import { MemberItemComponent } from './member-item/member-item.component';
 
 @Component({
   selector: 'app-search-members',
   standalone: true,
-  imports: [DialogComponent, InputComponent, ButtonComponent, MatIconModule, MemberItemComponent],
+  imports: [DialogComponent, AutocompleteComponent, ButtonComponent, MemberItemComponent],
   templateUrl: './search-members.component.html',
   styleUrl: './search-members.component.scss',
 })
 export class SearchMembersComponent implements OnInit {
   @Output() closed = new EventEmitter<void>();
-  @ViewChild(InputComponent) private readonly searchInput!: InputComponent;
 
   private readonly el = inject(ElementRef);
   private readonly membersService = inject(MembersService);
 
   protected allMembers: Member[] = [];
-  protected filteredMembers: Member[] = [];
   protected selectedMembers: Member[] = [];
+
+  protected get memberOptions(): AutocompleteOption[] {
+    return this.allMembers
+      .filter((member) => !this.selectedMembers.some((selected) => selected.id === member.id))
+      .map((member) => ({ id: member.id, label: member.name, data: member }));
+  }
 
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
@@ -32,24 +35,8 @@ export class SearchMembersComponent implements OnInit {
     });
   }
 
-  protected onSearch(value: string): void {
-    if (!value.trim()) {
-      this.filteredMembers = [];
-      return;
-    }
-
-    const lower = value.toLowerCase();
-    this.filteredMembers = this.allMembers.filter(
-      (m) =>
-        m.name.toLowerCase().includes(lower) &&
-        !this.selectedMembers.some((s) => s.id === m.id),
-    );
-  }
-
-  protected onSelectMember(member: Member): void {
-    this.selectedMembers = [...this.selectedMembers, member];
-    this.filteredMembers = [];
-    this.searchInput?.reset();
+  protected onSelectMember(option: AutocompleteOption): void {
+    this.selectedMembers = [...this.selectedMembers, option.data as Member];
   }
 
   protected onRemoveMember(member: Member): void {

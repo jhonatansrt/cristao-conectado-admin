@@ -1,0 +1,26 @@
+<div class="autocomplete flex flex-column">
+  <app-input
+    [label]="label()"
+    [placeholder]="placeholder()"
+    [value]="displayValue"
+    [errorMessage]="errorMessage()"
+    (valueChange)="onSearch($event)"
+  />
+
+  @if (filteredOptions.length) {
+    <ul class="predictions flex flex-column">
+      @for (option of filteredOptions; track option.id) {
+        <li (click)="onSelect(option)">
+          @if (optionTemplate) {
+            <ng-container
+              [ngTemplateOutlet]="optionTemplate"
+              [ngTemplateOutletContext]="{ $implicit: option }"
+            />
+          } @else {
+            <span class="option-label">{{ option.label }}</span>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

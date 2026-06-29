@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { MembersService } from '../../../../application/members/members-service';
+import { AutocompleteComponent, AutocompleteOption } from '../../../common/autocomplete/autocomplete';
 import { ButtonComponent } from '../../../common/button/button.component';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
@@ -29,18 +31,28 @@ export interface EbdTurmaData {
 
 @Component({
   selector: 'app-create-turma',
-  imports: [ModalComponent, InputComponent, SelectComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [
+    ModalComponent,
+    InputComponent,
+    SelectComponent,
+    AutocompleteComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './create-turma.html',
   styleUrl: './create-turma.scss',
 })
 export class CreateTurma implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly membersService = inject(MembersService);
 
   @Input() public turma?: EbdTurmaData;
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
   protected readonly classOptions = EBD_CLASS_OPTIONS;
+
+  protected professorOptions: AutocompleteOption[] = [];
 
   protected readonly typeOptions: SelectOption[] = [
     { label: 'Principal', value: 'principal' },
@@ -61,6 +73,14 @@ export class CreateTurma implements OnInit {
   }
 
   ngOnInit(): void {
+    this.membersService.getMembersByChurch().subscribe((members) => {
+      this.professorOptions = members.map((member) => ({
+        id: member.id,
+        label: member.name,
+        data: member,
+      }));
+    });
+
     if (this.turma) {
       this.form.patchValue({
         name: this.turma.name,
