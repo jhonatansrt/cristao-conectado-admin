@@ -76,6 +76,7 @@ export class AutoCompleteComponent implements ControlValueAccessor, AfterViewIni
     this.optionSelected.emit(option);
   }
 
+  @HostListener('click')
   public openDropdown(): void {
     if (this.isDisabled) {
       return;

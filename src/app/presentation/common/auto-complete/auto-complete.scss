@@ -1,30 +1,31 @@
-.auto-complete {
+:host {
   position: relative;
+  display: block;
+}
 
-  .options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    margin: 4px 0 0;
-    padding: 4px;
-    list-style: none;
-    border: 1px solid var(--color-input-border);
-    border-radius: 8px;
-    background-color: var(--color-input-background);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+ul {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  gap: 4px;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--color-input-border);
+  border-radius: 8px;
+  background-color: var(--color-input-background);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    li {
-      padding: 10px 12px;
-      border-radius: 6px;
-      color: var(--color-text-primary);
-      font-size: var(--font-size-16);
-      cursor: pointer;
+  li {
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-16);
+    cursor: pointer;
 
-      &:hover {
-        background-color: var(--background-light);
-      }
+    &:hover {
+      background-color: var(--background-light);
     }
   }
 }
