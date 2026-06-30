@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { AutoCompleteComponent, AutoCompleteOption } from '../../../common/auto-complete/auto-complete';
 import { ButtonComponent } from '../../../common/button/button.component';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
@@ -17,6 +18,16 @@ export const EBD_CLASS_OPTIONS: SelectOption[] = [
   { label: 'Adultos', value: '6' },
 ];
 
+export const EBD_TEACHER_OPTIONS: AutoCompleteOption[] = [
+  { id: '1', label: 'Ana Souza' },
+  { id: '2', label: 'Carlos Pereira' },
+  { id: '3', label: 'Fernanda Lima' },
+  { id: '4', label: 'João Silva' },
+  { id: '5', label: 'Mariana Costa' },
+  { id: '6', label: 'Paulo Henrique' },
+  { id: '7', label: 'Rafael Andrade' },
+];
+
 export interface EbdTurmaData {
   id: string;
   name: string;
@@ -29,7 +40,14 @@ export interface EbdTurmaData {
 
 @Component({
   selector: 'app-create-turma',
-  imports: [ModalComponent, InputComponent, SelectComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [
+    ModalComponent,
+    InputComponent,
+    SelectComponent,
+    AutoCompleteComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './create-turma.html',
   styleUrl: './create-turma.scss',
 })
@@ -41,6 +59,8 @@ export class CreateTurma implements OnInit {
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
   protected readonly classOptions = EBD_CLASS_OPTIONS;
+
+  protected readonly teacherOptions = EBD_TEACHER_OPTIONS;
 
   protected readonly typeOptions: SelectOption[] = [
     { label: 'Principal', value: 'principal' },

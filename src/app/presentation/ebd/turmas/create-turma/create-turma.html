@@ -23,9 +23,11 @@
         "
       />
 
-      <app-input
+      <app-auto-complete
         label="Professor responsável"
+        placeholder="Digite para buscar"
         formControlName="teacher"
+        [options]="teacherOptions"
         [errorMessage]="
           form.controls.teacher.touched && form.controls.teacher.hasError('required')
             ? 'Professor responsável é obrigatório'
