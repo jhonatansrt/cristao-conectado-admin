@@ -1,0 +1,16 @@
+<div class="auto-complete" (click)="openDropdown()">
+  <app-input
+    [label]="label()"
+    [placeholder]="placeholder()"
+    [errorMessage]="errorMessage()"
+    (valueChange)="onSearch($event)"
+  />
+
+  @if (showDropdown && filteredOptions.length) {
+    <ul class="options">
+      @for (option of filteredOptions; track option.id) {
+        <li (click)="onSelect(option); $event.stopPropagation()">{{ option.label }}</li>
+      }
+    </ul>
+  }
+</div>
