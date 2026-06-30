@@ -14,6 +14,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { InputComponent } from '../input/input';
+import { MemberItemComponent } from '../member-item/member-item.component';
 
 export interface AutocompleteOption {
   id: string;
@@ -24,7 +25,7 @@ export interface AutocompleteOption {
 @Component({
   selector: 'app-autocomplete',
   standalone: true,
-  imports: [InputComponent, NgTemplateOutlet],
+  imports: [InputComponent, NgTemplateOutlet, MemberItemComponent],
   templateUrl: './autocomplete.html',
   styleUrl: './autocomplete.scss',
   providers: [

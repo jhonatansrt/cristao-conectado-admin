@@ -5,11 +5,7 @@
       [options]="memberOptions"
       [clearOnSelect]="true"
       (optionSelected)="onSelectMember($event)"
-    >
-      <ng-template let-option>
-        <app-member-item [member]="$any(option.data)" />
-      </ng-template>
-    </app-autocomplete>
+    />
 
     @if (selectedMembers.length) {
       <ul class="selected flex flex-column">

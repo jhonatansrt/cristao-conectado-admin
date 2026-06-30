@@ -1,8 +1,8 @@
 import { Component, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Member } from '../../../../domain/members';
-import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
+import { Member } from '../../../domain/members';
+import { CapitalizeNamePipe } from '../../../pipes/capitalize-name.pipe';
 
 @Component({
   selector: 'app-member-item',

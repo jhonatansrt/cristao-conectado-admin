@@ -5,7 +5,7 @@ import { MembersService } from '../../../application/members/members-service';
 import { AutocompleteComponent, AutocompleteOption } from '../../common/autocomplete/autocomplete';
 import { ButtonComponent } from '../../common/button/button.component';
 import { DialogComponent } from '../../common/dialog/dialog.component';
-import { MemberItemComponent } from './member-item/member-item.component';
+import { MemberItemComponent } from '../../common/member-item/member-item.component';
 
 @Component({
   selector: 'app-search-members',

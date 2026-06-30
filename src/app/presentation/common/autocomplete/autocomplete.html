@@ -17,7 +17,7 @@
               [ngTemplateOutletContext]="{ $implicit: option }"
             />
           } @else {
-            <span class="option-label">{{ option.label }}</span>
+            <app-member-item [member]="$any(option.data)" />
           }
         </li>
       }
