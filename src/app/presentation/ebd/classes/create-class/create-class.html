@@ -16,7 +16,7 @@
         type="number"
         formControlName="minAge"
         [errorMessage]="
-          form.controls.minAge.touched && form.controls.minAge.invalid
+          form.controls.min_age.touched && form.controls.min_age.invalid
             ? 'Informe a faixa etária mínima'
             : ''
         "
@@ -27,7 +27,7 @@
         type="number"
         formControlName="maxAge"
         [errorMessage]="
-          form.controls.maxAge.touched && form.controls.maxAge.invalid
+          form.controls.max_age.touched && form.controls.max_age.invalid
             ? 'Informe a faixa etária máxima'
             : ''
         "
