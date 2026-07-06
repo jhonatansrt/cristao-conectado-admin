@@ -8,13 +8,6 @@ import { EbdClassService } from '../../../../application/ebd-class/ebd-class.ser
 import { EbdClass } from '../../../../domain/ebd/entities/ebd-class.entity';
 import { finalize } from 'rxjs';
 
-// export interface EbdClassData {
-//   id: string;
-//   name: string;
-//   minAge: number;
-//   maxAge: number;
-// }
-
 @Component({
   selector: 'app-create-class',
   imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule],
@@ -79,14 +72,4 @@ export class CreateClass implements OnInit {
         this.modal?.closeModal();
       });
   }
-
-  // protected onConfirm(): void {
-  //   if (this.form.invalid) {
-  //     this.form.markAllAsTouched();
-  //     return;
-  //   }
-
-  //   // Mock: nenhuma integração por enquanto, apenas fecha o modal.
-  //   this.modal?.closeModal();
-  // }
 }
