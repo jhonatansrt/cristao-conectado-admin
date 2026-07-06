@@ -70,8 +70,8 @@ export class CreateClass implements OnInit {
     this.ebdClassService
       .createEbdClass({
         name: name ?? '',
-        min_age: min_age ?? 0,
-        max_age: max_age ?? 0,
+        min_age: Number(min_age) || 0,
+        max_age: Number(max_age) || 0,
       })
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(() => {

@@ -14,7 +14,7 @@ export class EbdClassService {
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
 
-  public createEbdClass(props: EbdClass): Observable<void> {
+  public createEbdClass(props: Omit<EbdClass, 'id' | 'church_id'>): Observable<void> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
 
     if (!churchId) {
@@ -23,7 +23,7 @@ export class EbdClassService {
 
     return this.ebdClassRepository
       .postEbdClass({
-        church_id: props.church_id,
+        church_id: churchId,
         name: props.name,
         min_age: props.min_age,
         max_age: props.max_age,
