@@ -1,16 +1,19 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonComponent } from '../../../common/button/button.component';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
+import { EbdClassService } from '../../../../application/ebd-class/ebd-class.service';
+import { EbdClass } from '../../../../domain/ebd/entities/ebd-class.entity';
+import { finalize } from 'rxjs';
 
-export interface EbdClassData {
-  id: string;
-  name: string;
-  minAge: number;
-  maxAge: number;
-}
+// export interface EbdClassData {
+//   id: string;
+//   name: string;
+//   minAge: number;
+//   maxAge: number;
+// }
 
 @Component({
   selector: 'app-create-class',
@@ -21,14 +24,20 @@ export interface EbdClassData {
 export class CreateClass implements OnInit {
   private readonly fb = inject(FormBuilder);
 
-  @Input() public ebdClass?: EbdClassData;
+  public ebdClassCreated = output<void>();
+
+  private readonly ebdClassService = inject(EbdClassService);
+
+  @Input() public ebdClass?: EbdClass;
+
+  public loading = false;
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
   public readonly form = this.fb.group({
     name: ['', Validators.required],
-    minAge: ['', [Validators.required, Validators.min(0)]],
-    maxAge: ['', [Validators.required, Validators.min(0)]],
+    min_age: ['', [Validators.required, Validators.min(0)]],
+    max_age: ['', [Validators.required, Validators.min(0)]],
   });
 
   protected get title(): string {
@@ -39,8 +48,8 @@ export class CreateClass implements OnInit {
     if (this.ebdClass) {
       this.form.patchValue({
         name: this.ebdClass.name,
-        minAge: String(this.ebdClass.minAge),
-        maxAge: String(this.ebdClass.maxAge),
+        min_age: String(this.ebdClass.min_age),
+        max_age: String(this.ebdClass.max_age),
       });
     }
   }
@@ -50,12 +59,34 @@ export class CreateClass implements OnInit {
   }
 
   protected onConfirm(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
       return;
     }
 
-    // Mock: nenhuma integração por enquanto, apenas fecha o modal.
-    this.modal?.closeModal();
+    const { name, min_age, max_age } = this.form.getRawValue();
+
+    this.loading = true;
+    this.ebdClassService
+      .createEbdClass({
+        name: name ?? '',
+        min_age: Number(min_age) || 0,
+        max_age: Number(max_age) || 0,
+      })
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(() => {
+        this.ebdClassCreated.emit();
+        this.modal?.closeModal();
+      });
   }
+
+  // protected onConfirm(): void {
+  //   if (this.form.invalid) {
+  //     this.form.markAllAsTouched();
+  //     return;
+  //   }
+
+  //   // Mock: nenhuma integração por enquanto, apenas fecha o modal.
+  //   this.modal?.closeModal();
+  // }
 }
