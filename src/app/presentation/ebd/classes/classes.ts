@@ -6,13 +6,9 @@ import { Container } from '../../../util/container.service';
 import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
 import { CreateClass } from './create-class/create-class';
-
-interface EbdClass {
-  id: string;
-  name: string;
-  minAge: number;
-  maxAge: number;
-}
+import { EbdClassService } from '../../../application/ebd-class/ebd-class.service';
+import { finalize } from 'rxjs';
+import { EbdClass } from '../../../domain/ebd/entities/ebd-class.entity';
 
 @Component({
   selector: 'app-ebd-classes',
@@ -26,14 +22,9 @@ export class Classes implements OnInit, OnDestroy {
   private readonly container = inject(Container);
   protected readonly isLoading = this.tableStore.isLoading();
 
-  private readonly classes: EbdClass[] = [
-    { id: '1', name: 'Berçário', minAge: 0, maxAge: 3 },
-    { id: '2', name: 'Maternal', minAge: 4, maxAge: 6 },
-    { id: '3', name: 'Juniores', minAge: 7, maxAge: 10 },
-    { id: '4', name: 'Adolescentes', minAge: 11, maxAge: 14 },
-    { id: '5', name: 'Jovens', minAge: 15, maxAge: 24 },
-    { id: '6', name: 'Adultos', minAge: 25, maxAge: 120 },
-  ];
+  private readonly ebdClassService = inject(EbdClassService);
+
+  private readonly classes: EbdClass[] = [];
 
   constructor() {
     const columns: TableColumn[] = [
@@ -54,14 +45,29 @@ export class Classes implements OnInit, OnDestroy {
         onClick: this.handleCreateClass,
       },
     ]);
+
+    this.getEbdClass();
   }
 
   ngOnDestroy(): void {
     this.actionBarStore.clearButtonsActions();
   }
 
+  private getEbdClass(): void {
+    this.tableStore.setLoading(true);
+
+    this.ebdClassService
+      .getEbdClass()
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe((classes) => {
+        const rows = classes.map((ebdClass) => this.toRow(ebdClass));
+        this.tableStore.setRows(rows);
+      });
+  }
+
   private readonly handleCreateClass = (): void => {
-    this.container.vcr?.createComponent(CreateClass);
+    const componentRef = this.container.vcr?.createComponent(CreateClass);
+    componentRef?.instance.ebdClassCreated.subscribe(() => this.getEbdClass());
   };
 
   private readonly handleEditClass = (ebdClass: EbdClass): void => {
@@ -73,12 +79,12 @@ export class Classes implements OnInit, OnDestroy {
     return this.tableStore.hasRows();
   }
 
-  private toRow(ebdClass: EbdClass): TableRow {
+  private readonly toRow = (ebdClass: EbdClass): TableRow => {
     return {
       id: ebdClass.id,
       name: ebdClass.name,
-      minAge: `${ebdClass.minAge} anos`,
-      maxAge: `${ebdClass.maxAge} anos`,
+      minAge: `${ebdClass.min_age} anos`,
+      maxAge: `${ebdClass.max_age} anos`,
       actions: [
         {
           key: 'edit',
@@ -88,5 +94,5 @@ export class Classes implements OnInit, OnDestroy {
         },
       ],
     };
-  }
+  };
 }
