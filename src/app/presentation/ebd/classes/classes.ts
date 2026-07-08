@@ -73,6 +73,7 @@ export class Classes implements OnInit, OnDestroy {
   private readonly handleEditClass = (ebdClass: EbdClass): void => {
     const componentRef = this.container.vcr?.createComponent(CreateClass);
     componentRef?.setInput('ebdClass', ebdClass);
+    componentRef?.instance.ebdClassCreated.subscribe(() => this.getEbdClass());
   };
 
   protected hasClasses(): boolean {

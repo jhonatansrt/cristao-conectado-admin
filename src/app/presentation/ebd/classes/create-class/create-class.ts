@@ -58,18 +58,20 @@ export class CreateClass implements OnInit {
     }
 
     const { name, min_age, max_age } = this.form.getRawValue();
+    const props = {
+      name: name ?? '',
+      min_age: Number(min_age) || 0,
+      max_age: Number(max_age) || 0,
+    };
 
     this.loading = true;
-    this.ebdClassService
-      .createEbdClass({
-        name: name ?? '',
-        min_age: Number(min_age) || 0,
-        max_age: Number(max_age) || 0,
-      })
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => {
-        this.ebdClassCreated.emit();
-        this.modal?.closeModal();
-      });
+    const request$ = this.ebdClass
+      ? this.ebdClassService.putEbdClass({ ...this.ebdClass, ...props })
+      : this.ebdClassService.createEbdClass(props);
+
+    request$.pipe(finalize(() => (this.loading = false))).subscribe(() => {
+      this.ebdClassCreated.emit();
+      this.modal?.closeModal();
+    });
   }
 }
