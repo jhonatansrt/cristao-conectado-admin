@@ -5,7 +5,6 @@ import { AuthStore } from '../auth/auth-store';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { IEbdClassRepository } from '../../domain/ebd/ebd-class.repository';
 import { EbdClass } from '../../domain/ebd/entities/ebd-class.entity';
-import { GetEbdClassParamsDTO } from '../../domain/ebd/dto/get-ebd-class.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -46,15 +45,6 @@ export class EbdClassService {
     }
 
     return this.ebdClassRepository.getEbdClass({ church_id: churchId }).pipe(
-      map((ebdClasses) => {
-        return ebdClasses.map((item) => ({
-          id: item.id,
-          name: item.name,
-          min_age: item.min_age,
-          max_age: item.max_age,
-          church_id: item.church_id,
-        }));
-      }),
       catchError((e) => {
         this.toastService.openToast({ message: e?.error?.message || 'Erro ao carregar turmas' });
         return throwError(() => e);
