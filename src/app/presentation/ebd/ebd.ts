@@ -17,16 +17,16 @@ export class Ebd {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly options: SegmentOption[] = [
-    { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
-    { label: 'Alunos', value: 'alunos', icon: 'person_outline' },
-    { label: 'Professores', value: 'professores', icon: 'school' },
+    // { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+    // { label: 'Alunos', value: 'alunos', icon: 'person_outline' },
     { label: 'Classes', value: 'classes', icon: 'groups' },
+    { label: 'Professores', value: 'professores', icon: 'school' },
     { label: 'Turmas', value: 'turmas', icon: 'meeting_room' },
-    { label: 'Matrículas', value: 'matriculas', icon: 'how_to_reg' },
-    { label: 'Frequência', value: 'frequencia', icon: 'fact_check' },
-    { label: 'Conteúdo', value: 'conteudo', icon: 'menu_book' },
-    { label: 'Avisos', value: 'avisos', icon: 'warning_amber' },
-    { label: 'Relatórios', value: 'relatorios', icon: 'bar_chart' },
+    // { label: 'Matrículas', value: 'matriculas', icon: 'how_to_reg' },
+    // { label: 'Frequência', value: 'frequencia', icon: 'fact_check' },
+    // { label: 'Conteúdo', value: 'conteudo', icon: 'menu_book' },
+    // { label: 'Avisos', value: 'avisos', icon: 'warning_amber' },
+    // { label: 'Relatórios', value: 'relatorios', icon: 'bar_chart' },
   ];
 
   private readonly currentUrl = toSignal(
