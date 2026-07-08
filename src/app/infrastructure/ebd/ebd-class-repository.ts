@@ -35,7 +35,7 @@ export class EbdClassRepository implements IEbdClassRepository {
   }
 
   public putEbdClass(id: string, props: PutEbdClassDTO) {
-    const url = `${environment.apiBaseURL}/ebd/class/church/${id}`;
+    const url = `${environment.apiBaseURL}/ebd/class/${id}`;
 
     const body = {
       name: props.name,
