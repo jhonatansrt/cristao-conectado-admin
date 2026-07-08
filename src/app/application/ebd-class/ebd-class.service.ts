@@ -51,4 +51,20 @@ export class EbdClassService {
       }),
     );
   }
+
+  public putEbdClass(props: EbdClass): Observable<void> {
+    return this.ebdClassRepository
+      .putEbdClass(props.id, {
+        name: props.name,
+        min_age: props.min_age,
+        max_age: props.max_age,
+      })
+      .pipe(
+        map(() => void 0),
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
+  }
 }
