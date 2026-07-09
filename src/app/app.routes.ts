@@ -95,6 +95,10 @@ export const routes: Routes = [
             loadComponent: () => import('./presentation/ebd/classes/classes').then(m => m.Classes),
           },
           {
+            path: namedRoutes.ebd.professores,
+            loadComponent: () => import('./presentation/ebd/professores/professores').then(m => m.Professores),
+          },
+          {
             path: namedRoutes.ebd.turmas,
             loadComponent: () => import('./presentation/ebd/turmas/turmas').then(m => m.Turmas),
           },

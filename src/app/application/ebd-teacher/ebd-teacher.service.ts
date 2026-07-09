@@ -1,0 +1,33 @@
+import { inject, Injectable } from '@angular/core';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { AuthStore } from '../auth/auth-store';
+
+import { ToastService } from '../../presentation/common/toast/toast.service';
+import { IEbdTeacherRepository } from '../../domain/ebd/ebd-teacher.repository';
+import { CreateEbdTeacherResponseDTO } from '../../domain/ebd/dto/create-ebd-teacher-response.dto';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EbdTeacherService {
+  private ebdTeacherRepository = inject(IEbdTeacherRepository);
+  private authStore = inject(AuthStore);
+  private toastService = inject(ToastService);
+
+  public createEbdTeacher(memberId: string): Observable<CreateEbdTeacherResponseDTO | void> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of(void 0);
+    }
+
+    return this.ebdTeacherRepository
+      .postEbdTeacher({ church_id: churchId, member_id: memberId })
+      .pipe(
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message });
+          return throwError(() => e);
+        }),
+      );
+  }
+}
