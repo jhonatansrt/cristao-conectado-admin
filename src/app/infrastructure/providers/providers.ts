@@ -28,6 +28,8 @@ import { IPositionsRepository } from '../../domain/positions';
 import { PositionsRepository } from '../positions/positions-repository';
 import { IEbdClassRepository } from '../../domain/ebd/ebd-class.repository';
 import { EbdClassRepository } from '../ebd/ebd-class-repository';
+import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
+import { EbdGroupRepository } from '../ebd/ebd-group-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -104,6 +106,11 @@ const ebdClassProvider = {
   useClass: EbdClassRepository,
 };
 
+const ebdGroupProvider = {
+  provide: IEbdGroupRepository,
+  useClass: EbdGroupRepository,
+};
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -120,6 +127,7 @@ const commonProviders = [
   churchProvider,
   positionsProvider,
   ebdClassProvider,
+  ebdGroupProvider,
 ];
 
 export const providers = [...commonProviders];
