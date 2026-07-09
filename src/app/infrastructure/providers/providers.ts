@@ -30,6 +30,8 @@ import { IEbdClassRepository } from '../../domain/ebd/ebd-class.repository';
 import { EbdClassRepository } from '../ebd/ebd-class-repository';
 import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
 import { EbdGroupRepository } from '../ebd/ebd-group-repository';
+import { IEbdTeacherRepository } from '../../domain/ebd/ebd-teacher.repository';
+import { EbdTeacherRepository } from '../ebd/ebd-teacher-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -111,6 +113,11 @@ const ebdGroupProvider = {
   useClass: EbdGroupRepository,
 };
 
+const ebdTeacherProvider = {
+  provide: IEbdTeacherRepository,
+  useClass: EbdTeacherRepository,
+};
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -128,6 +135,7 @@ const commonProviders = [
   positionsProvider,
   ebdClassProvider,
   ebdGroupProvider,
+  ebdTeacherProvider,
 ];
 
 export const providers = [...commonProviders];

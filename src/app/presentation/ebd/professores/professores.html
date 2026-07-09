@@ -1,0 +1,5 @@
+@if (isLoading() || hasTeachers()) {
+  <app-table />
+} @else {
+  <app-empty-case description="Nenhum professor cadastrado até o momento." icon="school" />
+}

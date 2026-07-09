@@ -1,0 +1,22 @@
+<app-modal title="Adicionar professor">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-auto-complete
+        label="Membro"
+        placeholder="Digite para buscar"
+        formControlName="member"
+        [options]="memberOptions"
+        [errorMessage]="
+          form.controls.member.touched && form.controls.member.hasError('required')
+            ? 'Selecione um membro para cadastrar como professor'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>
