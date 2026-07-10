@@ -30,4 +30,10 @@ export class EbdTeacherRepository implements IEbdTeacherRepository {
 
     return this.httpClient.get<EbdTeacher[]>(url);
   }
+
+  public deleteEbdTeacher(id: string): Observable<void> {
+    const url = `${environment.apiBaseURL}/ebd/teacher/${id}`;
+
+    return this.httpClient.delete<void>(url);
+  }
 }

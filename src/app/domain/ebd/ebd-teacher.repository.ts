@@ -7,4 +7,5 @@ import { EbdTeacher } from './entities/ebd-teacher.entity';
 export abstract class IEbdTeacherRepository {
   abstract postEbdTeacher(props: CreateEbdTeacherDTO): Observable<CreateEbdTeacherResponseDTO>;
   abstract getEbdTeacher(props: GetEbdTeachersDTO): Observable<EbdTeacher[]>;
+  abstract deleteEbdTeacher(id: string): Observable<void>;
 }

@@ -46,4 +46,13 @@ export class EbdTeacherService {
       }),
     );
   }
+
+  public deleteEbdTeacher(id: string): Observable<void> {
+    return this.ebdTeacherRepository.deleteEbdTeacher(id).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
+  }
 }
