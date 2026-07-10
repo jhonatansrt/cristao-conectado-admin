@@ -8,6 +8,7 @@ import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
 import { CreateTeacher } from './create-teacher/create-teacher';
 import { EbdTeacherService } from '../../../application/ebd-teacher/ebd-teacher.service';
+import { AlertService } from '../../common/alert/alert.service';
 
 @Component({
   selector: 'app-ebd-professores',
@@ -22,6 +23,7 @@ export class Professores implements OnInit, OnDestroy {
   protected readonly isLoading = this.tableStore.isLoading();
 
   private readonly ebdTeacherService = inject(EbdTeacherService);
+  private readonly alertService = inject(AlertService);
 
   constructor() {
     const columns: TableColumn[] = [{ key: 'name', header: 'Nome do professor' }];
@@ -52,7 +54,18 @@ export class Professores implements OnInit, OnDestroy {
       .getEbdTeacher()
       .pipe(finalize(() => this.tableStore.setLoading(false)))
       .subscribe((teachers) => {
-        const rows = teachers.map((teacher) => ({ id: teacher.id, name: teacher.name }));
+        const rows = teachers.map((teacher) => ({
+          id: teacher.id,
+          name: teacher.name,
+          actions: [
+            {
+              key: 'delete',
+              icon: 'delete',
+              label: 'Excluir professor',
+              onClick: () => this.handleDeleteTeacher(teacher.id),
+            },
+          ],
+        }));
         this.tableStore.setRows(rows);
       });
   }
@@ -61,6 +74,23 @@ export class Professores implements OnInit, OnDestroy {
     const componentRef = this.container.vcr?.createComponent(CreateTeacher);
     componentRef?.instance.teacherCreated.subscribe(() => this.getEbdTeachers());
   };
+
+  private async handleDeleteTeacher(id: string): Promise<void> {
+    const confirmed = await this.alertService.openAlert({
+      message: 'Tem certeza que deseja excluir o professor?',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.tableStore.setLoading(true);
+
+    this.ebdTeacherService
+      .deleteEbdTeacher(id)
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe(() => this.getEbdTeachers());
+  }
 
   protected hasTeachers(): boolean {
     return this.tableStore.hasRows();
