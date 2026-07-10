@@ -2,14 +2,13 @@ import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
-import { AutoCompleteComponent, AutoCompleteOption } from '../../../common/auto-complete/auto-complete';
 import { ButtonComponent } from '../../../common/button/button.component';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { SelectComponent, SelectOption } from '../../../common/select/select';
 import { EbdClassService } from '../../../../application/ebd-class/ebd-class.service';
 import { EbdGroupService } from '../../../../application/ebd-group/ebd-group.service';
-import { MembersService } from '../../../../application/members/members-service';
+import { EbdTeacherService } from '../../../../application/ebd-teacher/ebd-teacher.service';
 import { EbdGroupType } from '../../../../domain/ebd/entities/ebd-group.entity';
 
 export type TurmaType = 'principal' | 'complementar';
@@ -40,14 +39,7 @@ const TURMA_TYPE_TO_API: Record<TurmaType, EbdGroupType> = {
 
 @Component({
   selector: 'app-create-turma',
-  imports: [
-    ModalComponent,
-    InputComponent,
-    SelectComponent,
-    AutoCompleteComponent,
-    ButtonComponent,
-    ReactiveFormsModule,
-  ],
+  imports: [ModalComponent, InputComponent, SelectComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-turma.html',
   styleUrl: './create-turma.scss',
 })
@@ -55,7 +47,7 @@ export class CreateTurma implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly ebdGroupService = inject(EbdGroupService);
   private readonly ebdClassService = inject(EbdClassService);
-  private readonly membersService = inject(MembersService);
+  private readonly ebdTeacherService = inject(EbdTeacherService);
 
   @Input() public turma?: EbdTurmaData;
 
@@ -65,7 +57,7 @@ export class CreateTurma implements OnInit {
 
   protected classOptions: SelectOption[] = [];
 
-  protected teacherOptions: AutoCompleteOption[] = [];
+  protected teacherOptions: SelectOption[] = [];
 
   protected readonly typeOptions: SelectOption[] = [
     { label: 'Principal', value: 'principal' },
@@ -138,8 +130,8 @@ export class CreateTurma implements OnInit {
   }
 
   private loadTeacherOptions(): void {
-    this.membersService.getMembersByChurch().subscribe((members) => {
-      this.teacherOptions = members.map((member) => ({ id: member.id, label: member.name }));
+    this.ebdTeacherService.getEbdTeacher().subscribe((teachers) => {
+      this.teacherOptions = teachers.map((teacher) => ({ label: teacher.name, value: teacher.id }));
     });
   }
 }
