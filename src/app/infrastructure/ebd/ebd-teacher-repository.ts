@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { IEbdTeacherRepository } from '../../domain/ebd/ebd-teacher.repository';
 import { CreateEbdTeacherDTO } from '../../domain/ebd/dto/create-ebd-teacher.dto';
 import { CreateEbdTeacherResponseDTO } from '../../domain/ebd/dto/create-ebd-teacher-response.dto';
+import { GetEbdTeachersDTO } from '../../domain/ebd/dto/get-ebd-teacher.dto';
+import { EbdTeacher } from '../../domain/ebd/entities/ebd-teacher.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +23,11 @@ export class EbdTeacherRepository implements IEbdTeacherRepository {
     };
 
     return this.httpClient.post<CreateEbdTeacherResponseDTO>(url, body);
+  }
+
+  public getEbdTeacher(props: GetEbdTeachersDTO): Observable<EbdTeacher[]> {
+    const url = `${environment.apiBaseURL}/ebd/teacher/church/${props.church_id}`;
+
+    return this.httpClient.get<EbdTeacher[]>(url);
   }
 }
