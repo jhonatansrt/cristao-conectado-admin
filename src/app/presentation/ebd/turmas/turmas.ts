@@ -1,21 +1,21 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { finalize, forkJoin } from 'rxjs';
 
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
 import { TableColumn, TableRow, TableStore } from '../../../application/table/table-store';
 import { Container } from '../../../util/container.service';
 import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
-import { CreateTurma, EBD_CLASS_OPTIONS, TurmaType } from './create-turma/create-turma';
+import { EbdGroupService } from '../../../application/ebd-group/ebd-group.service';
+import { EbdClassService } from '../../../application/ebd-class/ebd-class.service';
+import { EbdTeacherService } from '../../../application/ebd-teacher/ebd-teacher.service';
+import { EbdGroup } from '../../../domain/ebd/entities/ebd-group.entity';
+import { CreateTurma, TurmaType } from './create-turma/create-turma';
 
-interface EbdTurma {
-  id: string;
-  name: string;
-  classId: string;
-  teacher: string;
-  schoolYear: number;
-  maxStudents: number | null;
-  type: TurmaType;
-}
+const API_TYPE_TO_TURMA: Record<EbdGroup['type'], TurmaType> = {
+  MAIN: 'principal',
+  COMPLEMENTARY: 'complementar',
+};
 
 @Component({
   selector: 'app-ebd-turmas',
@@ -29,53 +29,9 @@ export class Turmas implements OnInit, OnDestroy {
   private readonly container = inject(Container);
   protected readonly isLoading = this.tableStore.isLoading();
 
-  private readonly turmas: EbdTurma[] = [
-    {
-      id: '1',
-      name: 'Adultos - Manhã',
-      classId: '6',
-      teacher: 'Pr. João Silva',
-      schoolYear: 2026,
-      maxStudents: 30,
-      type: 'principal',
-    },
-    {
-      id: '2',
-      name: 'Jovens - Manhã',
-      classId: '5',
-      teacher: 'Maria Oliveira',
-      schoolYear: 2026,
-      maxStudents: 25,
-      type: 'principal',
-    },
-    {
-      id: '3',
-      name: 'Música',
-      classId: '4',
-      teacher: 'Lucas Pereira',
-      schoolYear: 2026,
-      maxStudents: null,
-      type: 'complementar',
-    },
-    {
-      id: '4',
-      name: 'Discipulado',
-      classId: '5',
-      teacher: 'Ana Costa',
-      schoolYear: 2026,
-      maxStudents: 15,
-      type: 'complementar',
-    },
-    {
-      id: '5',
-      name: 'Teologia Básica',
-      classId: '6',
-      teacher: 'Pr. Pedro Santos',
-      schoolYear: 2026,
-      maxStudents: null,
-      type: 'complementar',
-    },
-  ];
+  private readonly ebdGroupService = inject(EbdGroupService);
+  private readonly ebdClassService = inject(EbdClassService);
+  private readonly ebdTeacherService = inject(EbdTeacherService);
 
   constructor() {
     const columns: TableColumn[] = [
@@ -88,7 +44,6 @@ export class Turmas implements OnInit, OnDestroy {
     ];
 
     this.tableStore.setColumns(columns);
-    this.tableStore.setRows(this.turmas.map((turma) => this.toRow(turma)));
   }
 
   ngOnInit(): void {
@@ -99,44 +54,76 @@ export class Turmas implements OnInit, OnDestroy {
         onClick: this.handleCreateTurma,
       },
     ]);
+
+    this.getTurmas();
   }
 
   ngOnDestroy(): void {
     this.actionBarStore.clearButtonsActions();
   }
 
+  private getTurmas(): void {
+    this.tableStore.setLoading(true);
+
+    forkJoin({
+      groups: this.ebdGroupService.getEbdGroup(),
+      classes: this.ebdClassService.getEbdClass(),
+      teachers: this.ebdTeacherService.getEbdTeacher(),
+    })
+      .pipe(finalize(() => this.tableStore.setLoading(false)))
+      .subscribe(({ groups, classes, teachers }) => {
+        const classNameById = new Map(classes.map((ebdClass) => [ebdClass.id, ebdClass.name]));
+        const teacherNameById = new Map(teachers.map((teacher) => [teacher.id, teacher.name]));
+
+        const rows = groups.map((group) => this.toRow(group, classNameById, teacherNameById));
+        this.tableStore.setRows(rows);
+      });
+  }
+
   private readonly handleCreateTurma = (): void => {
-    this.container.vcr?.createComponent(CreateTurma);
+    const componentRef = this.container.vcr?.createComponent(CreateTurma);
+    componentRef?.instance.ebdGroupSaved.subscribe(() => this.getTurmas());
   };
 
-  private readonly handleEditTurma = (turma: EbdTurma): void => {
+  private readonly handleEditTurma = (group: EbdGroup): void => {
     const componentRef = this.container.vcr?.createComponent(CreateTurma);
-    componentRef?.setInput('turma', turma);
+    componentRef?.setInput('turma', {
+      id: group.id,
+      name: group.name,
+      classId: group.class_id,
+      teacher: group.teacher_id,
+      schoolYear: group.school_year,
+      maxStudents: group.student_limit ?? null,
+      type: API_TYPE_TO_TURMA[group.type],
+    });
+    componentRef?.instance.ebdGroupSaved.subscribe(() => this.getTurmas());
   };
 
   protected hasTurmas(): boolean {
     return this.tableStore.hasRows();
   }
 
-  private className(classId: string): string {
-    return EBD_CLASS_OPTIONS.find((option) => option.value === classId)?.label ?? '—';
-  }
+  private toRow(
+    group: EbdGroup,
+    classNameById: Map<string, string>,
+    teacherNameById: Map<string, string>,
+  ): TableRow {
+    const maxStudents = group.student_limit ?? null;
 
-  private toRow(turma: EbdTurma): TableRow {
     return {
-      id: turma.id,
-      name: turma.name,
-      class: this.className(turma.classId),
-      teacher: turma.teacher,
-      schoolYear: String(turma.schoolYear),
-      maxStudents: turma.maxStudents === null ? 'Sem limite' : `${turma.maxStudents} alunos`,
-      type: turma.type === 'principal' ? 'Principal' : 'Complementar',
+      id: group.id,
+      name: group.name,
+      class: classNameById.get(group.class_id) ?? '—',
+      teacher: teacherNameById.get(group.teacher_id) ?? '—',
+      schoolYear: String(group.school_year),
+      maxStudents: maxStudents === null ? 'Sem limite' : `${maxStudents} alunos`,
+      type: API_TYPE_TO_TURMA[group.type] === 'principal' ? 'Principal' : 'Complementar',
       actions: [
         {
           key: 'edit',
           icon: 'edit',
           label: 'Editar turma',
-          onClick: () => this.handleEditTurma(turma),
+          onClick: () => this.handleEditTurma(group),
         },
       ],
     };

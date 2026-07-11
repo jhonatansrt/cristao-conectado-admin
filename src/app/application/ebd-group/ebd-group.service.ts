@@ -39,4 +39,19 @@ export class EbdGroupService {
         }),
       );
   }
+
+  public getEbdGroup(): Observable<EbdGroup[]> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of([]);
+    }
+
+    return this.ebdGroupRepository.getEbdGroup({ church_id: churchId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message || 'Erro ao carregar turmas' });
+        return throwError(() => e);
+      }),
+    );
+  }
 }
