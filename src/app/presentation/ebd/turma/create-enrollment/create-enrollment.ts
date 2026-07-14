@@ -5,14 +5,13 @@ import { finalize } from 'rxjs';
 import { AutoCompleteComponent, AutoCompleteOption } from '../../../common/auto-complete/auto-complete';
 import { ButtonComponent } from '../../../common/button/button.component';
 import { ModalComponent } from '../../../common/modal/modal.component';
-import { SelectComponent, SelectOption } from '../../../common/select/select';
 import { EbdEnrollmentService } from '../../../../application/ebd-enrollment/ebd-enrollment.service';
 import { EbdGroupSelectedStore } from '../../../../application/ebd-group/ebd-group-selected-store';
 import { MembersService } from '../../../../application/members/members-service';
 
 @Component({
   selector: 'app-create-enrollment',
-  imports: [ModalComponent, SelectComponent, AutoCompleteComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [ModalComponent, AutoCompleteComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-enrollment.html',
   styleUrl: './create-enrollment.scss',
 })
@@ -28,7 +27,7 @@ export class CreateEnrollment implements OnInit {
 
   public loading = false;
 
-  protected studentOptions: SelectOption[] = [];
+  protected studentOptions: AutoCompleteOption[] = [];
   protected responsibleOptions: AutoCompleteOption[] = [];
 
   public readonly form = this.fb.group({
@@ -38,7 +37,7 @@ export class CreateEnrollment implements OnInit {
 
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
-      this.studentOptions = members.map((member) => ({ label: member.name, value: member.id }));
+      this.studentOptions = members.map((member) => ({ id: member.id, label: member.name }));
       this.responsibleOptions = members.map((member) => ({ id: member.id, label: member.name }));
     });
   }
