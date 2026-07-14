@@ -108,13 +108,14 @@ export class CreateTurma implements OnInit {
     };
 
     this.loading = true;
-    this.ebdGroupService
-      .createEbdGroup(props)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe(() => {
-        this.groupSaved.emit();
-        this.modal?.closeModal();
-      });
+    const request$ = this.turma
+      ? this.ebdGroupService.putEbdGroup({ id: this.turma.id, ...props })
+      : this.ebdGroupService.createEbdGroup(props);
+
+    request$.pipe(finalize(() => (this.loading = false))).subscribe(() => {
+      this.groupSaved.emit();
+      this.modal?.closeModal();
+    });
   }
 
   private loadClassOptions(): void {
