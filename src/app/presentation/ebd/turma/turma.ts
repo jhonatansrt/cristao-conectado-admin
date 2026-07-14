@@ -6,6 +6,7 @@ import { TableColumn, TableRow, TableStore } from '../../../application/table/ta
 import { EbdEnrollmentService } from '../../../application/ebd-enrollment/ebd-enrollment.service';
 import { EbdGroupSelectedStore } from '../../../application/ebd-group/ebd-group-selected-store';
 import { EbdEnrollment } from '../../../domain/ebd/entities/ebd-enrollment.entity';
+import { CapitalizeNamePipe } from '../../../pipes/capitalize-name.pipe';
 import { FormatDatePipe } from '../../../pipes/format-date.pipe';
 import { Container } from '../../../util/container.service';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
@@ -28,6 +29,7 @@ export class Turma implements OnInit, OnDestroy {
   private readonly ebdEnrollmentService = inject(EbdEnrollmentService);
   private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
   private readonly formatDate = new FormatDatePipe();
+  private readonly capitalizeName = new CapitalizeNamePipe();
 
   protected readonly options: SegmentOption[] = [
     { label: 'Alunos', value: 'alunos', icon: 'group' },
@@ -39,9 +41,9 @@ export class Turma implements OnInit, OnDestroy {
 
   constructor() {
     const columns: TableColumn[] = [
+      { key: 'name', header: 'Aluno' },
       { key: 'enrollmentDate', header: 'Data de matrícula' },
       { key: 'status', header: 'Status' },
-      { key: 'name', header: 'Aluno' },
       { key: 'responsibleName', header: 'Responsável' },
     ];
 
@@ -100,8 +102,8 @@ export class Turma implements OnInit, OnDestroy {
       id: enrollment.id,
       enrollmentDate: this.formatDate.transform(enrollment.enrollment_date),
       status: enrollment.status === 'ACTIVE' ? 'Ativa' : 'Cancelada',
-      name: enrollment.name,
-      responsibleName: enrollment.responsible_name ?? '-',
+      name: this.capitalizeName.transform(enrollment.name),
+      responsibleName: this.capitalizeName.transform(enrollment.responsible_name),
     };
   }
 }
