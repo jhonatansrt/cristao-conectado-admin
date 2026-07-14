@@ -114,16 +114,16 @@ export class Turmas implements OnInit, OnDestroy {
       type: group.type === 'MAIN' ? 'Principal' : 'Complementar',
       actions: [
         {
-          key: 'enter',
-          icon: 'login',
-          label: 'Entrar na turma',
-          onClick: () => this.handleEnterTurma(group),
-        },
-        {
           key: 'edit',
           icon: 'edit',
           label: 'Editar turma',
           onClick: () => this.handleEditTurma(turma),
+        },
+        {
+          key: 'enter',
+          icon: 'chevron_right',
+          label: 'Entrar na turma',
+          onClick: () => this.handleEnterTurma(group),
         },
       ],
     };
