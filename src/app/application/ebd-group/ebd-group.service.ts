@@ -4,7 +4,7 @@ import { AuthStore } from '../auth/auth-store';
 
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
-import { EbdGroup } from '../../domain/ebd/entities/ebd-group.entity';
+import { EbdGroup, EbdGroupListItem } from '../../domain/ebd/entities/ebd-group.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +38,20 @@ export class EbdGroupService {
           return throwError(() => e);
         }),
       );
+  }
+
+  public getEbdGroup(): Observable<EbdGroupListItem[]> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of([]);
+    }
+
+    return this.ebdGroupRepository.getEbdGroup({ church_id: churchId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message || 'Erro ao carregar turmas' });
+        return throwError(() => e);
+      }),
+    );
   }
 }

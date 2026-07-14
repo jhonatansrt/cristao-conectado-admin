@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
 import { CreateEbdGroupDTO } from '../../domain/ebd/dto/create-ebd-group.dto';
 import { CreateEbdGroupResponseDTO } from '../../domain/ebd/dto/create-ebd-group-response.dto';
+import { GetEbdGroupsDTO } from '../../domain/ebd/dto/get-ebd-group.dto';
+import { EbdGroupListItem } from '../../domain/ebd/entities/ebd-group.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +28,11 @@ export class EbdGroupRepository implements IEbdGroupRepository {
     };
 
     return this.httpClient.post<CreateEbdGroupResponseDTO>(url, body);
+  }
+
+  public getEbdGroup(props: GetEbdGroupsDTO): Observable<EbdGroupListItem[]> {
+    const url = `${environment.apiBaseURL}/ebd/group/church/${props.church_id}`;
+
+    return this.httpClient.get<EbdGroupListItem[]>(url);
   }
 }
