@@ -6,6 +6,8 @@ import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
 import { CreateEbdGroupDTO } from '../../domain/ebd/dto/create-ebd-group.dto';
 import { CreateEbdGroupResponseDTO } from '../../domain/ebd/dto/create-ebd-group-response.dto';
 import { GetEbdGroupsDTO } from '../../domain/ebd/dto/get-ebd-group.dto';
+import { PutEbdGroupDTO } from '../../domain/ebd/dto/put-ebd-group.dto';
+import { PutEbdGroupResponseDTO } from '../../domain/ebd/dto/put-ebd-group.dto.response';
 import { EbdGroupListItem } from '../../domain/ebd/entities/ebd-group.entity';
 
 @Injectable({
@@ -34,5 +36,20 @@ export class EbdGroupRepository implements IEbdGroupRepository {
     const url = `${environment.apiBaseURL}/ebd/group/church/${props.church_id}`;
 
     return this.httpClient.get<EbdGroupListItem[]>(url);
+  }
+
+  public putEbdGroup(id: string, props: PutEbdGroupDTO): Observable<PutEbdGroupResponseDTO> {
+    const url = `${environment.apiBaseURL}/ebd/group/${id}`;
+
+    const body = {
+      name: props.name,
+      type: props.type,
+      school_year: props.school_year,
+      student_limit: props.student_limit,
+      class_id: props.class_id,
+      teacher_id: props.teacher_id,
+    };
+
+    return this.httpClient.put<PutEbdGroupResponseDTO>(url, body);
   }
 }
