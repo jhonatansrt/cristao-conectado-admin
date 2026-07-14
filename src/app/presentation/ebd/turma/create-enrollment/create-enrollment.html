@@ -13,7 +13,12 @@
         "
       />
 
-      <app-input label="Responsável (opcional)" formControlName="responsible" />
+      <app-auto-complete
+        label="Responsável (opcional)"
+        placeholder="Digite para buscar"
+        formControlName="responsible"
+        [options]="responsibleOptions"
+      />
     </form>
   </section>
 

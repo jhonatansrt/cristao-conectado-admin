@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
+import { AutoCompleteComponent, AutoCompleteOption } from '../../../common/auto-complete/auto-complete';
 import { ButtonComponent } from '../../../common/button/button.component';
-import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { SelectComponent, SelectOption } from '../../../common/select/select';
 import { EbdEnrollmentService } from '../../../../application/ebd-enrollment/ebd-enrollment.service';
@@ -12,7 +12,7 @@ import { MembersService } from '../../../../application/members/members-service'
 
 @Component({
   selector: 'app-create-enrollment',
-  imports: [ModalComponent, SelectComponent, InputComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [ModalComponent, SelectComponent, AutoCompleteComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-enrollment.html',
   styleUrl: './create-enrollment.scss',
 })
@@ -29,6 +29,7 @@ export class CreateEnrollment implements OnInit {
   public loading = false;
 
   protected studentOptions: SelectOption[] = [];
+  protected responsibleOptions: AutoCompleteOption[] = [];
 
   public readonly form = this.fb.group({
     student: ['', Validators.required],
@@ -38,6 +39,7 @@ export class CreateEnrollment implements OnInit {
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
       this.studentOptions = members.map((member) => ({ label: member.name, value: member.id }));
+      this.responsibleOptions = members.map((member) => ({ id: member.id, label: member.name }));
     });
   }
 
