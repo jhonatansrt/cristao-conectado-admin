@@ -1,0 +1,29 @@
+<app-modal title="Matricular aluno">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-select
+        label="Aluno"
+        placeholder="Selecione o aluno"
+        formControlName="student"
+        [options]="studentOptions"
+        [errorMessage]="
+          form.controls.student.touched && form.controls.student.hasError('required')
+            ? 'Selecione um aluno para matricular'
+            : ''
+        "
+      />
+
+      <app-auto-complete
+        label="Responsável (opcional)"
+        placeholder="Digite para buscar"
+        formControlName="responsible"
+        [options]="responsibleOptions"
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>
