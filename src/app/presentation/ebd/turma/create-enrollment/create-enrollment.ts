@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { ButtonComponent } from '../../../common/button/button.component';
+import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { SelectComponent, SelectOption } from '../../../common/select/select';
 import { EbdEnrollmentService } from '../../../../application/ebd-enrollment/ebd-enrollment.service';
@@ -11,7 +12,7 @@ import { MembersService } from '../../../../application/members/members-service'
 
 @Component({
   selector: 'app-create-enrollment',
-  imports: [ModalComponent, SelectComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [ModalComponent, SelectComponent, InputComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-enrollment.html',
   styleUrl: './create-enrollment.scss',
 })
@@ -31,6 +32,7 @@ export class CreateEnrollment implements OnInit {
 
   public readonly form = this.fb.group({
     student: ['', Validators.required],
+    responsible: [''],
   });
 
   ngOnInit(): void {
@@ -55,11 +57,13 @@ export class CreateEnrollment implements OnInit {
       return;
     }
 
-    const userId = this.form.getRawValue().student ?? '';
+    const { student, responsible } = this.form.getRawValue();
+    const userId = student ?? '';
+    const responsibleMemberId = responsible?.trim() || undefined;
 
     this.loading = true;
     this.ebdEnrollmentService
-      .createEbdEnrollment(userId, groupId)
+      .createEbdEnrollment(userId, groupId, responsibleMemberId)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(() => {
         this.enrollmentCreated.emit();
