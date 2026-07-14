@@ -60,7 +60,7 @@ export class Header {
       return this.playlistSelectedStore.getPlaylistSelected()()[0]?.name ?? 'Vídeos';
     }
 
-    if (fullPath.startsWith(`${namedRoutes.ebd.home}/${namedRoutes.ebd.turma}/`)) {
+    if (fullPath === `${namedRoutes.ebd.home}/${namedRoutes.ebd.turma}`) {
       const groupName = this.ebdGroupSelectedStore.getGroup()()?.name;
       return groupName ? `EBD > ${groupName}` : 'EBD';
     }
