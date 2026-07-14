@@ -7,6 +7,7 @@ import { ButtonComponent } from '../../../common/button/button.component';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { EbdTeacherService } from '../../../../application/ebd-teacher/ebd-teacher.service';
 import { MembersService } from '../../../../application/members/members-service';
+import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 
 export interface EbdTeacherCreated {
   id: string;
@@ -24,6 +25,7 @@ export class CreateTeacher implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly ebdTeacherService = inject(EbdTeacherService);
   private readonly membersService = inject(MembersService);
+  private readonly capitalizeName = new CapitalizeNamePipe();
 
   public teacherCreated = output<EbdTeacherCreated>();
 
@@ -39,7 +41,10 @@ export class CreateTeacher implements OnInit {
 
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
-      this.memberOptions = members.map((member) => ({ id: member.id, label: member.name }));
+      this.memberOptions = members.map((member) => ({
+        id: member.id,
+        label: this.capitalizeName.transform(member.name),
+      }));
     });
   }
 
