@@ -8,6 +8,7 @@ import { ModalComponent } from '../../../common/modal/modal.component';
 import { EbdEnrollmentService } from '../../../../application/ebd-enrollment/ebd-enrollment.service';
 import { EbdGroupSelectedStore } from '../../../../application/ebd-group/ebd-group-selected-store';
 import { MembersService } from '../../../../application/members/members-service';
+import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 
 @Component({
   selector: 'app-create-enrollment',
@@ -20,6 +21,7 @@ export class CreateEnrollment implements OnInit {
   private readonly ebdEnrollmentService = inject(EbdEnrollmentService);
   private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
   private readonly membersService = inject(MembersService);
+  private readonly capitalizeName = new CapitalizeNamePipe();
 
   public enrollmentCreated = output<void>();
 
@@ -37,8 +39,14 @@ export class CreateEnrollment implements OnInit {
 
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
-      this.studentOptions = members.map((member) => ({ id: member.id, label: member.name }));
-      this.responsibleOptions = members.map((member) => ({ id: member.id, label: member.name }));
+      this.studentOptions = members.map((member) => ({
+        id: member.id,
+        label: this.capitalizeName.transform(member.name),
+      }));
+      this.responsibleOptions = members.map((member) => ({
+        id: member.id,
+        label: this.capitalizeName.transform(member.name),
+      }));
     });
   }
 

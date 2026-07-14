@@ -10,6 +10,7 @@ import { EbdClassService } from '../../../../application/ebd-class/ebd-class.ser
 import { EbdGroupService } from '../../../../application/ebd-group/ebd-group.service';
 import { EbdTeacherService } from '../../../../application/ebd-teacher/ebd-teacher.service';
 import { EbdGroupType } from '../../../../domain/ebd/entities/ebd-group.entity';
+import { CapitalizeNamePipe } from '../../../../pipes/capitalize-name.pipe';
 
 export type TurmaType = 'principal' | 'complementar';
 
@@ -39,6 +40,7 @@ export class CreateTurma implements OnInit {
   private readonly ebdGroupService = inject(EbdGroupService);
   private readonly ebdClassService = inject(EbdClassService);
   private readonly ebdTeacherService = inject(EbdTeacherService);
+  private readonly capitalizeName = new CapitalizeNamePipe();
 
   @Input() public turma?: EbdTurmaData;
 
@@ -126,7 +128,10 @@ export class CreateTurma implements OnInit {
 
   private loadTeacherOptions(): void {
     this.ebdTeacherService.getEbdTeacher().subscribe((teachers) => {
-      this.teacherOptions = teachers.map((teacher) => ({ label: teacher.name, value: teacher.id }));
+      this.teacherOptions = teachers.map((teacher) => ({
+        label: this.capitalizeName.transform(teacher.name),
+        value: teacher.id,
+      }));
     });
   }
 }
