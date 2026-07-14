@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -12,15 +12,6 @@ import { EbdTeacherService } from '../../../../application/ebd-teacher/ebd-teach
 import { EbdGroupType } from '../../../../domain/ebd/entities/ebd-group.entity';
 
 export type TurmaType = 'principal' | 'complementar';
-
-export const EBD_CLASS_OPTIONS: SelectOption[] = [
-  { label: 'Berçário', value: '1' },
-  { label: 'Maternal', value: '2' },
-  { label: 'Juniores', value: '3' },
-  { label: 'Adolescentes', value: '4' },
-  { label: 'Jovens', value: '5' },
-  { label: 'Adultos', value: '6' },
-];
 
 export interface EbdTurmaData {
   id: string;
@@ -50,6 +41,8 @@ export class CreateTurma implements OnInit {
   private readonly ebdTeacherService = inject(EbdTeacherService);
 
   @Input() public turma?: EbdTurmaData;
+
+  public groupSaved = output<void>();
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
@@ -119,6 +112,7 @@ export class CreateTurma implements OnInit {
       .createEbdGroup(props)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(() => {
+        this.groupSaved.emit();
         this.modal?.closeModal();
       });
   }
