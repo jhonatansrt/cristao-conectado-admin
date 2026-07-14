@@ -32,6 +32,8 @@ import { IEbdGroupRepository } from '../../domain/ebd/ebd-group.repository';
 import { EbdGroupRepository } from '../ebd/ebd-group-repository';
 import { IEbdTeacherRepository } from '../../domain/ebd/ebd-teacher.repository';
 import { EbdTeacherRepository } from '../ebd/ebd-teacher-repository';
+import { IEbdEnrollmentRepository } from '../../domain/ebd/ebd-enrollment.repository';
+import { EbdEnrollmentRepository } from '../ebd/ebd-enrollment-repository';
 
 const storageProvider = {
   provide: IStorageRepository,
@@ -118,6 +120,11 @@ const ebdTeacherProvider = {
   useClass: EbdTeacherRepository,
 };
 
+const ebdEnrollmentProvider = {
+  provide: IEbdEnrollmentRepository,
+  useClass: EbdEnrollmentRepository,
+};
+
 const commonProviders = [
   storageProvider,
   authProvider,
@@ -136,6 +143,7 @@ const commonProviders = [
   ebdClassProvider,
   ebdGroupProvider,
   ebdTeacherProvider,
+  ebdEnrollmentProvider,
 ];
 
 export const providers = [...commonProviders];
