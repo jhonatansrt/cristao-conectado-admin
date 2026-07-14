@@ -81,6 +81,11 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
       {
+        path: `${namedRoutes.ebd.home}/${namedRoutes.ebd.turma}/:id`,
+        loadComponent: () => import('./presentation/ebd/turma/turma').then(m => m.Turma),
+        canActivate: [churchRequiredGuard],
+      },
+      {
         path: namedRoutes.ebd.home,
         loadComponent: () => import('./presentation/ebd/ebd').then(m => m.Ebd),
         canActivate: [churchRequiredGuard],

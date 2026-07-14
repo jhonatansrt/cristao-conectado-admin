@@ -10,6 +10,7 @@ import { ActionBarStore } from '../../../application/action-bar/action-bar-store
 import { MenuStore } from '../../../application/menu/menu-store';
 import { namedRoutes } from '../../../named-routes';
 import { PlaylistSelectedStore } from '../../../application/playlists/playlist-selected-store';
+import { EbdGroupSelectedStore } from '../../../application/ebd-group/ebd-group-selected-store';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class Header {
   private readonly actionBarStore = inject(ActionBarStore);
   private readonly navController = inject(Router);
   private readonly playlistSelectedStore = inject(PlaylistSelectedStore);
+  private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
 
   private readonly currentUrl = toSignal(
     this.navController.events.pipe(
@@ -56,6 +58,11 @@ export class Header {
 
     if (firstSegment === namedRoutes.videos) {
       return this.playlistSelectedStore.getPlaylistSelected()()[0]?.name ?? 'Vídeos';
+    }
+
+    if (fullPath.startsWith(`${namedRoutes.ebd.home}/${namedRoutes.ebd.turma}/`)) {
+      const groupName = this.ebdGroupSelectedStore.getGroup()()?.name;
+      return groupName ? `EBD > ${groupName}` : 'EBD';
     }
 
     return this.routeTitles[fullPath] ?? this.routeTitles[firstSegment] ?? 'Igreja';
