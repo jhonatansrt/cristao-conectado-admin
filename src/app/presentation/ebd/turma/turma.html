@@ -1,0 +1,12 @@
+<article class="flex flex-column">
+  <app-segment [options]="options" [selected]="selected()" (selectedChange)="onSelect($event)" />
+
+  @switch (selected()) {
+    @case ('alunos') {
+      <app-empty-case description="Nenhum aluno cadastrado até o momento." icon="group" />
+    }
+    @case ('licoes') {
+      <app-empty-case description="Nenhuma lição cadastrada até o momento." icon="menu_book" />
+    }
+  }
+</article>

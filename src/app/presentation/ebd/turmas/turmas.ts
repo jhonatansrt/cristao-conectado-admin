@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
@@ -8,7 +9,9 @@ import { TableComponent } from '../../common/table/table.component';
 import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component';
 import { CreateTurma, EbdTurmaData } from './create-turma/create-turma';
 import { EbdGroupService } from '../../../application/ebd-group/ebd-group.service';
+import { EbdGroupSelectedStore } from '../../../application/ebd-group/ebd-group-selected-store';
 import { EbdGroupListItem } from '../../../domain/ebd/entities/ebd-group.entity';
+import { namedRoutes } from '../../../named-routes';
 
 @Component({
   selector: 'app-ebd-turmas',
@@ -23,6 +26,8 @@ export class Turmas implements OnInit, OnDestroy {
   protected readonly isLoading = this.tableStore.isLoading();
 
   private readonly ebdGroupService = inject(EbdGroupService);
+  private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
+  private readonly router = inject(Router);
 
   constructor() {
     const columns: TableColumn[] = [
@@ -75,6 +80,11 @@ export class Turmas implements OnInit, OnDestroy {
     componentRef?.instance.groupSaved.subscribe(() => this.getEbdGroups());
   };
 
+  private readonly handleEnterTurma = (group: EbdGroupListItem): void => {
+    this.ebdGroupSelectedStore.setGroup(group);
+    this.router.navigate([namedRoutes.ebd.home, namedRoutes.ebd.turma, group.id]);
+  };
+
   protected hasTurmas(): boolean {
     return this.tableStore.hasRows();
   }
@@ -103,6 +113,12 @@ export class Turmas implements OnInit, OnDestroy {
       maxStudents: group.student_limit === null ? 'Sem limite' : `${group.student_limit} alunos`,
       type: group.type === 'MAIN' ? 'Principal' : 'Complementar',
       actions: [
+        {
+          key: 'enter',
+          icon: 'login',
+          label: 'Entrar na turma',
+          onClick: () => this.handleEnterTurma(group),
+        },
         {
           key: 'edit',
           icon: 'edit',
