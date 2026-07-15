@@ -1,0 +1,31 @@
+<app-modal title="Adicionar lição">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+      <app-input
+        label="Título da lição"
+        formControlName="title"
+        [errorMessage]="
+          form.controls.title.touched && form.controls.title.hasError('required')
+            ? 'Título da lição é obrigatório'
+            : ''
+        "
+      />
+
+      <app-input
+        label="Ordem de exibição"
+        type="number"
+        formControlName="displayOrder"
+        [errorMessage]="
+          form.controls.displayOrder.touched && form.controls.displayOrder.invalid
+            ? 'Informe uma ordem de exibição válida'
+            : ''
+        "
+      />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" [disabled]="loading" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()">Confirmar</app-button>
+  </footer>
+</app-modal>
