@@ -13,6 +13,7 @@ import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component
 import { SegmentComponent, SegmentOption } from '../../common/segment/segment';
 import { TableComponent } from '../../common/table/table.component';
 import { CreateEnrollment } from './create-enrollment/create-enrollment';
+import { CreateLesson } from './create-lesson/create-lesson';
 
 type TurmaSection = 'alunos' | 'licoes';
 
@@ -51,14 +52,7 @@ export class Turma implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.actionBarStore.setButtonsActions([
-      {
-        btnClass: 'btn-primary',
-        label: 'Matricular aluno',
-        onClick: this.handleCreateEnrollment,
-      },
-    ]);
-
+    this.setActionBarButton();
     this.getEnrollments();
   }
 
@@ -68,11 +62,37 @@ export class Turma implements OnInit, OnDestroy {
 
   protected onSelect(value: string): void {
     this.selected.set(value as TurmaSection);
+    this.setActionBarButton();
+  }
+
+  private setActionBarButton(): void {
+    if (this.selected() === 'licoes') {
+      this.actionBarStore.setButtonsActions([
+        {
+          btnClass: 'btn-primary',
+          label: 'Adicionar lição',
+          onClick: this.handleCreateLesson,
+        },
+      ]);
+      return;
+    }
+
+    this.actionBarStore.setButtonsActions([
+      {
+        btnClass: 'btn-primary',
+        label: 'Matricular aluno',
+        onClick: this.handleCreateEnrollment,
+      },
+    ]);
   }
 
   private readonly handleCreateEnrollment = (): void => {
     const componentRef = this.container.vcr?.createComponent(CreateEnrollment);
     componentRef?.instance.enrollmentCreated.subscribe(() => this.getEnrollments());
+  };
+
+  private readonly handleCreateLesson = (): void => {
+    this.container.vcr?.createComponent(CreateLesson);
   };
 
   protected hasAlunos(): boolean {
