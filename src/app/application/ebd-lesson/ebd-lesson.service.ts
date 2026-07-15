@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { IEbdLessonRepository } from '../../domain/ebd/ebd-lesson.repository';
 import { CreateEbdLessonResponseDTO } from '../../domain/ebd/dto/create-ebd-lesson-response.dto';
+import { PutEbdLessonResponseDTO } from '../../domain/ebd/dto/put-ebd-lesson.dto.response';
 import { EbdLesson } from '../../domain/ebd/entities/ebd-lesson.entity';
 
 @Injectable({
@@ -38,6 +39,26 @@ export class EbdLessonService {
       .pipe(
         catchError((e) => {
           this.toastService.openToast({ message: e?.error?.message || 'Erro ao criar lição' });
+          return throwError(() => e);
+        }),
+      );
+  }
+
+  public updateEbdLesson(
+    id: string,
+    title: string,
+    displayOrder: number,
+    done: boolean,
+  ): Observable<PutEbdLessonResponseDTO> {
+    return this.ebdLessonRepository
+      .putEbdLesson(id, {
+        title,
+        done,
+        display_order: displayOrder,
+      })
+      .pipe(
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message || 'Erro ao atualizar lição' });
           return throwError(() => e);
         }),
       );

@@ -6,6 +6,8 @@ import { IEbdLessonRepository } from '../../domain/ebd/ebd-lesson.repository';
 import { CreateEbdLessonDTO } from '../../domain/ebd/dto/create-ebd-lesson.dto';
 import { CreateEbdLessonResponseDTO } from '../../domain/ebd/dto/create-ebd-lesson-response.dto';
 import { GetEbdLessonsDTO } from '../../domain/ebd/dto/get-ebd-lesson.dto';
+import { PutEbdLessonDTO } from '../../domain/ebd/dto/put-ebd-lesson.dto';
+import { PutEbdLessonResponseDTO } from '../../domain/ebd/dto/put-ebd-lesson.dto.response';
 import { EbdLesson } from '../../domain/ebd/entities/ebd-lesson.entity';
 
 @Injectable({
@@ -31,5 +33,17 @@ export class EbdLessonRepository implements IEbdLessonRepository {
     };
 
     return this.httpClient.post<CreateEbdLessonResponseDTO>(url, body);
+  }
+
+  public putEbdLesson(id: string, props: PutEbdLessonDTO): Observable<PutEbdLessonResponseDTO> {
+    const url = `${environment.apiBaseURL}/ebd/lesson/${id}`;
+
+    const body = {
+      title: props.title,
+      done: props.done,
+      display_order: props.display_order,
+    };
+
+    return this.httpClient.put<PutEbdLessonResponseDTO>(url, body);
   }
 }

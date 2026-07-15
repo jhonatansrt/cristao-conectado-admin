@@ -15,7 +15,7 @@ import { EmptyCaseComponent } from '../../common/empty-case/empty-case.component
 import { SegmentComponent, SegmentOption } from '../../common/segment/segment';
 import { TableComponent } from '../../common/table/table.component';
 import { CreateEnrollment } from './create-enrollment/create-enrollment';
-import { CreateLesson } from './create-lesson/create-lesson';
+import { CreateLesson, EbdLessonData } from './create-lesson/create-lesson';
 
 type TurmaSection = 'alunos' | 'licoes';
 
@@ -109,7 +109,13 @@ export class Turma implements OnInit, OnDestroy {
 
   private readonly handleCreateLesson = (): void => {
     const componentRef = this.container.vcr?.createComponent(CreateLesson);
-    componentRef?.instance.lessonCreated.subscribe(() => this.getLessons());
+    componentRef?.instance.lessonSaved.subscribe(() => this.getLessons());
+  };
+
+  private readonly handleEditLesson = (lesson: EbdLessonData): void => {
+    const componentRef = this.container.vcr?.createComponent(CreateLesson);
+    componentRef?.setInput('lesson', lesson);
+    componentRef?.instance.lessonSaved.subscribe(() => this.getLessons());
   };
 
   protected hasRows(): boolean {
@@ -172,6 +178,23 @@ export class Turma implements OnInit, OnDestroy {
       displayOrder: lesson.display_order,
       title: lesson.title,
       done: lesson.done ? 'Sim' : 'Não',
+      actions: [
+        {
+          key: 'edit',
+          icon: 'edit',
+          label: 'Editar lição',
+          onClick: () => this.handleEditLesson(this.toLessonData(lesson)),
+        },
+      ],
+    };
+  }
+
+  private toLessonData(lesson: EbdLesson): EbdLessonData {
+    return {
+      id: lesson.id,
+      title: lesson.title,
+      displayOrder: lesson.display_order,
+      done: lesson.done,
     };
   }
 }

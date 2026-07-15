@@ -1,25 +1,35 @@
-import { Component, ViewChild, inject, output } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { ButtonComponent } from '../../../common/button/button.component';
+import { CheckboxComponent } from '../../../common/checkbox/checkbox';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { EbdLessonService } from '../../../../application/ebd-lesson/ebd-lesson.service';
 import { EbdGroupSelectedStore } from '../../../../application/ebd-group/ebd-group-selected-store';
 
+export interface EbdLessonData {
+  id: string;
+  title: string;
+  displayOrder: number;
+  done: boolean;
+}
+
 @Component({
   selector: 'app-create-lesson',
-  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [ModalComponent, InputComponent, CheckboxComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-lesson.html',
   styleUrl: './create-lesson.scss',
 })
-export class CreateLesson {
+export class CreateLesson implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly ebdLessonService = inject(EbdLessonService);
   private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
 
-  public lessonCreated = output<void>();
+  @Input() public lesson?: EbdLessonData;
+
+  public lessonSaved = output<void>();
 
   @ViewChild(ModalComponent) private modal?: ModalComponent;
 
@@ -28,10 +38,29 @@ export class CreateLesson {
   public readonly form = this.fb.group({
     title: ['', Validators.required],
     displayOrder: ['', [Validators.required, Validators.min(1)]],
+    done: [false],
   });
+
+  protected get title(): string {
+    return this.lesson ? 'Editar lição' : 'Adicionar lição';
+  }
+
+  ngOnInit(): void {
+    if (this.lesson) {
+      this.form.patchValue({
+        title: this.lesson.title,
+        displayOrder: String(this.lesson.displayOrder),
+        done: this.lesson.done,
+      });
+    }
+  }
 
   protected onCancel(): void {
     this.modal?.closeModal();
+  }
+
+  protected onDoneChange(done: boolean): void {
+    this.form.controls.done.setValue(done);
   }
 
   protected onConfirm(): void {
@@ -40,20 +69,33 @@ export class CreateLesson {
       return;
     }
 
-    const groupId = this.ebdGroupSelectedStore.getGroup()()?.id;
+    const { title, displayOrder, done } = this.form.getRawValue();
 
-    if (!groupId) {
+    this.loading = true;
+
+    if (this.lesson) {
+      this.ebdLessonService
+        .updateEbdLesson(this.lesson.id, title ?? '', Number(displayOrder) || 0, done ?? false)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe(() => {
+          this.lessonSaved.emit();
+          this.modal?.closeModal();
+        });
       return;
     }
 
-    const { title, displayOrder } = this.form.getRawValue();
+    const groupId = this.ebdGroupSelectedStore.getGroup()()?.id;
 
-    this.loading = true;
+    if (!groupId) {
+      this.loading = false;
+      return;
+    }
+
     this.ebdLessonService
-      .createEbdLesson(groupId, title ?? '', Number(displayOrder) || 0)
+      .createEbdLesson(groupId, title ?? '', Number(displayOrder) || 0, done ?? false)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(() => {
-        this.lessonCreated.emit();
+        this.lessonSaved.emit();
         this.modal?.closeModal();
       });
   }
