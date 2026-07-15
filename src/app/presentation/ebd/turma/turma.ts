@@ -43,9 +43,9 @@ export class Turma implements OnInit, OnDestroy {
   ];
 
   private readonly lessonColumns: TableColumn[] = [
-    { key: 'displayOrder', header: 'Ordem de exibição' },
     { key: 'title', header: 'Lição' },
     { key: 'done', header: 'Realizada' },
+    { key: 'displayOrder', header: 'Ordem de exibição' },
   ];
 
   protected readonly options: SegmentOption[] = [
