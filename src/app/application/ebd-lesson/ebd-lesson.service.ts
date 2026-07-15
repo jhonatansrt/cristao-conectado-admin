@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { IEbdLessonRepository } from '../../domain/ebd/ebd-lesson.repository';
 import { CreateEbdLessonResponseDTO } from '../../domain/ebd/dto/create-ebd-lesson-response.dto';
+import { CreateEbdLessonPassageResponseDTO } from '../../domain/ebd/dto/create-ebd-lesson-passage-response.dto';
 import { PutEbdLessonResponseDTO } from '../../domain/ebd/dto/put-ebd-lesson.dto.response';
 import { EbdLesson } from '../../domain/ebd/entities/ebd-lesson.entity';
 
@@ -39,6 +40,29 @@ export class EbdLessonService {
       .pipe(
         catchError((e) => {
           this.toastService.openToast({ message: e?.error?.message || 'Erro ao criar lição' });
+          return throwError(() => e);
+        }),
+      );
+  }
+
+  public createEbdLessonPassage(
+    lessonId: string,
+    bookId: string,
+    chapter: number,
+    verseStart?: number,
+    verseEnd?: number,
+  ): Observable<CreateEbdLessonPassageResponseDTO> {
+    return this.ebdLessonRepository
+      .postEbdLessonPassage({
+        lesson_id: lessonId,
+        book_id: bookId,
+        chapter,
+        verse_start: verseStart,
+        verse_end: verseEnd,
+      })
+      .pipe(
+        catchError((e) => {
+          this.toastService.openToast({ message: e?.error?.message || 'Erro ao adicionar passagem' });
           return throwError(() => e);
         }),
       );
