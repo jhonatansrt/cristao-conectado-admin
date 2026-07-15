@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { ButtonComponent } from '../../../common/button/button.component';
-import { CheckboxComponent } from '../../../common/checkbox/checkbox';
 import { InputComponent } from '../../../common/input/input';
 import { ModalComponent } from '../../../common/modal/modal.component';
 import { EbdLessonService } from '../../../../application/ebd-lesson/ebd-lesson.service';
@@ -18,7 +17,7 @@ export interface EbdLessonData {
 
 @Component({
   selector: 'app-create-lesson',
-  imports: [ModalComponent, InputComponent, CheckboxComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [ModalComponent, InputComponent, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-lesson.html',
   styleUrl: './create-lesson.scss',
 })
@@ -38,7 +37,6 @@ export class CreateLesson implements OnInit {
   public readonly form = this.fb.group({
     title: ['', Validators.required],
     displayOrder: ['', [Validators.required, Validators.min(1)]],
-    done: [false],
   });
 
   protected get title(): string {
@@ -50,7 +48,6 @@ export class CreateLesson implements OnInit {
       this.form.patchValue({
         title: this.lesson.title,
         displayOrder: String(this.lesson.displayOrder),
-        done: this.lesson.done,
       });
     }
   }
@@ -59,23 +56,19 @@ export class CreateLesson implements OnInit {
     this.modal?.closeModal();
   }
 
-  protected onDoneChange(done: boolean): void {
-    this.form.controls.done.setValue(done);
-  }
-
   protected onConfirm(): void {
     if (this.form.invalid || this.loading) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const { title, displayOrder, done } = this.form.getRawValue();
+    const { title, displayOrder } = this.form.getRawValue();
 
     this.loading = true;
 
     if (this.lesson) {
       this.ebdLessonService
-        .updateEbdLesson(this.lesson.id, title ?? '', Number(displayOrder) || 0, done ?? false)
+        .updateEbdLesson(this.lesson.id, title ?? '', Number(displayOrder) || 0, this.lesson.done)
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(() => {
           this.lessonSaved.emit();
@@ -92,7 +85,7 @@ export class CreateLesson implements OnInit {
     }
 
     this.ebdLessonService
-      .createEbdLesson(groupId, title ?? '', Number(displayOrder) || 0, done ?? false)
+      .createEbdLesson(groupId, title ?? '', Number(displayOrder) || 0)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(() => {
         this.lessonSaved.emit();
