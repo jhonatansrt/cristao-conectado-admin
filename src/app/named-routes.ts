@@ -17,6 +17,7 @@ export const namedRoutes = {
     professores: 'professores',
     turmas: 'turmas',
     turma: 'turma',
+    lessonPlan: 'lesson-plan',
   },
   login: 'login',
   privacyPolicy: 'privacy-policy',

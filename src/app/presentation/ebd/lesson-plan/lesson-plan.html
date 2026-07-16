@@ -1,0 +1,5 @@
+@if (isLoading() || hasRows()) {
+  <app-table />
+} @else {
+  <app-empty-case description="Nenhum plano de lições cadastrado até o momento." icon="menu_book" />
+}

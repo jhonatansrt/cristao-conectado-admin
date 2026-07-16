@@ -81,6 +81,11 @@ export const routes: Routes = [
         canActivate: [churchRequiredGuard, playlistSelectedGuard],
       },
       {
+        path: `${namedRoutes.ebd.home}/${namedRoutes.ebd.lessonPlan}`,
+        loadComponent: () => import('./presentation/ebd/lesson-plan/lesson-plan').then(m => m.LessonPlan),
+        canActivate: [churchRequiredGuard],
+      },
+      {
         path: `${namedRoutes.ebd.home}/${namedRoutes.ebd.turma}`,
         loadComponent: () => import('./presentation/ebd/turma/turma').then(m => m.Turma),
         canActivate: [churchRequiredGuard],

@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { ActionBarStore } from '../../../application/action-bar/action-bar-store';
@@ -32,6 +33,7 @@ export class Turma implements OnInit, OnDestroy {
   private readonly ebdEnrollmentService = inject(EbdEnrollmentService);
   private readonly ebdLessonService = inject(EbdLessonService);
   private readonly ebdGroupSelectedStore = inject(EbdGroupSelectedStore);
+  private readonly route = inject(ActivatedRoute);
   private readonly formatDate = new FormatDatePipe();
   private readonly capitalizeName = new CapitalizeNamePipe();
 
@@ -60,6 +62,15 @@ export class Turma implements OnInit, OnDestroy {
   protected readonly lessons = signal<EbdLesson[]>([]);
 
   ngOnInit(): void {
+    const section = this.route.snapshot.queryParamMap.get('section');
+
+    if (section === 'licoes') {
+      this.selected.set('licoes');
+      this.setActionBarButton();
+      this.getLessons();
+      return;
+    }
+
     this.setActionBarButton();
     this.getEnrollments();
   }

@@ -84,7 +84,7 @@ export class Turmas implements OnInit, OnDestroy {
 
   private readonly handleEnterTurma = (group: EbdGroupListItem): void => {
     this.ebdGroupSelectedStore.setGroup(group);
-    this.router.navigate([namedRoutes.ebd.home, namedRoutes.ebd.turma]);
+    this.router.navigate([namedRoutes.ebd.home, namedRoutes.ebd.lessonPlan]);
   };
 
   protected hasTurmas(): boolean {
