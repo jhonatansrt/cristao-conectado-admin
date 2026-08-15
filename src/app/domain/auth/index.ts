@@ -17,3 +17,4 @@ export * from './entities/user.entity';
 
 // enums
 export * from './enums/type-user.enum';
+export * from './enums/marital-status.enum';

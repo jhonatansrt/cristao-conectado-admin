@@ -41,7 +41,7 @@ export class SearchMembersComponent implements OnInit {
     const lower = value.toLowerCase();
     this.filteredMembers = this.allMembers.filter(
       (m) =>
-        m.name.toLowerCase().includes(lower) &&
+        m.user.name.toLowerCase().includes(lower) &&
         !this.selectedMembers.some((s) => s.id === m.id),
     );
   }
