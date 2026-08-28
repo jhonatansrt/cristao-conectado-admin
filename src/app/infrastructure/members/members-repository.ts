@@ -17,7 +17,7 @@ export class MembersRepository implements IMembersRepository {
 
     return this.httpClient.get<Member[]>(url, { params });
   }
-  public updateChurchMember(props: UpdateMemberDTO): Observable<void> {
+  public updateChurchMember(props: UpdateMemberDTO): Observable<Member> {
     const url = `${environment.apiBaseURL}/members/${props.id}`;
     const body = {
       position_id: props.position_id, 
@@ -27,6 +27,6 @@ export class MembersRepository implements IMembersRepository {
       user_id: props.user_id
     };
 
-    return this.httpClient.put<void>(url, body);
+    return this.httpClient.put<Member>(url, body);
   }
 }

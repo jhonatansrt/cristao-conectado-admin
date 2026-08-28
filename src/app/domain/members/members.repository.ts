@@ -5,5 +5,5 @@ import { UpdateMemberDTO } from './dto/update-member.dto';
 
 export abstract class IMembersRepository {
   abstract getMembersByChurch(props: GetMembersDTO): Observable<Member[]>;
-  abstract updateChurchMember(props: UpdateMemberDTO): Observable<void>;
+  abstract updateChurchMember(props: UpdateMemberDTO): Observable<Member>;
 }

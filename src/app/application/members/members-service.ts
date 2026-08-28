@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
 import { IMembersRepository, Member } from '../../domain/members';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { UpdateMemberDTO } from '../../domain/members/dto/update-member.dto';
+import { MembersStore } from './members-store';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class MembersService {
   private membersRepository = inject(IMembersRepository);
   private authStore = inject(AuthStore);
   private toastService = inject(ToastService);
+  private readonly membersStore = inject(MembersStore);
 
   public getMembersByChurch(): Observable<Member[]> {
     const churchId = this.authStore.getUserLogged()()?.church_id;
@@ -36,6 +38,7 @@ export class MembersService {
     }
 
     return this.membersRepository.updateChurchMember(memberData).pipe(
+      tap((members) => this.membersStore.updateMember(members)),
       map(() => {
         this.toastService.openToast({ success: true, message: 'Atualizado com sucesso' });
       }),

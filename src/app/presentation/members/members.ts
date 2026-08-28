@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { TableColumn, TableRow, TableStore } from '../../application/table/table-store';
 import { TableComponent } from '../common/table/table.component';
 import { MembersService } from '../../application/members/members-service';
@@ -11,6 +11,7 @@ import { Member } from '../../domain/members';
 import { AlertService } from '../common/alert/alert.service';
 import { Container } from '../../util/container.service';
 import { CreateMember } from './create-member/create-member';
+import { MembersStore } from '../../application/members/members-store';
 
 @Component({
   selector: 'app-members',
@@ -21,6 +22,7 @@ import { CreateMember } from './create-member/create-member';
 export class Members {
   private readonly tableStore = inject(TableStore<TableRow>);
   private readonly membersService = inject(MembersService);
+  private readonly membersStore = inject(MembersStore);
   private readonly actionBarStore = inject(ActionBarStore);
   private readonly navController = inject(Router);
   private readonly alertService = inject(AlertService);
@@ -41,6 +43,14 @@ export class Members {
     ];
 
     this.tableStore.setColumns(columns);
+
+  effect(() => {
+    const members = this.membersStore.getMembers()();
+
+    this.tableStore.setRows(
+      members.map((member) => this.toRow(member))
+    );
+  });
   }
 
   ngOnInit() {
@@ -71,25 +81,7 @@ export class Members {
 
     this.membersService.getMembersByChurch().subscribe({
       next: (members) => {
-        const rows = members.map((member) => ({
-          ...MemberTransform.toRow(member),
-          actions: [
-            {
-              key: 'edit',
-              icon: 'edit',
-              label: 'Editar membro',
-              onClick: () => this.handleEditMember(member),
-            },
-            {
-              key: 'delete',
-              icon: 'delete',
-              label: 'Excluir membro',
-              onClick: () => this.handleDeleteMember(member),
-            },
-          ],
-        }));
-
-        this.tableStore.setRows(rows);
+        this.membersStore.setMembers(members);
         this.tableStore.setLoading(false);
       },
       error: () => {
@@ -97,6 +89,26 @@ export class Members {
       },
     });
   }
+
+  private toRow(member: Member): TableRow {
+  return {
+    ...MemberTransform.toRow(member),
+    actions: [
+      {
+        key: 'edit',
+        icon: 'edit',
+        label: 'Editar membro',
+        onClick: () => this.handleEditMember(member),
+      },
+      {
+        key: 'delete',
+        icon: 'delete',
+        label: 'Excluir membro',
+        onClick: () => this.handleDeleteMember(member),
+      },
+    ],
+  };
+}
 
   private handleEditMember(member: Member): void {
     const componentRef = this.container.vcr?.createComponent(CreateMember);

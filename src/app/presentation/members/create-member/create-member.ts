@@ -101,9 +101,6 @@ export class CreateMember implements OnInit {
             user_id: this.member?.user.id,
             type: type
         }
-
-        console.log(memberData);
-
         this.loading = true;
         this.membersService.updateChurchMember(memberData)
         .pipe(finalize(() => (this.loading = false)))
