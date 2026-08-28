@@ -44,13 +44,13 @@ export class Members {
 
     this.tableStore.setColumns(columns);
 
-  effect(() => {
-    const members = this.membersStore.getMembers()();
+    effect(() => {
+      const members = this.membersStore.getMembers()();
 
-    this.tableStore.setRows(
-      members.map((member) => this.toRow(member))
-    );
-  });
+      this.tableStore.setRows(
+        members.map((member) => this.toRow(member))
+      );
+    });
   }
 
   ngOnInit() {

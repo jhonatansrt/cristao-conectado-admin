@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { ReportMaritalStatusDTO } from '../../../../domain/members';
+import { MaritalStatus, MaritalStatusUtils } from '../../../../domain/auth';
 
 Chart.register(...registerables);
 
@@ -14,20 +16,20 @@ interface MaritalStatusModel {
   templateUrl: './marital-status.html',
   styleUrl: './marital-status.scss',
 })
-export class MaritalStatus implements AfterViewInit, OnDestroy {
+export class MaritalStatusChart implements AfterViewInit, OnDestroy {
   @ViewChild('chartCanvas') private readonly chartCanvas!: ElementRef<HTMLCanvasElement>;
 
-  protected readonly statuses: MaritalStatusModel[] = [
-    { label: 'Casado(a)', count: 9, color: '#4A90D9' },
-    { label: 'Solteiro(a)', count: 7, color: '#1FB892' },
-    { label: 'Divorciado(a)', count: 2, color: '#FF9800' },
-    { label: 'Viúvo(a)', count: 1, color: '#F44336' },
-    { label: 'União Estável', count: 1, color: '#7B61FF' },
-  ];
+  @Input() public maritalStatus?: ReportMaritalStatusDTO[];
+  protected statuses: MaritalStatusModel[] = [];
 
   private chart?: Chart;
 
   ngAfterViewInit(): void {
+    this.statuses = this.maritalStatus?.map((item) => ({
+      label: MaritalStatusUtils.getLabel(item.status),
+      count: item.count,
+      color: this.getStatusColor(item.status),
+    })) ?? [];
     this.buildChart();
   }
 
@@ -35,6 +37,27 @@ export class MaritalStatus implements AfterViewInit, OnDestroy {
     this.chart?.destroy();
   }
 
+  private getStatusColor(status: MaritalStatus): string {
+  switch (status) {
+    case MaritalStatus.MARRIED:
+      return '#4A90D9';
+
+    case MaritalStatus.SINGLE:
+      return '#1FB892';
+
+    case MaritalStatus.DIVORCED:
+      return '#FF9800';
+
+    case MaritalStatus.WIDOWED:
+      return '#F44336';
+
+    case MaritalStatus.LIVES_WITH_SOMEONE:
+      return '#7B61FF';
+
+    default:
+      return '#999999';
+  }
+}
   private buildChart(): void {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'bar',

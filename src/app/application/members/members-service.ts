@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
-import { IMembersRepository, Member } from '../../domain/members';
+import { IMembersRepository, Member, ReportDataMemberDTO,  } from '../../domain/members';
 import { ToastService } from '../../presentation/common/toast/toast.service';
 import { UpdateMemberDTO } from '../../domain/members/dto/update-member.dto';
 import { MembersStore } from './members-store';
@@ -47,5 +47,20 @@ export class MembersService {
         return throwError(() => e);
       }),
     )
+  }
+
+  public getMembersReport(): Observable<ReportDataMemberDTO> {
+    const churchId = this.authStore.getUserLogged()()?.church_id;
+
+    if (!churchId) {
+      return of();
+    }
+
+    return this.membersRepository.reportDataMeber({ churchId }).pipe(
+      catchError((e) => {
+        this.toastService.openToast({ message: e?.error?.message });
+        return throwError(() => e);
+      }),
+    );
   }
 }

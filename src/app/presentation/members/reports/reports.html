@@ -1,10 +1,23 @@
 <article class="flex flex-column">
-  <app-summary />
+@if (reportData) {
+  <app-summary
+    [summary]="reportData.summary"
+  />
 
   <div>
-    <app-type-of-members />
-    <app-active-members />
-    <app-marital-status />
-    <app-role-distribution />
+    <app-type-of-members 
+      [typeMember]="reportData?.byType"
+    />
+    <app-active-members 
+      [activeMembers]="reportData?.byActiveStatus?.active"
+      [inactiveMembers]="reportData?.byActiveStatus?.inactive"
+    />
+    <app-marital-status
+      [maritalStatus]="reportData?.byMaritalStatus"
+     />
+    <app-role-distribution
+      [role]="reportData?.byRole"
+     />
   </div>
+}
 </article>

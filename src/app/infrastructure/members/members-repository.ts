@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { GetMembersDTO, IMembersRepository, Member } from '../../domain/members';
+import { GetMembersDTO, IMembersRepository, Member, ReportDataMemberDTO,  } from '../../domain/members';
 import { UpdateMemberDTO } from '../../domain/members/dto/update-member.dto';
 
 @Injectable({
@@ -28,5 +28,11 @@ export class MembersRepository implements IMembersRepository {
     };
 
     return this.httpClient.put<Member>(url, body);
+  }
+
+  public reportDataMeber(props: GetMembersDTO): Observable<ReportDataMemberDTO> {
+    const url = `${environment.apiBaseURL}/members/reportDataMember/${props.churchId}`;
+
+    return this.httpClient.get<ReportDataMemberDTO>(url);
   }
 }
