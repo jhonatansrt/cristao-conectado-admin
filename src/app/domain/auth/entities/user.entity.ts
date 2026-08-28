@@ -1,3 +1,4 @@
+import { MaritalStatus } from '../enums/marital-status.enum';
 import { TypeUser } from '../enums/type-user.enum';
 
 export type User = {
@@ -8,4 +9,5 @@ export type User = {
   avatar: string;
   type: TypeUser;
   church_id?: string;
+  marital_status: MaritalStatus
 };

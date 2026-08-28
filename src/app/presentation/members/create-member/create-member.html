@@ -1,0 +1,48 @@
+<app-modal title="Editar Membro">
+  <section class="body-modal flex flex-column">
+    <form class="flex flex-column" [formGroup]="form">
+        <app-checkbox
+            label="Ativo"
+            [isChecked]="!!form.value.is_active"
+            (isCheckedChange)="onActiveChange($event)"
+        />
+
+        <app-checkbox
+            label="Batizado"
+            [isChecked]="!!form.value.is_baptized"
+            (isCheckedChange)="onBaptizedChange($event)"
+        />
+
+        <app-select
+            label="Tipo"
+            placeholder="Selecione o tipo"
+            formControlName="type"
+            [options]="typeOptions"
+            [errorMessage]="
+                form.controls.type.touched && form.controls.type.hasError('required')
+                ? 'Tipo é obrigatório'
+                : ''
+            "
+        />
+
+        <app-select
+            label="Cargo"
+            placeholder="Selecione o cargo"
+            formControlName="position"
+            [options]="positionOptions"
+            [errorMessage]="
+                form.controls.position.touched && form.controls.position.hasError('required')
+                ? 'Cargo é obrigatório'
+                : ''
+            "
+        />
+    </form>
+  </section>
+
+  <footer class="flex justify-end">
+    <app-button btnClass="btn-secondary" (click)="onCancel()">Cancelar</app-button>
+    <app-button btnClass="btn-primary" [loading]="loading" (click)="onConfirm()"
+      >Confirmar</app-button
+    >
+  </footer>
+</app-modal>

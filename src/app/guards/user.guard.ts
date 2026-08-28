@@ -21,7 +21,7 @@ export const userGuard: CanActivateFn = async () => {
     return router.createUrlTree([`/${namedRoutes.login}`]);
   }
 
-  const allowedRoles = [TypeUser.MASTER, TypeUser.ADMIN];
+  const allowedRoles = [TypeUser.MASTER];
   if (!allowedRoles.includes(user.type)) {
     return router.createUrlTree([`/${namedRoutes.login}`]);
   }

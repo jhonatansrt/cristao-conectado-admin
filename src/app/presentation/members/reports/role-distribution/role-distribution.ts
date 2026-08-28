@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { Member, ReportRoleDTO } from '../../../../domain/members';
 
 Chart.register(...registerables);
 
@@ -16,20 +17,19 @@ interface RoleModel {
 })
 export class RoleDistribution implements AfterViewInit, OnDestroy {
   @ViewChild('chartCanvas') private readonly chartCanvas!: ElementRef<HTMLCanvasElement>;
+  @Input() public role?: ReportRoleDTO[];
 
-  protected readonly roles: RoleModel[] = [
-    { label: 'Membro Regular', count: 9, color: '#4A90D9' },
-    { label: 'Líder de Célula', count: 3, color: '#4A90D9' },
-    { label: 'Pastor', count: 1, color: '#4A90D9' },
-    { label: 'Diácono', count: 2, color: '#4A90D9' },
-    { label: 'Auxiliar', count: 2, color: '#4A90D9' },
-    { label: 'Secretário', count: 1, color: '#4A90D9' },
-    { label: 'Tesoureiro', count: 1, color: '#4A90D9' },
-  ];
+  protected roles: RoleModel[] = [];
 
   private chart?: Chart;
 
   ngAfterViewInit(): void {
+    this.roles = this.role?.map((item) => ({
+      label: item.role,
+      count: item.count,
+      color: '#4A90D9',
+    })) ?? [];
+
     this.buildChart();
   }
 

@@ -42,8 +42,8 @@ export class CreateTeacher implements OnInit {
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
       this.memberOptions = members.map((member) => ({
-        id: member.id,
-        label: this.capitalizeName.transform(member.name),
+        id: member.user.id,
+        label: this.capitalizeName.transform(member.user.name),
       }));
     });
   }

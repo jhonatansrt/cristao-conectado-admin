@@ -40,12 +40,12 @@ export class CreateEnrollment implements OnInit {
   ngOnInit(): void {
     this.membersService.getMembersByChurch().subscribe((members) => {
       this.studentOptions = members.map((member) => ({
-        id: member.id,
-        label: this.capitalizeName.transform(member.name),
+        id: member.user.id,
+        label: this.capitalizeName.transform(member.user.name),
       }));
       this.responsibleOptions = members.map((member) => ({
-        id: member.id,
-        label: this.capitalizeName.transform(member.name),
+        id: member.user.id,
+        label: this.capitalizeName.transform(member.user.name),
       }));
     });
   }

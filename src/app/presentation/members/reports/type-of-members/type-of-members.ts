@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { ReportByTypeDTO } from '../../../../domain/members';
+import { TypeUser, TypeUserUtils } from '../../../../domain/auth';
 
 Chart.register(...registerables);
 
@@ -18,16 +20,18 @@ interface MemberType {
 export class TypeOfMembers implements AfterViewInit, OnDestroy {
   @ViewChild('chartCanvas') private readonly chartCanvas!: ElementRef<HTMLCanvasElement>;
 
-  protected readonly types: MemberType[] = [
-    { label: 'Membro', count: 10, percentage: 40, color: '#4A90D9' },
-    { label: 'Congregado', count: 4, percentage: 30, color: '#4CAF50' },
-    { label: 'Visitante', count: 3, percentage: 15, color: '#FF9800' },
-    { label: 'Master', count: 3, percentage: 15, color: '#7B61FF' },
-  ];
+  @Input() public typeMember?: ReportByTypeDTO[];
+  protected types: MemberType[] = [];
 
   private chart?: Chart;
 
   ngAfterViewInit(): void {
+    this.types = this.typeMember?.map((item) => ({
+      label: TypeUserUtils.getLabel(item.type),
+      count: item.count,
+      percentage: item.percentage,
+      color: this.getTypeColor(item.type),
+    })) ?? [];
     this.buildChart();
   }
 
@@ -35,6 +39,25 @@ export class TypeOfMembers implements AfterViewInit, OnDestroy {
     this.chart?.destroy();
   }
 
+  private getTypeColor(type: TypeUser): string {
+    switch (type) {
+      case TypeUser.MEMBER:
+        return '#4A90D9';
+
+      case TypeUser.CONGREGATED:
+        return '#4CAF50';
+
+      case TypeUser.VISITOR:
+        return '#FF9800';
+
+      case TypeUser.MASTER:
+        return '#7B61FF';
+
+      default:
+        return '#999999';
+    }
+  }
+  
   private buildChart(): void {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'pie',
